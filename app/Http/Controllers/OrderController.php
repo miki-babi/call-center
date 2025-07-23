@@ -1,0 +1,169 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Shop;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+
+class OrderController extends Controller
+{
+    //
+    public function index()
+    {
+        // Logic to list orders
+        return view('order.index');
+    }
+    public function fetchOrders($shopName)
+    {
+        // dd($shopName);
+        $shop = Shop::where('name', $shopName)->first();
+        // dd($shop);
+        $cacheKey = "woo_orders_{$shop->id}";
+
+        // Get from cache or fetch and cache for 5 minutes
+        $orders = Cache::remember($cacheKey, now()->addMinutes(1), function () use ($shop) {
+            return retry(5, function () use ($shop) {
+                $response = Http::withBasicAuth($shop->consumer_key, $shop->consumer_secret)
+                    ->timeout(80)
+                    ->get($shop->url . '/wp-json/wc/v3/orders', [
+                        'before' => Carbon::now()->endOfMonth()->format('Y-m-d\TH:i:s'),
+                        'orderby' => 'date',
+                    ]);
+
+                if ($response->successful()) {
+                    return $response->json();
+                }
+
+                Log::error("Failed to fetch orders for shop: {$shop->name}, status: " . $response->status());
+                return [];
+            }, 5000, function ($exception) use ($shop) {
+                if (Str::contains($exception->getMessage(), 'cURL error 28')) {
+                    Log::warning("Timeout fetching orders for shop: {$shop->name}, retrying...");
+                    return true;
+                }
+                return false;
+            });
+        });
+
+        [$pendingOrders, $cancelledOrders, $onHoldOrders, $completedOrders, $failedOrders, $processingOrders,$shipmentReadyOrders] = [collect($orders)->where('status', 'pending')->values(), collect($orders)->where('status', 'cancelled')->values(), collect($orders)->where('status', 'on-hold')->values(), collect($orders)->where('status', 'completed')->values(), collect($orders)->where('status', 'failed')->values(), collect($orders)->where('status', 'processing')->values(), collect($orders)->where('status', 'shipment-ready')->values()];
+
+        $now = Carbon::now();
+        $groupedPendingOrders = [
+            'today' => $pendingOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameDay($now))->values(),
+            'week' => $pendingOrders->filter(fn($order) => Carbon::parse($order['date_created'])->between($now->startOfWeek(), $now->endOfWeek()))->values(),
+            'month' => $pendingOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameMonth($now))->values(),
+        ];
+        $groupedCompletedOrders = [
+            'today' => $completedOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameDay($now))->values(),
+            'week' => $completedOrders->filter(fn($order) => Carbon::parse($order['date_created'])->between($now->startOfWeek(), $now->endOfWeek()))->values(),
+            'month' => $completedOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameMonth($now))->values(),
+        ];
+        $groupedProcessingOrders = [
+            'today' => $processingOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameDay($now))->values(),
+            'week' => $processingOrders->filter(fn($order) => Carbon::parse($order['date_created'])->between($now->startOfWeek(), $now->endOfWeek()))->values(),
+            'month' => $processingOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameMonth($now))->values(),
+        ];
+        $groupedOnHoldOrders = [
+            'today' => $onHoldOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameDay($now))->values(),
+            'week' => $onHoldOrders->filter(fn($order) => Carbon::parse($order['date_created'])->between($now->startOfWeek(), $now->endOfWeek()))->values(),
+            'month' => $onHoldOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameMonth($now))->values(),
+        ];
+        $groupedFailedOrders = [
+            'today' => $failedOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameDay($now))->values(),
+            'week' => $failedOrders->filter(fn($order) => Carbon::parse($order['date_created'])->between($now->startOfWeek(), $now->endOfWeek()))->values(),
+            'month' => $failedOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameMonth($now))->values(),
+        ];
+        $groupedShipmentReadyOrders = [
+            'today' => $shipmentReadyOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameDay($now))->values(),
+            'week' => $shipmentReadyOrders->filter(fn($order) => Carbon::parse($order['date_created'])->between($now->startOfWeek(), $now->endOfWeek()))->values(),
+            'month' => $shipmentReadyOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameMonth($now))->values(),
+        ];
+        // if ($completedOrders->isEmpty()) {
+        //     Log::info("No completed orders found for shop: {$shop->name}");
+        //     return response()->json(['message' => 'No completed orders found'], 404);
+        // }
+        $test = Carbon::now()->format('Y-m-d\TH:i:s');
+        // dd($test);
+        // dd($orders);
+        // return response()->json([
+        //     'shop' => $shop->name,
+        //     'orders_count' => count($orders),
+        //     'orders' => $orders,
+        // ]);
+        // dd($orders);
+        return view('order.branch-order', [
+            'pendingOrders' => $pendingOrders,
+            'cancelledOrders' => $cancelledOrders,
+            'onHoldOrders' => $onHoldOrders,
+            'completedOrders' => $completedOrders,
+            'failedOrders' => $failedOrders,
+            'processingOrders' => $processingOrders,
+            'shipmentReadyOrders' => $shipmentReadyOrders
+        ]);
+    }
+
+    public function fetchAllOrders()
+    {
+        $allShops = Shop::getCachedAllShops();
+        $allOrders = [];
+
+        foreach ($allShops as $shop) {
+            $cacheKey = "woo_orders_{$shop->id}";
+
+            $orders = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($shop) {
+                return retry(5, function () use ($shop) {
+                    $response = Http::withBasicAuth($shop->consumer_key, $shop->consumer_secret)
+                        ->timeout(80)
+                        ->get($shop->url . '/wp-json/wc/v3/orders', [
+                            'before' => Carbon::now()->endOfMonth()->format('Y-m-d\TH:i:s'),
+                            'orderby' => 'date',
+                        ]);
+
+                    if ($response->successful()) {
+                        return $response->json();  // <--- you need this!
+                    }
+
+                    Log::error("Failed to fetch orders for shop: {$shop->name}, status: " . $response->status());
+                    return [];
+                }, 5000, function ($exception) use ($shop) {
+                    if (Str::contains($exception->getMessage(), 'cURL error 28')) {
+                        Log::warning("Timeout fetching orders for shop: {$shop->name}, retrying...");
+                        return true;
+                    }
+                    return false;
+                });
+            });
+            // dd($orders);
+            $orders = collect($orders)->values();
+            $now = Carbon::now();
+
+            $orderToday = $orders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameDay($now))->values();
+            $orderWeek = $orders->filter(fn($order) => Carbon::parse($order['date_created'])->between($now->startOfWeek(), $now->endOfWeek()))->values();
+            $orderMonth = $orders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameMonth($now))->values();
+
+            // dd($orderToday, $orderWeek, $orderMonth);
+            if ($orders->isNotEmpty()) {
+                $allOrders[] = [
+                    'shop' => $shop->name,
+                    'orders' => $orders,
+                    'orders_today' => $orderToday,
+                    'orders_week' => $orderWeek,
+                    'orders_month' => $orderMonth,
+                ];
+            }
+        }
+
+        if (empty($allOrders)) {
+            return response()->json(['message' => 'No shipment-ready orders found'], 404);
+        }
+
+        return view('order.index', [
+            'allOrders' => $allOrders,
+        ]);
+    }
+}
