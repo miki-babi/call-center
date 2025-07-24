@@ -53,7 +53,7 @@
         <div class="distance-display" id="distance"></div>
 
 
-        {{-- <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
                 <label class="block font-medium">First Name:</label>
                 <input type="text" name="first_name" required class="w-full border border-gray-300 rounded-lg p-2">
@@ -96,7 +96,7 @@
                     <option value="ET" selected>Ethiopia</option>
                 </select>
             </div>
-        </div> --}}
+        </div>
 
 
 
@@ -195,17 +195,24 @@
                 distanceDiv.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
             }
 
-            // function fillAddressFields(result) {
-            //     const address = result.address || {};
-            //     document.getElementById('address_1')?.value = result.display_name || '';
-            //     document.getElementById('city')?.value = address.city || address.town || address.village || '';
-            //     document.getElementById('state')?.value = address.state || '';
-            //     document.getElementById('postcode')?.value = address.postcode || '';
-            //     // const countrySelect = document.querySelector('select[name="country"]');
-            //     // if (countrySelect && address.country_code) {
-            //     //     countrySelect.value = address.country_code.toUpperCase();
-            //     // }
-            // }
+            function fillAddressFields(result) {
+                const address = result.address || {};
+
+                const addressInput = document.getElementById('address_1');
+                const cityInput = document.getElementById('city');
+                const stateInput = document.getElementById('state');
+                const postcodeInput = document.getElementById('postcode');
+                const countrySelect = document.querySelector('select[name="country"]');
+
+                if (addressInput) addressInput.value = result.display_name || '';
+                if (cityInput) cityInput.value = address.city || address.town || address.village || '';
+                if (stateInput) stateInput.value = address.state || '';
+                if (postcodeInput) postcodeInput.value = address.postcode || '';
+                if (countrySelect && address.country_code) {
+                    countrySelect.value = address.country_code.toUpperCase();
+                }
+            }
+
 
             // Allow placing marker by double-clicking map
             map.on('dblclick', function(e) {
