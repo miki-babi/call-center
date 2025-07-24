@@ -78,7 +78,7 @@
             <div>
                 <label class="block font-medium">City:</label>
                 <input type="text" name="city" id="city" required
-                    class="w-full border border-gray-300 rounded-lg p-2">
+                    class="w-full border border-gray-300 rounded-lg p-2" value="Addis Ababa">
             </div>
             <div>
                 <label class="block font-medium">State:</label>
@@ -205,8 +205,8 @@
                 const countrySelect = document.querySelector('select[name="country"]');
 
                 if (addressInput) addressInput.value = result.display_name || '';
-                if (cityInput) cityInput.value = address.city || address.town || address.village || '';
-                if (stateInput) stateInput.value = address.state || '';
+                if (cityInput) cityInput.value = address.state || address.town || address.village || '';
+                if (stateInput) stateInput.value = address.suburb || '';
                 if (postcodeInput) postcodeInput.value = address.postcode || '';
                 if (countrySelect && address.country_code) {
                     countrySelect.value = address.country_code.toUpperCase();
