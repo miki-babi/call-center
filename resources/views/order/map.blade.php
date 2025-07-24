@@ -1,54 +1,82 @@
-@extends('layout.app')
-
-@section('content')
-<style>
-    #map { height: 400px; margin-bottom: 10px; }
-    #location-search { width: 100%; padding: 8px; margin-bottom: 5px; }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Map Search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    #distance-display { font-weight: bold; margin-bottom: 10px; }
-    .search-results {
-    background: #fff;
-    border: 1px solid #ccc;
-    max-height: 150px;
-    overflow-y: auto;
-    color: #000; /* black text */
-    font-weight: bold; /* bold text */
-}
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
 
-.search-results div {
-    padding: 5px;
-    cursor: pointer;
-    color: #000; /* black text */
-    font-weight: bold; /* bold text */
-}
+        .search-box {
+            margin: 10px;
+        }
 
-.search-results div:hover {
-    background: #eee;
-}
-</style>
+        .search-results {
+            background: #fff;
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+            color: #000;
+            font-weight: bold;
+            position: absolute;
+            z-index: 1000;
+            width: 300px;
+        }
 
-<div class="container mx-auto px-4">
-    <input type="text" id="location-search" placeholder="Type your location in Addis Ababa...">
-    <div class="search-results" id="search-results"></div>
-    <div id="distance-display">Distance: -- km</div>
-    <div id="map"></div>
+        .search-results div {
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .search-results div:hover {
+            background: #eee;
+        }
+
+        .distance-display {
+            margin: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="search-box">
+    <input type="text" id="search" placeholder="Search location..." style="width: 300px; padding: 6px;">
+    <div id="results" class="search-results"></div>
 </div>
 
-<!-- Leaflet scripts -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.min.js"></script>
+<div id="map"></div>
+<div class="distance-display" id="distance"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 <script>
+    let map = L.map('map').setView([9.03, 38.74], 13); // Centered on Addis Ababa
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    let startMarker = null;
+    let endMarker = null;
+
     let timeout = null;
 
     const input = document.getElementById('search');
     const resultsDiv = document.getElementById('results');
+    const distanceDiv = document.getElementById('distance');
 
     input.addEventListener('input', function () {
         const query = this.value.trim();
 
-        // Clear previous timeout
         clearTimeout(timeout);
 
         if (query.length < 2) {
@@ -56,7 +84,6 @@
             return;
         }
 
-        // Wait 500ms after user stops typing
         timeout = setTimeout(() => {
             fetch(`/leaflet/search?query=${encodeURIComponent(query)}`)
                 .then(res => res.json())
@@ -73,15 +100,34 @@
             div.addEventListener('click', () => {
                 const lat = parseFloat(result.lat);
                 const lon = parseFloat(result.lon);
-                map.setView([lat, lon], 15);
-                L.marker([lat, lon]).addTo(map)
+                if (endMarker) map.removeLayer(endMarker);
+                endMarker = L.marker([lat, lon]).addTo(map)
                     .bindPopup(result.display_name)
                     .openPopup();
+                map.setView([lat, lon], 15);
                 resultsDiv.innerHTML = '';
+                calculateDistance(lat, lon);
             });
             resultsDiv.appendChild(div);
         });
     }
+
+    function calculateDistance(lat, lon) {
+        if (!startMarker) {
+            // Use a fixed warehouse location (e.g., 9.03, 38.74)
+            startMarker = L.marker([9.03, 38.74], { color: 'green' })
+                .addTo(map)
+                .bindPopup('Warehouse')
+                .openPopup();
+        }
+
+        const from = startMarker.getLatLng();
+        const to = L.latLng(lat, lon);
+        const distanceKm = from.distanceTo(to) / 1000;
+
+        distanceDiv.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
+    }
 </script>
 
-@endsection
+</body>
+</html>
