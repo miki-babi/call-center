@@ -42,13 +42,7 @@
         const map = L.map('map').setView([9.03, 38.74], 13);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-        let marker = L.marker([9.03, 38.74], { draggable: true }).addTo(map);
-
-        marker.on('dragend', function (e) {
-            const latlng = marker.getLatLng();
-            document.getElementById('lat').innerText = latlng.lat.toFixed(5);
-            document.getElementById('lon').innerText = latlng.lng.toFixed(5);
-        });
+        let marker = L.marker([9.03, 38.74]).addTo(map);
 
         const input = document.getElementById('location-input');
         const resultsDiv = document.getElementById('results');
