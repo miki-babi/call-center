@@ -195,17 +195,17 @@
                 distanceDiv.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
             }
 
-            // function fillAddressFields(result) {
-            //     const address = result.address || {};
-            //     document.getElementById('address_1')?.value = result.display_name || '';
-            //     document.getElementById('city')?.value = address.city || address.town || address.village || '';
-            //     document.getElementById('state')?.value = address.state || '';
-            //     document.getElementById('postcode')?.value = address.postcode || '';
-            //     // const countrySelect = document.querySelector('select[name="country"]');
-            //     // if (countrySelect && address.country_code) {
-            //     //     countrySelect.value = address.country_code.toUpperCase();
-            //     // }
-            // }
+            function fillAddressFields(result) {
+                const address = result.address || {};
+                document.getElementById('address_1')?.value = result.display_name || '';
+                document.getElementById('city')?.value = address.city || address.town || address.village || '';
+                document.getElementById('state')?.value = address.state || '';
+                document.getElementById('postcode')?.value = address.postcode || '';
+                // const countrySelect = document.querySelector('select[name="country"]');
+                // if (countrySelect && address.country_code) {
+                //     countrySelect.value = address.country_code.toUpperCase();
+                // }
+            }
 
             // Allow placing marker by double-clicking map
             map.on('dblclick', function(e) {
