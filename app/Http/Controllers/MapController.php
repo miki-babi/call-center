@@ -35,6 +35,8 @@ public function search(Request $request)
         Log::info('Requesting Nominatim URL: ' . $url);
 
         $response = Http::get($url);
+// $response = Http::get($url);
+Log::info('Raw response: ' . $response->body());
 
         if (!$response->successful()) {
             Log::error('Nominatim request failed: ' . $response->status());
