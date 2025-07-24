@@ -101,12 +101,17 @@
                 const lat = parseFloat(result.lat);
                 const lon = parseFloat(result.lon);
                 if (endMarker) map.removeLayer(endMarker);
-                endMarker = L.marker([lat, lon]).addTo(map)
+                endMarker = L.marker([lat, lon], { draggable: true }).addTo(map)
                     .bindPopup(result.display_name)
                     .openPopup();
                 map.setView([lat, lon], 15);
                 resultsDiv.innerHTML = '';
                 calculateDistance(lat, lon);
+
+                endMarker.on('dragend', function (e) {
+                    const newLatLng = e.target.getLatLng();
+                    calculateDistance(newLatLng.lat, newLatLng.lng);
+                });
             });
             resultsDiv.appendChild(div);
         });
