@@ -1,84 +1,133 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Map Search</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    
     <style>
-        #map { height: 400px; margin-top: 1rem; }
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+
+        .search-box {
+            margin: 10px;
+        }
+
         .search-results {
-            position: absolute;
             background: #fff;
             border: 1px solid #ccc;
-            z-index: 1000;
-            width: 300px;
             max-height: 150px;
             overflow-y: auto;
+            color: #000;
             font-weight: bold;
-            color: black;
+            position: absolute;
+            z-index: 1000;
+            width: 300px;
         }
+
         .search-results div {
             padding: 5px;
             cursor: pointer;
         }
+
         .search-results div:hover {
             background: #eee;
+        }
+
+        .distance-display {
+            margin: 10px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <div style="position: relative;">
-        <input type="text" id="location-input" placeholder="Search location..." style="width:300px; padding:6px;" />
-        <div class="search-results" id="results"></div>
-    </div>
 
-    <div id="map"></div>
+<div class="search-box">
+    <input type="text" id="search" placeholder="Search location..." style="width: 300px; padding: 6px;">
+    <div id="results" class="search-results"></div>
+</div>
 
-    <p>Latitude: <span id="lat">-</span></p>
-    <p>Longitude: <span id="lon">-</span></p>
+<div id="map"></div>
+<div class="distance-display" id="distance"></div>
 
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
-        const map = L.map('map').setView([9.03, 38.74], 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-        let marker = L.marker([9.03, 38.74]).addTo(map);
+<script>
+    let map = L.map('map').setView([9.03, 38.74], 13); // Centered on Addis Ababa
 
-        const input = document.getElementById('location-input');
-        const resultsDiv = document.getElementById('results');
-        let timeout;
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
 
-        input.addEventListener('input', () => {
-            const query = input.value.trim();
+    let startMarker = null;
+    let endMarker = null;
 
+    let timeout = null;
+
+    const input = document.getElementById('search');
+    const resultsDiv = document.getElementById('results');
+    const distanceDiv = document.getElementById('distance');
+
+    input.addEventListener('input', function () {
+        const query = this.value.trim();
+
+        clearTimeout(timeout);
+
+        if (query.length < 2) {
             resultsDiv.innerHTML = '';
+            return;
+        }
 
-            if (query.length < 3) return;
+        timeout = setTimeout(() => {
+            fetch(`/leaflet/search?query=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => renderResults(data))
+                .catch(err => console.error('Search error:', err));
+        }, 500);
+    });
 
-            clearTimeout(timeout);
-            timeout = setTimeout(() => {
-                fetch(`/map/search?query=${encodeURIComponent(query)}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        resultsDiv.innerHTML = '';
-                        data.forEach(place => {
-                            const div = document.createElement('div');
-                            div.textContent = place.display_name;
-                            div.onclick = () => {
-                                const lat = parseFloat(place.lat);
-                                const lon = parseFloat(place.lon);
-                                map.setView([lat, lon], 15);
-                                marker.setLatLng([lat, lon]);
-
-                                document.getElementById('lat').innerText = lat.toFixed(5);
-                                document.getElementById('lon').innerText = lon.toFixed(5);
-                                resultsDiv.innerHTML = '';
-                            };
-                            resultsDiv.appendChild(div);
-                        });
-                    });
-            }, 500); // debounce
+    function renderResults(results) {
+        resultsDiv.innerHTML = '';
+        results.forEach(result => {
+            const div = document.createElement('div');
+            div.textContent = result.display_name;
+            div.addEventListener('click', () => {
+                const lat = parseFloat(result.lat);
+                const lon = parseFloat(result.lon);
+                if (endMarker) map.removeLayer(endMarker);
+                endMarker = L.marker([lat, lon]).addTo(map)
+                    .bindPopup(result.display_name)
+                    .openPopup();
+                map.setView([lat, lon], 15);
+                resultsDiv.innerHTML = '';
+                calculateDistance(lat, lon);
+            });
+            resultsDiv.appendChild(div);
         });
-    </script>
+    }
+
+    function calculateDistance(lat, lon) {
+        if (!startMarker) {
+            // Use a fixed warehouse location (e.g., 9.03, 38.74)
+            startMarker = L.marker([9.03, 38.74], { color: 'green' })
+                .addTo(map)
+                .bindPopup('Warehouse')
+                .openPopup();
+        }
+
+        const from = startMarker.getLatLng();
+        const to = L.latLng(lat, lon);
+        const distanceKm = from.distanceTo(to) / 1000;
+
+        distanceDiv.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
+    }
+</script>
+
 </body>
 </html>
