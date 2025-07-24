@@ -3,7 +3,7 @@
 @section('content')
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    
+
     <style>
         #map {
             height: 500px;
@@ -40,174 +40,180 @@
             font-weight: bold;
         }
     </style>
-</head>
-<body>
+    </head>
 
-<div class="search-box">
-    <input type="text" id="search" placeholder="Search location..." style="width: 300px; padding: 6px;">
-    <div id="results" class="search-results"></div>
-</div>
+    <body>
 
-<div id="map"></div>
-<div class="distance-display" id="distance"></div>
+        <div class="search-box">
+            <input type="text" id="search" placeholder="Search location..." style="width: 300px; padding: 6px;">
+            <div id="results" class="search-results"></div>
+        </div>
 
-
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block font-medium">First Name:</label>
-                        <input type="text" name="first_name" required
-                            class="w-full border border-gray-300 rounded-lg p-2">
-                    </div>
-                    <div>
-                        <label class="block font-medium">Last Name:</label>
-                        <input type="text" name="last_name" required
-                            class="w-full border border-gray-300 rounded-lg p-2">
-                    </div>
-                    <div>
-                        <label class="block font-medium">Email:</label>
-                        <input type="email" name="email" required class="w-full border border-gray-300 rounded-lg p-2">
-                    </div>
-                    <div>
-                        <label class="block font-medium">Phone:</label>
-                        <input type="text" name="phone" class="w-full border border-gray-300 rounded-lg p-2">
-                    </div>
-                    <div>
-                        <label class="block font-medium">Address:</label>
-                        <input type="text" name="address_1"  id="address_1" required
-                            class="w-full border border-gray-300 rounded-lg p-2">
-                    </div>
-                    <div>
-                        <label class="block font-medium">City:</label>
-                        <input type="text" name="city" id="city" required class="w-full border border-gray-300 rounded-lg p-2">
-                    </div>
-                    <div>
-                        <label class="block font-medium">State:</label>
-                        <input type="text" name="state" id="state" value="notset"
-                            class="w-full border border-gray-300 rounded-lg p-2">
-                    </div>
-                    <div>
-                        <label class="block font-medium">Postcode:</label>
-                        <input type="text" name="postcode" id="postcode" required class="w-full border border-gray-300 rounded-lg p-2">
-                    </div>
-                    <div>
-                        <label class="block font-medium">Country:</label>
-                        <select name="country" required class="w-full border border-gray-300 rounded-lg p-2">
-                            <option value="ET" selected>Ethiopia</option>
-                        </select>
-                    </div>
-                </div>
+        <div id="map"></div>
+        <div class="distance-display" id="distance"></div>
 
 
-
+        {{-- <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block font-medium">First Name:</label>
+                <input type="text" name="first_name" required class="w-full border border-gray-300 rounded-lg p-2">
+            </div>
+            <div>
+                <label class="block font-medium">Last Name:</label>
+                <input type="text" name="last_name" required class="w-full border border-gray-300 rounded-lg p-2">
+            </div>
+            <div>
+                <label class="block font-medium">Email:</label>
+                <input type="email" name="email" required class="w-full border border-gray-300 rounded-lg p-2">
+            </div>
+            <div>
+                <label class="block font-medium">Phone:</label>
+                <input type="text" name="phone" class="w-full border border-gray-300 rounded-lg p-2">
+            </div>
+            <div>
+                <label class="block font-medium">Address:</label>
+                <input type="text" name="address_1" id="address_1" required
+                    class="w-full border border-gray-300 rounded-lg p-2">
+            </div>
+            <div>
+                <label class="block font-medium">City:</label>
+                <input type="text" name="city" id="city" required
+                    class="w-full border border-gray-300 rounded-lg p-2">
+            </div>
+            <div>
+                <label class="block font-medium">State:</label>
+                <input type="text" name="state" id="state" value="notset"
+                    class="w-full border border-gray-300 rounded-lg p-2">
+            </div>
+            <div>
+                <label class="block font-medium">Postcode:</label>
+                <input type="text" name="postcode" id="postcode" required
+                    class="w-full border border-gray-300 rounded-lg p-2">
+            </div>
+            <div>
+                <label class="block font-medium">Country:</label>
+                <select name="country" required class="w-full border border-gray-300 rounded-lg p-2">
+                    <option value="ET" selected>Ethiopia</option>
+                </select>
+            </div>
+        </div> --}}
 
 
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-<script>
-    let map = L.map('map').setView([9.03, 38.74], 13); // Addis Ababa center
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
 
-    let startMarker = null;
-    let endMarker = null;
+        <!-- Leaflet JS -->
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-    let timeout = null;
+        <script>
+            let map = L.map('map').setView([9.03, 38.74], 13); // Addis Ababa center
 
-    const input = document.getElementById('search');
-    const resultsDiv = document.getElementById('results');
-    const distanceDiv = document.getElementById('distance');
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
 
-    input.addEventListener('input', function () {
-        const query = this.value.trim();
-        clearTimeout(timeout);
+            let startMarker = null;
+            let endMarker = null;
 
-        if (query.length < 2) {
-            resultsDiv.innerHTML = '';
-            return;
-        }
+            let timeout = null;
 
-        timeout = setTimeout(() => {
-            fetch(`/leaflet/search?query=${encodeURIComponent(query)}`)
-                .then(res => res.json())
-                .then(data => renderResults(data))
-                .catch(err => console.error('Search error:', err));
-        }, 500);
-    });
+            const input = document.getElementById('search');
+            const resultsDiv = document.getElementById('results');
+            const distanceDiv = document.getElementById('distance');
 
-    function renderResults(results) {
-        resultsDiv.innerHTML = '';
-        results.forEach(result => {
-            const div = document.createElement('div');
-            div.textContent = result.display_name;
-            div.classList.add('cursor-pointer', 'hover:bg-gray-100', 'p-1');
+            input.addEventListener('input', function() {
+                const query = this.value.trim();
+                clearTimeout(timeout);
 
-            div.addEventListener('click', () => {
-                const lat = parseFloat(result.lat);
-                const lon = parseFloat(result.lon);
+                if (query.length < 2) {
+                    resultsDiv.innerHTML = '';
+                    return;
+                }
 
-                placeEndMarker(lat, lon, result);
-                resultsDiv.innerHTML = '';
+                timeout = setTimeout(() => {
+                    fetch(`/leaflet/search?query=${encodeURIComponent(query)}`)
+                        .then(res => res.json())
+                        .then(data => renderResults(data))
+                        .catch(err => console.error('Search error:', err));
+                }, 500);
             });
 
-            resultsDiv.appendChild(div);
-        });
-    }
+            function renderResults(results) {
+                resultsDiv.innerHTML = '';
+                results.forEach(result => {
+                    const div = document.createElement('div');
+                    div.textContent = result.display_name;
+                    div.classList.add('cursor-pointer', 'hover:bg-gray-100', 'p-1');
 
-    function placeEndMarker(lat, lon, result = null) {
-        if (endMarker) map.removeLayer(endMarker);
+                    div.addEventListener('click', () => {
+                        const lat = parseFloat(result.lat);
+                        const lon = parseFloat(result.lon);
 
-        endMarker = L.marker([lat, lon], { draggable: true }).addTo(map)
-            .bindPopup(result?.display_name || 'Selected Location')
-            .openPopup();
+                        placeEndMarker(lat, lon, result);
+                        resultsDiv.innerHTML = '';
+                    });
 
-        map.setView([lat, lon], 15);
-        calculateDistance(lat, lon);
+                    resultsDiv.appendChild(div);
+                });
+            }
 
-        endMarker.on('dragend', function (e) {
-            const newLatLng = e.target.getLatLng();
-            calculateDistance(newLatLng.lat, newLatLng.lng);
-        });
+            function placeEndMarker(lat, lon, result = null) {
+                if (endMarker) map.removeLayer(endMarker);
 
-        if (result) fillAddressFields(result);
-    }
+                endMarker = L.marker([lat, lon], {
+                        draggable: true
+                    }).addTo(map)
+                    .bindPopup(result?.display_name || 'Selected Location')
+                    .openPopup();
 
-    function calculateDistance(lat, lon) {
-        if (!startMarker) {
-            startMarker = L.marker([9.03, 38.74], { color: 'green' })
-                .addTo(map)
-                .bindPopup('Warehouse')
-                .openPopup();
-        }
+                map.setView([lat, lon], 15);
+                calculateDistance(lat, lon);
 
-        const from = startMarker.getLatLng();
-        const to = L.latLng(lat, lon);
-        const distanceKm = from.distanceTo(to) / 1000;
+                endMarker.on('dragend', function(e) {
+                    const newLatLng = e.target.getLatLng();
+                    calculateDistance(newLatLng.lat, newLatLng.lng);
+                });
 
-        distanceDiv.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
-    }
+                if (result) fillAddressFields(result);
+            }
 
-    function fillAddressFields(result) {
-        const address = result.address || {};
-        document.getElementById('address_1')?.value = result.display_name || '';
-        document.getElementById('city')?.value = address.city || address.town || address.village || '';
-        document.getElementById('state')?.value = address.state || '';
-        document.getElementById('postcode')?.value = address.postcode || '';
-        // const countrySelect = document.querySelector('select[name="country"]');
-        // if (countrySelect && address.country_code) {
-        //     countrySelect.value = address.country_code.toUpperCase();
-        // }
-    }
+            function calculateDistance(lat, lon) {
+                if (!startMarker) {
+                    startMarker = L.marker([9.03, 38.74], {
+                            color: 'green'
+                        })
+                        .addTo(map)
+                        .bindPopup('Warehouse')
+                        .openPopup();
+                }
 
-    // Allow placing marker by double-clicking map
-    map.on('dblclick', function (e) {
-        const { lat, lng } = e.latlng;
-        placeEndMarker(lat, lng);
-    });
-</script>
+                const from = startMarker.getLatLng();
+                const to = L.latLng(lat, lon);
+                const distanceKm = from.distanceTo(to) / 1000;
 
+                distanceDiv.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
+            }
 
-@endsection
+            function fillAddressFields(result) {
+                const address = result.address || {};
+                document.getElementById('address_1')?.value = result.display_name || '';
+                document.getElementById('city')?.value = address.city || address.town || address.village || '';
+                document.getElementById('state')?.value = address.state || '';
+                document.getElementById('postcode')?.value = address.postcode || '';
+                // const countrySelect = document.querySelector('select[name="country"]');
+                // if (countrySelect && address.country_code) {
+                //     countrySelect.value = address.country_code.toUpperCase();
+                // }
+            }
+
+            // Allow placing marker by double-clicking map
+            map.on('dblclick', function(e) {
+                const {
+                    lat,
+                    lng
+                } = e.latlng;
+                placeEndMarker(lat, lng);
+            });
+        </script>
+    @endsection
