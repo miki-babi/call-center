@@ -9,7 +9,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Models\Farmer;
 use Illuminate\Support\Facades\Artisan;
+   use App\Http\Controllers\MapController;
 
+
+   
 Route::post('login', [SessionController::class,'login'])->name('auth.login');
 Route::post('logout', [SessionController::class,'logout'])->name('auth.logout');
 Route::get('/login', function(){
@@ -54,6 +57,13 @@ Route::get('/sync-woo', function () {
     Route::get('/dashboard', function(){
         return view('dashboard');
     })->name('dashboard');
+
+
+Route::get('/map', [MapController::class, 'show']);
+Route::get('/leaflet/search', [MapController::class, 'search']);
+Route::get('/leaflet/distance', [MapController::class, 'getDistance']);
+
+
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/product', [ProductController::class, 'fetchAllProducts'])->name('product.index');
