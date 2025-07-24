@@ -4,10 +4,27 @@
 <style>
     #map { height: 400px; margin-bottom: 10px; }
     #location-search { width: 100%; padding: 8px; margin-bottom: 5px; }
-    .search-results { background: #fff; border: 1px solid #ccc; max-height: 150px; overflow-y: auto; }
-    .search-results div { padding: 5px; cursor: pointer; }
-    .search-results div:hover { background: #eee; }
+    
     #distance-display { font-weight: bold; margin-bottom: 10px; }
+    .search-results {
+    background: #fff;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    color: #000; /* black text */
+    font-weight: bold; /* bold text */
+}
+
+.search-results div {
+    padding: 5px;
+    cursor: pointer;
+    color: #000; /* black text */
+    font-weight: bold; /* bold text */
+}
+
+.search-results div:hover {
+    background: #eee;
+}
 </style>
 
 <div class="container mx-auto px-4">
