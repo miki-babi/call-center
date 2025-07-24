@@ -39,68 +39,49 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.min.js"></script>
-
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const storeLatLng = [9.03, 38.74]; // Addis default
-    const map = L.map('map').setView(storeLatLng, 13);
-    const searchInput = document.getElementById('location-search');
-    const resultsContainer = document.getElementById('search-results');
-    const distanceDisplay = document.getElementById('distance-display');
-    let routingControl = null;
+    let timeout = null;
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+    const input = document.getElementById('search');
+    const resultsDiv = document.getElementById('results');
 
-    L.marker(storeLatLng).addTo(map).bindPopup("Store Location").openPopup();
+    input.addEventListener('input', function () {
+        const query = this.value.trim();
 
-    function renderResults(data) {
-        resultsContainer.innerHTML = '';
-        data.forEach(place => {
-            const div = document.createElement('div');
-            div.textContent = place.display_name;
-            div.addEventListener('click', () => {
-                resultsContainer.innerHTML = '';
-                const latLng = [parseFloat(place.lat), parseFloat(place.lon)];
-                showRouteTo(latLng);
-            });
-            resultsContainer.appendChild(div);
-        });
-    }
+        // Clear previous timeout
+        clearTimeout(timeout);
 
-    function showRouteTo(destinationLatLng) {
-        if (routingControl) map.removeControl(routingControl);
-
-        routingControl = L.Routing.control({
-            waypoints: [L.latLng(storeLatLng), L.latLng(destinationLatLng)],
-            routeWhileDragging: false,
-            show: false,
-            addWaypoints: false,
-            createMarker: () => null
-        }).addTo(map);
-
-        const distance = map.distance(storeLatLng, destinationLatLng);
-        const km = (distance / 1000).toFixed(2);
-        distanceDisplay.textContent = `Distance: ${km} km`;
-
-        document.cookie = `delivery_distance=${km}; path=/; max-age=3600;`;
-    }
-
-    searchInput.addEventListener('input', function () {
-        const query = searchInput.value.trim();
-        if (query.length < 3) {
-            resultsContainer.innerHTML = '';
+        if (query.length < 2) {
+            resultsDiv.innerHTML = '';
             return;
         }
 
-        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ' Addis Ababa')}&addressdetails=1&limit=5&viewbox=38.65,9.10,38.85,8.90&bounded=1`;
-
-        fetch(url)
-            .then(res => res.json())
-            .then(data => renderResults(data))
-            .catch(err => console.error('Search error:', err));
+        // Wait 500ms after user stops typing
+        timeout = setTimeout(() => {
+            fetch(`/leaflet/search?query=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => renderResults(data))
+                .catch(err => console.error('Search error:', err));
+        }, 500);
     });
-});
+
+    function renderResults(results) {
+        resultsDiv.innerHTML = '';
+        results.forEach(result => {
+            const div = document.createElement('div');
+            div.textContent = result.display_name;
+            div.addEventListener('click', () => {
+                const lat = parseFloat(result.lat);
+                const lon = parseFloat(result.lon);
+                map.setView([lat, lon], 15);
+                L.marker([lat, lon]).addTo(map)
+                    .bindPopup(result.display_name)
+                    .openPopup();
+                resultsDiv.innerHTML = '';
+            });
+            resultsDiv.appendChild(div);
+        });
+    }
 </script>
+
 @endsection
