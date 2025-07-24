@@ -132,7 +132,7 @@
                 }
 
                 timeout = setTimeout(() => {
-                    fetch(`/leaflet/search?query=${encodeURIComponent(query)}`)
+                    fetch(`/leaflet/search?query=${encodeURIComponent(query)}&accept-language=en`)
                         .then(res => res.json())
                         .then(data => renderResults(data))
                         .catch(err => console.error('Search error:', err));
