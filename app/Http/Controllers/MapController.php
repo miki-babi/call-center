@@ -29,27 +29,19 @@ public function search(Request $request)
     $cacheKey = 'addis_search_' . md5($query);
     $results = Cache::remember($cacheKey, 86400, function () use ($query) {
         $url = 'https://nominatim.openstreetmap.org/search?format=json&q=' .
-    urlencode($query . ' Addis Ababa') .
-    '&addressdetails=1&limit=5&viewbox=38.65,8.90,38.85,9.10&bounded=1';
+            urlencode($query . ' Addis Ababa') .
+            '&addressdetails=1&limit=5';
 
-        Log::info('Requesting Nominatim URL: ' . $url);
+        $response = Http::withHeaders([
+            'User-Agent' => 'MyLaravelApp (myemail@example.com)'
+        ])->get($url);
 
-        $response = Http::get($url);
-// $response = Http::get($url);
-Log::info('Raw response: ' . $response->body());
+        Log::info('Raw response: ' . $response->body());
 
-        if (!$response->successful()) {
-            Log::error('Nominatim request failed: ' . $response->status());
-            return [];
-        }
-
-        Log::info('Nominatim response received with count: ' . count($response->json()));
-
-        return $response->json();
+        return $response->successful() ? $response->json() : [];
     });
 
     Log::info('Returning ' . count($results) . ' results');
-
     return response()->json($results);
 }
 
