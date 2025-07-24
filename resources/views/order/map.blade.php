@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Map Search</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+@extends('layout.app')
+
+@section('content')
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     
@@ -134,5 +130,4 @@
     }
 </script>
 
-</body>
-</html>
+@endsection
