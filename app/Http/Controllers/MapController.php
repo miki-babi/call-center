@@ -33,7 +33,7 @@ public function search(Request $request)
             '&addressdetails=1&limit=5';
 
         $response = Http::withHeaders([
-            'User-Agent' => 'MyLaravelApp (myemail@example.com)'
+            'User-Agent' => 'call-center.beshgebeya.co'
         ])->get($url);
 
         Log::info('Raw response: ' . $response->body());
