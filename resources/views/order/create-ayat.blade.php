@@ -61,7 +61,6 @@
                     <div>
                         <label class="block font-medium">Country:</label>
                         <select name="country" required class="w-full border border-gray-300 rounded-lg p-2">
-                            <option value="SZ">Eswatini</option>
                             <option value="ET" selected>Ethiopia</option>
                         </select>
                     </div>

@@ -51,11 +51,62 @@
 <div id="map"></div>
 <div class="distance-display" id="distance"></div>
 
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-medium">First Name:</label>
+                        <input type="text" name="first_name" required
+                            class="w-full border border-gray-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block font-medium">Last Name:</label>
+                        <input type="text" name="last_name" required
+                            class="w-full border border-gray-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block font-medium">Email:</label>
+                        <input type="email" name="email" required class="w-full border border-gray-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block font-medium">Phone:</label>
+                        <input type="text" name="phone" class="w-full border border-gray-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block font-medium">Address:</label>
+                        <input type="text" name="address_1"  id="address_1" required
+                            class="w-full border border-gray-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block font-medium">City:</label>
+                        <input type="text" name="city" id="city" required class="w-full border border-gray-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block font-medium">State:</label>
+                        <input type="text" name="state" id="state" value="notset"
+                            class="w-full border border-gray-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block font-medium">Postcode:</label>
+                        <input type="text" name="postcode" id="postcode" required class="w-full border border-gray-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block font-medium">Country:</label>
+                        <select name="country" required class="w-full border border-gray-300 rounded-lg p-2">
+                            <option value="ET" selected>Ethiopia</option>
+                        </select>
+                    </div>
+                </div>
+
+
+
+
+
+
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-    let map = L.map('map').setView([9.03, 38.74], 13); // Centered on Addis Ababa
+    let map = L.map('map').setView([9.03, 38.74], 13); // Addis Ababa center
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
@@ -72,7 +123,6 @@
 
     input.addEventListener('input', function () {
         const query = this.value.trim();
-
         clearTimeout(timeout);
 
         if (query.length < 2) {
@@ -93,29 +143,40 @@
         results.forEach(result => {
             const div = document.createElement('div');
             div.textContent = result.display_name;
+            div.classList.add('cursor-pointer', 'hover:bg-gray-100', 'p-1');
+
             div.addEventListener('click', () => {
                 const lat = parseFloat(result.lat);
                 const lon = parseFloat(result.lon);
-                if (endMarker) map.removeLayer(endMarker);
-                endMarker = L.marker([lat, lon], { draggable: true }).addTo(map)
-                    .bindPopup(result.display_name)
-                    .openPopup();
-                map.setView([lat, lon], 15);
-                resultsDiv.innerHTML = '';
-                calculateDistance(lat, lon);
 
-                endMarker.on('dragend', function (e) {
-                    const newLatLng = e.target.getLatLng();
-                    calculateDistance(newLatLng.lat, newLatLng.lng);
-                });
+                placeEndMarker(lat, lon, result);
+                resultsDiv.innerHTML = '';
             });
+
             resultsDiv.appendChild(div);
         });
     }
 
+    function placeEndMarker(lat, lon, result = null) {
+        if (endMarker) map.removeLayer(endMarker);
+
+        endMarker = L.marker([lat, lon], { draggable: true }).addTo(map)
+            .bindPopup(result?.display_name || 'Selected Location')
+            .openPopup();
+
+        map.setView([lat, lon], 15);
+        calculateDistance(lat, lon);
+
+        endMarker.on('dragend', function (e) {
+            const newLatLng = e.target.getLatLng();
+            calculateDistance(newLatLng.lat, newLatLng.lng);
+        });
+
+        if (result) fillAddressFields(result);
+    }
+
     function calculateDistance(lat, lon) {
         if (!startMarker) {
-            // Use a fixed warehouse location (e.g., 9.03, 38.74)
             startMarker = L.marker([9.03, 38.74], { color: 'green' })
                 .addTo(map)
                 .bindPopup('Warehouse')
@@ -129,24 +190,24 @@
         distanceDiv.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
     }
 
+    function fillAddressFields(result) {
+        const address = result.address || {};
+        document.getElementById('address_1')?.value = result.display_name || '';
+        document.getElementById('city')?.value = address.city || address.town || address.village || '';
+        document.getElementById('state')?.value = address.state || '';
+        document.getElementById('postcode')?.value = address.postcode || '';
+        // const countrySelect = document.querySelector('select[name="country"]');
+        // if (countrySelect && address.country_code) {
+        //     countrySelect.value = address.country_code.toUpperCase();
+        // }
+    }
+
+    // Allow placing marker by double-clicking map
     map.on('dblclick', function (e) {
-    const lat = e.latlng.lat;
-    const lon = e.latlng.lng;
-
-    if (endMarker) map.removeLayer(endMarker);
-
-    endMarker = L.marker([lat, lon], { draggable: true }).addTo(map)
-        .bindPopup('Custom location')
-        .openPopup();
-
-    calculateDistance(lat, lon);
-
-    endMarker.on('dragend', function (e) {
-        const newLatLng = e.target.getLatLng();
-        calculateDistance(newLatLng.lat, newLatLng.lng);
+        const { lat, lng } = e.latlng;
+        placeEndMarker(lat, lng);
     });
-});
-
 </script>
+
 
 @endsection
