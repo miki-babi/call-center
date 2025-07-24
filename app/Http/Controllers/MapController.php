@@ -30,6 +30,17 @@ class MapController extends Controller
             return $response->successful() ? $response->json() : [];
         });
 
-        return response()->json($results);
+        return response()->json([
+    [
+        'display_name' => 'Bole Medhanialem Church, Addis Ababa',
+        'lat' => '9.01',
+        'lon' => '38.76',
+    ],
+    [
+        'display_name' => 'Merkato, Addis Ababa',
+        'lat' => '9.04',
+        'lon' => '38.74',
+    ],
+]);
     }
 }
