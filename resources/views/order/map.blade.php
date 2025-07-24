@@ -128,6 +128,25 @@
 
         distanceDiv.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
     }
+
+    map.on('dblclick', function (e) {
+    const lat = e.latlng.lat;
+    const lon = e.latlng.lng;
+
+    if (endMarker) map.removeLayer(endMarker);
+
+    endMarker = L.marker([lat, lon], { draggable: true }).addTo(map)
+        .bindPopup('Custom location')
+        .openPopup();
+
+    calculateDistance(lat, lon);
+
+    endMarker.on('dragend', function (e) {
+        const newLatLng = e.target.getLatLng();
+        calculateDistance(newLatLng.lat, newLatLng.lng);
+    });
+});
+
 </script>
 
 @endsection
