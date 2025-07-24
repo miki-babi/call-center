@@ -9,7 +9,7 @@ class MapController extends Controller
 {
     public function show()
     {
-        return view('map');
+        return view('order.map');
     }
 
     public function search(Request $request)
