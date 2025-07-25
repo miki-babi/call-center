@@ -8,6 +8,7 @@
         #map {
             height: 500px;
             width: 100%;
+            padding-top:15px;
         }
 
         .search-box {
