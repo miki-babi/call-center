@@ -26,7 +26,7 @@ setTimeout(() => loading = false, 1000)">
                 <span>Current branch: </span>
             </div>
             <a role="tab" class="tab {{ request()->is('shop/orders') ? 'tab-active' : '' }} "
-                href="{{ route('orders.fetchAll') }}">All</a>
+                href="{{ route('orders.index') }}">All</a>
             <a role="tab" class="tab {{ request()->is('shop/orders/mexico') ? 'tab-active' : '' }} "
                 href="{{ route('orders.fetch', ['name' => 'mexico']) }}">Mexico</a>
             <a role="tab" class="tab {{ request()->is('shop/orders/ayat') ? 'tab-active' : '' }} "
