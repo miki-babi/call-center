@@ -7,7 +7,7 @@
 
         <x-product :products="$allProducts"/>
 
-        <x-map shope="mexico"/>
+        <x-map shop="mexico"/>
      <x-fields/>
 
     @endsection
