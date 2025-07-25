@@ -28,10 +28,10 @@ class OrderController extends Controller
     public function branch($branch)
     {
         $shop = Shop::where('name', $branch)->first();
-        dd($shop);
-        if ($shop == 'mexico') {
+        // dd($shop);
+        if ($shop->name == 'mexico') {
             return view('order.new-mexico');
-        } elseif ($shop == 'ayat') {
+        } elseif ($shop->name == 'ayat') {
             # code...
             return view('order.new-ayat');
         } else {
