@@ -56,88 +56,96 @@
     </head>
 
     <body>
-        <div class="w-1/2  mt-8 relative z-100 ">
-            <div class="flex flex-col gap-4">
-                <div class="bg-white text-gray-900 p-6 rounded-2xl shadow-lg border border-gray-200 mt-4">
-                    <div class="relative mb-4 max-w-md">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z" />
-                            </svg>
-                        </span>
-                        <input type="text" id="search-product" placeholder="Search products..."
-                            class="pl-10 p-2 border border-gray-300 rounded-lg w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white shadow-sm transition-all duration-150">
-                    </div>
-
-                    <div class="">
-                        @foreach ($allProducts as $shopData)
-                            <div class="mb-8">
-                                <ul class="space-y-4">
-                                    @foreach ($shopData['products'] as $product)
-                                        <li
-                                            class="product-item bg-white text-gray-900 rounded-xl shadow hover:shadow-lg transition-all duration-150 p-6 flex flex-col gap-2 border border-gray-100">
-                                            <div class="flex flex-wrap items-center gap-4">
-                                                <img src="{{ $product['images'][0]['src'] ?? '' }}"
-                                                    alt="{{ $product['name'] }}" class="w-16 h-16 object-cover rounded" />
-                                                <div>
-                                                    <h3 class="text-lg font-semibold">{{ $product['name'] }}</h3>
-                                                    <p class="text-sm text-gray-700">Price:
-                                                        {{ $product['price'] ? $product['price'] . ' ' . ($product['currency'] ?? 'ETB') : 'N/A' }}
-                                                    </p>
-                                                    <p class="text-sm text-gray-500">
-                                                        {{ Str::limit($product['description'] ?? '', 100) }}</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                            @if (!$loop->last)
-                                <hr class="my-8 border-t border-gray-200">
-                            @endif
-                        @endforeach
-                    </div>
-                </div>
+        <div class="w-1/2 mt-8 relative z-50">
+    <div class="flex flex-col gap-4">
+        <div class="bg-white text-gray-900 p-6 rounded-2xl shadow-lg border border-gray-200 mt-4 relative">
+            <div class="relative mb-4 max-w-md">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z" />
+                    </svg>
+                </span>
+                <input type="text" id="search-product" placeholder="Search products..."
+                    class="pl-10 p-2 border border-gray-300 rounded-lg w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white shadow-sm transition-all duration-150">
             </div>
 
-            <script>
-                const searchInput = document.getElementById('search-product');
-                const productItems = document.querySelectorAll('.product-item');
-                const shopBlocks = document.querySelectorAll('.mb-8');
+            <!-- Floating Results Box -->
+            <div id="product-results"
+                class="absolute top-20 left-0 w-full max-h-[300px] overflow-y-auto bg-white rounded-xl shadow-lg border border-gray-200 z-50">
+                @foreach ($allProducts as $shopData)
+                    <div class="mb-8">
+                        <ul class="space-y-4">
+                            @foreach ($shopData['products'] as $product)
+                                <li
+                                    class="product-item bg-white text-gray-900 rounded-xl shadow hover:shadow-lg transition-all duration-150 p-6 flex flex-col gap-2 border border-gray-100">
+                                    <div class="flex flex-wrap items-center gap-4">
+                                        <img src="{{ $product['images'][0]['src'] ?? '' }}"
+                                            alt="{{ $product['name'] }}" class="w-16 h-16 object-cover rounded" />
+                                        <div>
+                                            <h3 class="text-lg font-semibold">{{ $product['name'] }}</h3>
+                                            <p class="text-sm text-gray-700">Price:
+                                                {{ $product['price'] ? $product['price'] . ' ' . ($product['currency'] ?? 'ETB') : 'N/A' }}
+                                            </p>
+                                            <p class="text-sm text-gray-500">
+                                                {{ Str::limit($product['description'] ?? '', 100) }}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @if (!$loop->last)
+                        <hr class="my-8 border-t border-gray-200">
+                    @endif
+                @endforeach
+            </div>
+        </div>
+    </div>
 
-                // Initially hide all
+    <script>
+        const searchInput = document.getElementById('search-product');
+        const productItems = document.querySelectorAll('.product-item');
+        const shopBlocks = document.querySelectorAll('.mb-8');
+        const resultsBox = document.getElementById('product-results');
+
+        // Hide results on load
+        resultsBox.style.display = 'none';
+        productItems.forEach(item => item.style.display = 'none');
+        shopBlocks.forEach(block => block.style.display = 'none');
+
+        searchInput.addEventListener('input', function () {
+            const searchValue = this.value.toLowerCase().trim();
+
+            if (searchValue === '') {
                 productItems.forEach(item => item.style.display = 'none');
                 shopBlocks.forEach(block => block.style.display = 'none');
+                resultsBox.style.display = 'none';
+                return;
+            }
 
-                searchInput.addEventListener('input', function() {
-                    const searchValue = this.value.toLowerCase().trim();
+            let hasMatch = false;
+            shopBlocks.forEach(shopBlock => {
+                let matchFound = false;
+                const items = shopBlock.querySelectorAll('.product-item');
 
-                    if (searchValue === '') {
-                        // Hide all if input is empty
-                        productItems.forEach(item => item.style.display = 'none');
-                        shopBlocks.forEach(block => block.style.display = 'none');
-                        return;
-                    }
-
-                    shopBlocks.forEach(shopBlock => {
-                        let matchFound = false;
-                        const items = shopBlock.querySelectorAll('.product-item');
-
-                        items.forEach(item => {
-                            const text = item.textContent.toLowerCase();
-                            const isMatch = text.includes(searchValue);
-                            item.style.display = isMatch ? 'flex' : 'none';
-                            if (isMatch) matchFound = true;
-                        });
-
-                        shopBlock.style.display = matchFound ? 'block' : 'none';
-                    });
+                items.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    const isMatch = text.includes(searchValue);
+                    item.style.display = isMatch ? 'flex' : 'none';
+                    if (isMatch) matchFound = true;
                 });
-            </script>
 
-        </div>
+                shopBlock.style.display = matchFound ? 'block' : 'none';
+                if (matchFound) hasMatch = true;
+            });
+
+            resultsBox.style.display = hasMatch ? 'block' : 'none';
+        });
+    </script>
+</div>
+
 
 
         <div class="search-box w-full justify-end flex pr-4 mt-8">
