@@ -55,7 +55,7 @@
     </head>
 
     <body>
-        <div class="w-full mx-auto mt-8 md-8 ">
+        <div class="w-full mx-auto mt-8 mb-8 ">
             <div class="flex flex-col gap-4">
                 <div class="bg-white text-gray-900 p-6 rounded-2xl shadow-lg border border-gray-200 mt-4">
                     <div class="relative mb-4 max-w-md">
@@ -101,65 +101,39 @@
             </div>
 
             <script>
-    const searchInput = document.getElementById('search-product');
-    const productItems = document.querySelectorAll('.product-item');
-    const shopBlocks = document.querySelectorAll('.mb-8');
-
-    // Initially hide all
-    productItems.forEach(item => item.style.display = 'none');
-    shopBlocks.forEach(block => block.style.display = 'none');
-
-    searchInput.addEventListener('input', function () {
-        const searchValue = this.value.toLowerCase().trim();
-
-        if (searchValue === '') {
-            // Hide all if input is empty
-            productItems.forEach(item => item.style.display = 'none');
-            shopBlocks.forEach(block => block.style.display = 'none');
-            return;
-        }
-
-        shopBlocks.forEach(shopBlock => {
-            let matchFound = false;
-            const items = shopBlock.querySelectorAll('.product-item');
-
-            items.forEach(item => {
-                const text = item.textContent.toLowerCase();
-                const isMatch = text.includes(searchValue);
-                item.style.display = isMatch ? 'flex' : 'none';
-                if (isMatch) matchFound = true;
-            });
-
-            shopBlock.style.display = matchFound ? 'block' : 'none';
-        });
-    });
-</script>
-
-
-            {{-- <script>
                 const searchInput = document.getElementById('search-product');
                 const productItems = document.querySelectorAll('.product-item');
+                const shopBlocks = document.querySelectorAll('.mb-8');
+
+                // Initially hide all
+                productItems.forEach(item => item.style.display = 'none');
+                shopBlocks.forEach(block => block.style.display = 'none');
 
                 searchInput.addEventListener('input', function() {
-                    const searchValue = this.value.toLowerCase();
+                    const searchValue = this.value.toLowerCase().trim();
 
-                    // Loop through each product item
-                    productItems.forEach(item => {
-                        const text = item.textContent.toLowerCase();
-                        item.style.display = text.includes(searchValue) ? 'flex' : 'none';
-                    });
+                    if (searchValue === '') {
+                        // Hide all if input is empty
+                        productItems.forEach(item => item.style.display = 'none');
+                        shopBlocks.forEach(block => block.style.display = 'none');
+                        return;
+                    }
 
-                    // Hide or show entire shop blocks based on visible products
-                    document.querySelectorAll('.mb-8').forEach(shopBlock => {
-                        const visibleItems = shopBlock.querySelectorAll('.product-item') ?
-                            Array.from(shopBlock.querySelectorAll('.product-item'))
-                            .filter(item => item.style.display !== 'none') :
-                            [];
+                    shopBlocks.forEach(shopBlock => {
+                        let matchFound = false;
+                        const items = shopBlock.querySelectorAll('.product-item');
 
-                        shopBlock.style.display = visibleItems.length ? 'block' : 'none';
+                        items.forEach(item => {
+                            const text = item.textContent.toLowerCase();
+                            const isMatch = text.includes(searchValue);
+                            item.style.display = isMatch ? 'flex' : 'none';
+                            if (isMatch) matchFound = true;
+                        });
+
+                        shopBlock.style.display = matchFound ? 'block' : 'none';
                     });
                 });
-            </script> --}}
+            </script>
 
         </div>
 
