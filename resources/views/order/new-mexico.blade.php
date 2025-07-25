@@ -94,10 +94,11 @@
                                         </div>
                                     </div>
                                     <button
-    class="add-to-cart bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded text-sm"
+    class="toggle-cart bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded text-sm"
     data-product-id="{{ $product['id'] }}">
     Add to Cart
 </button>
+
                                 </li>
                             @endforeach
                         </ul>
@@ -112,19 +113,34 @@
 <script>
     const cart = [];
 
-    document.querySelectorAll('.add-to-cart').forEach(button => {
+    function updateCartUI(button, isInCart) {
+        if (isInCart) {
+            button.innerText = 'Remove from Cart';
+            button.classList.replace('bg-blue-500', 'bg-red-500');
+        } else {
+            button.innerText = 'Add to Cart';
+            button.classList.replace('bg-red-500', 'bg-blue-500');
+        }
+    }
+
+    document.querySelectorAll('.toggle-cart').forEach(button => {
         button.addEventListener('click', function () {
             const productId = this.getAttribute('data-product-id');
-            if (!cart.includes(productId)) {
+            const index = cart.indexOf(productId);
+
+            if (index === -1) {
                 cart.push(productId);
-                console.log('Added to cart:', productId);
-                console.log('Cart:', cart);
-                this.innerText = 'Added';
-                this.classList.replace('bg-blue-500', 'bg-green-500');
+                updateCartUI(this, true);
+            } else {
+                cart.splice(index, 1);
+                updateCartUI(this, false);
             }
+
+            console.log('Cart:', cart);
         });
     });
 </script>
+
 
     <script>
         const searchInput = document.getElementById('search-product');
