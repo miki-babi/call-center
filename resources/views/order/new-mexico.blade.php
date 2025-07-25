@@ -57,7 +57,7 @@
     </head>
 
     <body>
-        <div class="w-full mt-8 relative z-1000">
+        <div class="w-full mt-8 relative z-1000 flex flex-row justify-between">
             <div class="flex flex-row gap-4">
                 <div class="bg-white text-gray-900 p-6 rounded-2xl shadow-lg border border-gray-200 mt-4 relative">
                     <div class="relative mb-4 max-w-md">
@@ -109,14 +109,15 @@
                         @endforeach
                     </div>
                 </div>
-                <div id="cart-summary" class="bg-gray-100 p-4 rounded-lg shadow-lg w-full max-w-md mt-6 hidden text-black">
-                    <h2 class="text-lg font-bold mb-4">Cart</h2>
-                    <ul id="cart-items" class="space-y-2"></ul>
-                    <div class="mt-4 text-right font-semibold text-lg">
-                        Total: <span id="cart-total">0</span> ETB
-                    </div>
-                </div>
 
+
+            </div>
+            <div id="cart-summary" class="bg-gray-100 p-4 rounded-lg shadow-lg w-full max-w-md mt-6 hidden text-black">
+                <h2 class="text-lg font-bold mb-4">Cart</h2>
+                <ul id="cart-items" class="space-y-2"></ul>
+                <div class="mt-4 text-right font-semibold text-lg">
+                    Total: <span id="cart-total">0</span> ETB
+                </div>
             </div>
             <script>
                 const cart = {}; // { productId: { id, name, price, quantity } }
