@@ -55,7 +55,7 @@
     </head>
 
     <body>
-        <div class="w-full mx-auto mt-8 mb-8 ">
+        <div class="w-full mx-auto mt-8  ">
             <div class="flex flex-col gap-4">
                 <div class="bg-white text-gray-900 p-6 rounded-2xl shadow-lg border border-gray-200 mt-4">
                     <div class="relative mb-4 max-w-md">
@@ -138,7 +138,7 @@
         </div>
 
 
-        <div class="search-box w-full justify-end flex pr-4">
+        <div class="search-box w-full justify-end flex pr-4 mt-8">
             <input type="text" id="search" placeholder="Search location..." style="width: 300px; padding: 6px;">
             <div id="results" class="search-results"></div>
         </div>
