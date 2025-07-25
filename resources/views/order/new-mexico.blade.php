@@ -110,6 +110,8 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div>
             <div id="cart-summary" class="bg-gray-100 p-4 rounded-lg shadow-lg w-1/2 max-w-md mt-6 hidden text-black">
                 <h2 class="text-lg font-bold mb-4">Cart</h2>
                 <ul id="cart-items" class="space-y-2"></ul>
