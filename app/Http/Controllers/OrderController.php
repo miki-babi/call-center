@@ -228,51 +228,6 @@ class OrderController extends Controller
         });
 
         [$pendingOrders, $cancelledOrders, $onHoldOrders, $completedOrders, $failedOrders, $processingOrders, $shipmentReadyOrders] = [collect($orders)->where('status', 'pending')->values(), collect($orders)->where('status', 'cancelled')->values(), collect($orders)->where('status', 'on-hold')->values(), collect($orders)->where('status', 'completed')->values(), collect($orders)->where('status', 'failed')->values(), collect($orders)->where('status', 'processing')->values(), collect($orders)->where('status', 'shipment-ready')->values()];
-
-        $now = Carbon::now();
-        $groupedPendingOrders = [
-            'today' => $pendingOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameDay($now))->values(),
-            'week' => $pendingOrders->filter(fn($order) => Carbon::parse($order['date_created'])->between($now->startOfWeek(), $now->endOfWeek()))->values(),
-            'month' => $pendingOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameMonth($now))->values(),
-        ];
-        $groupedCompletedOrders = [
-            'today' => $completedOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameDay($now))->values(),
-            'week' => $completedOrders->filter(fn($order) => Carbon::parse($order['date_created'])->between($now->startOfWeek(), $now->endOfWeek()))->values(),
-            'month' => $completedOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameMonth($now))->values(),
-        ];
-        $groupedProcessingOrders = [
-            'today' => $processingOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameDay($now))->values(),
-            'week' => $processingOrders->filter(fn($order) => Carbon::parse($order['date_created'])->between($now->startOfWeek(), $now->endOfWeek()))->values(),
-            'month' => $processingOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameMonth($now))->values(),
-        ];
-        $groupedOnHoldOrders = [
-            'today' => $onHoldOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameDay($now))->values(),
-            'week' => $onHoldOrders->filter(fn($order) => Carbon::parse($order['date_created'])->between($now->startOfWeek(), $now->endOfWeek()))->values(),
-            'month' => $onHoldOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameMonth($now))->values(),
-        ];
-        $groupedFailedOrders = [
-            'today' => $failedOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameDay($now))->values(),
-            'week' => $failedOrders->filter(fn($order) => Carbon::parse($order['date_created'])->between($now->startOfWeek(), $now->endOfWeek()))->values(),
-            'month' => $failedOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameMonth($now))->values(),
-        ];
-        $groupedShipmentReadyOrders = [
-            'today' => $shipmentReadyOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameDay($now))->values(),
-            'week' => $shipmentReadyOrders->filter(fn($order) => Carbon::parse($order['date_created'])->between($now->startOfWeek(), $now->endOfWeek()))->values(),
-            'month' => $shipmentReadyOrders->filter(fn($order) => Carbon::parse($order['date_created'])->isSameMonth($now))->values(),
-        ];
-        // if ($completedOrders->isEmpty()) {
-        //     Log::info("No completed orders found for shop: {$shop->name}");
-        //     return response()->json(['message' => 'No completed orders found'], 404);
-        // }
-        $test = Carbon::now()->format('Y-m-d\TH:i:s');
-        // dd($test);
-        // dd($orders);
-        // return response()->json([
-        //     'shop' => $shop->name,
-        //     'orders_count' => count($orders),
-        //     'orders' => $orders,
-        // ]);
-        // dd($orders);
         return view('order.branch-order', [
             'pendingOrders' => $pendingOrders,
             'cancelledOrders' => $cancelledOrders,
@@ -342,5 +297,9 @@ class OrderController extends Controller
         return view('order.index', [
             'allOrders' => $allOrders,
         ]);
+    }
+
+    public function placeOrder(){
+        
     }
 }

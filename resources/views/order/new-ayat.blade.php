@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layout.new-order')
 
 @section('content')
     <!-- Leaflet CSS -->
