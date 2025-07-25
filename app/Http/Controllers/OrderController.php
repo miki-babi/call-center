@@ -18,6 +18,28 @@ class OrderController extends Controller
         // Logic to list orders
         return view('order.index');
     }
+       public function newOrder()
+    {
+        // Logic to list orders
+        return view('order.newOrder');
+    }
+    
+
+    public function branch($branch)
+    {
+        $shop = Shop::where('name', $branch)->first();
+        if ($shop == 'mexico') {
+            return view('order.new-mexico');
+        } elseif ($shop == 'ayat') {
+            # code...
+            return view('order.new-ayat');
+        } else {
+            return;
+        }
+        // Logic to list orders
+        return view('order.index');
+    }
+
     public function fetchOrders($shopName)
     {
         // dd($shopName);
@@ -50,7 +72,7 @@ class OrderController extends Controller
             });
         });
 
-        [$pendingOrders, $cancelledOrders, $onHoldOrders, $completedOrders, $failedOrders, $processingOrders,$shipmentReadyOrders] = [collect($orders)->where('status', 'pending')->values(), collect($orders)->where('status', 'cancelled')->values(), collect($orders)->where('status', 'on-hold')->values(), collect($orders)->where('status', 'completed')->values(), collect($orders)->where('status', 'failed')->values(), collect($orders)->where('status', 'processing')->values(), collect($orders)->where('status', 'shipment-ready')->values()];
+        [$pendingOrders, $cancelledOrders, $onHoldOrders, $completedOrders, $failedOrders, $processingOrders, $shipmentReadyOrders] = [collect($orders)->where('status', 'pending')->values(), collect($orders)->where('status', 'cancelled')->values(), collect($orders)->where('status', 'on-hold')->values(), collect($orders)->where('status', 'completed')->values(), collect($orders)->where('status', 'failed')->values(), collect($orders)->where('status', 'processing')->values(), collect($orders)->where('status', 'shipment-ready')->values()];
 
         $now = Carbon::now();
         $groupedPendingOrders = [

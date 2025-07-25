@@ -53,6 +53,8 @@ Route::get('/leaflet/distance', [MapController::class, 'getDistance']);
 
 
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::get('/order/new', [OrderController::class, 'branch'])->name('orders.new.branch');
+Route::get('/order/new/{branch}', [OrderController::class, 'branch'])->name('orders.new.branch');
 Route::get('/product', [ProductController::class, 'fetchAllProducts'])->name('product.index');
 Route::get('/shop/orders', [OrderController::class, 'fetchAllOrders'])->name('orders.fetchAll');
 Route::get('/shop/orders/{name}', [OrderController::class, 'fetchOrders'])->name('orders.fetch');
