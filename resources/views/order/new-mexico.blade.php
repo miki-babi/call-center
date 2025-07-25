@@ -93,6 +93,11 @@
                                                 {{ Str::limit($product['description'] ?? '', 100) }}</p>
                                         </div>
                                     </div>
+                                    <button
+    class="add-to-cart bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded text-sm"
+    data-product-id="{{ $product['id'] }}">
+    Add to Cart
+</button>
                                 </li>
                             @endforeach
                         </ul>
@@ -104,6 +109,22 @@
             </div>
         </div>
     </div>
+<script>
+    const cart = [];
+
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function () {
+            const productId = this.getAttribute('data-product-id');
+            if (!cart.includes(productId)) {
+                cart.push(productId);
+                console.log('Added to cart:', productId);
+                console.log('Cart:', cart);
+                this.innerText = 'Added';
+                this.classList.replace('bg-blue-500', 'bg-green-500');
+            }
+        });
+    });
+</script>
 
     <script>
         const searchInput = document.getElementById('search-product');
