@@ -50,7 +50,7 @@
     </head>
 
     <body>
-        <div class="w-full mx-auto mt-8 md-8 max-h-[220px] overflow-hidden">
+        <div class="w-full mx-auto mt-8 md-8 max-h-[300px] overflow-hidden">
             <div class="flex flex-col gap-4">
                 <div class="bg-white text-gray-900 p-6 rounded-2xl shadow-lg border border-gray-200 mt-4">
                     <div class="relative mb-4 max-w-md">
