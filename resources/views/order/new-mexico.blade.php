@@ -1,10 +1,9 @@
 @extends('layout.new-order')
 
 @section('content')
-    <!-- Leaflet CSS -->
 
     <x-product :products="$allProducts" />
-    <x-map shop="mexico" lat="9.03" lon="38.74" />
+    <x-map shop="mexico" lat="9.009907758314755" lon="38.75883353263652" />
     <x-fields />
-    
+
 @endsection
