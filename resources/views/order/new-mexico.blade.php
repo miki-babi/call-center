@@ -95,7 +95,7 @@
                 </div>
             </div>
 
-            <script>
+            {{-- <script>
                 const searchInput = document.getElementById('search-product');
                 const listItems = document.querySelectorAll('.product-item');
 
@@ -106,7 +106,32 @@
                         item.style.display = text.includes(searchValue) ? 'flex' : 'none';
                     });
                 });
-            </script>
+            </script> --}}
+            <script>
+    const searchInput = document.getElementById('search-product');
+    const productItems = document.querySelectorAll('.product-item');
+
+    searchInput.addEventListener('input', function () {
+        const searchValue = this.value.toLowerCase();
+
+        // Loop through each product item
+        productItems.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            item.style.display = text.includes(searchValue) ? 'flex' : 'none';
+        });
+
+        // Hide or show entire shop blocks based on visible products
+        document.querySelectorAll('.mb-8').forEach(shopBlock => {
+            const visibleItems = shopBlock.querySelectorAll('.product-item')
+                ? Array.from(shopBlock.querySelectorAll('.product-item'))
+                      .filter(item => item.style.display !== 'none')
+                : [];
+
+            shopBlock.style.display = visibleItems.length ? 'block' : 'none';
+        });
+    });
+</script>
+
         </div>
 
 
