@@ -163,9 +163,7 @@
             });
         });
     </script>
-
-
-
+    
     <script>
         const searchInput = document.getElementById('search-product');
         const productItems = document.querySelectorAll('.product-item');
