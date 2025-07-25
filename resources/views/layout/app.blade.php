@@ -34,7 +34,10 @@ setTimeout(() => loading = false, 1000)">
             <a role="tab" class="tab tab-disabled">Kadisco</a>
         </div>
         <div class="p-4 bg-blue-500 text-white rounded-sm ">
+            <a href="{{ route('orders.new') }}">
             create new order 
+
+            </a>
         </div>
     </nav>
 
