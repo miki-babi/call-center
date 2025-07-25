@@ -1,3 +1,5 @@
+@props(['products'])
+
 <div class="w-full">
     <div class="w-full mt-8 relative z-1000 flex flex-row gap-6">
         <!-- Product Search & List (2/3 width) -->
@@ -18,7 +20,7 @@
                 <!-- Product Results -->
                 <div id="product-results"
                     class="absolute top-20 left-0 w-full max-h-[300px] overflow-y-auto bg-white rounded-xl shadow-lg border border-gray-200 z-50 hidden">
-                    @foreach ($allProducts as $shopData)
+                    @foreach ($products as $shopData)
                         <div class="mb-8">
                             <ul class="space-y-4">
                                 @foreach ($shopData['products'] as $product)
