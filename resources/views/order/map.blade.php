@@ -20,7 +20,7 @@
         }
 
         .search-results {
-            margin-top: 25px;
+            margin-top: 35px;
             background: #fff;
             border: 1px solid #ccc;
             max-height: 150px;
