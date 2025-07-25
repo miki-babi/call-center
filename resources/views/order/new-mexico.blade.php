@@ -57,7 +57,7 @@
     </head>
 
     <body>
-        <div class="w-full mt-8 relative z-1000 flex flex-row justify-between mx-auto">
+        <div class="w-full mt-8 relative z-1000 flex flex-row  mx-auto">
             <div class="flex flex-row gap-4 w-1/2">
                 <div class="bg-white text-gray-900 p-6 rounded-2xl shadow-lg border border-gray-200 mt-4 relative">
                     <div class="relative mb-4 max-w-md">
