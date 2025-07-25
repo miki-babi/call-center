@@ -10,6 +10,7 @@
             /* space between search/results and map */
             height: 500px;
             width: 100%;
+            z-index:-10;
         }
 
 
@@ -56,7 +57,7 @@
     </head>
 
     <body>
-        <div class="w-1/2 mt-8 relative z-50">
+        <div class="w-1/2 mt-8 relative z-1000">
     <div class="flex flex-col gap-4">
         <div class="bg-white text-gray-900 p-6 rounded-2xl shadow-lg border border-gray-200 mt-4 relative">
             <div class="relative mb-4 max-w-md">
