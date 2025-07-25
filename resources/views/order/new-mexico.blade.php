@@ -57,8 +57,9 @@
     </head>
 
     <body>
+        <div class="w-full">
         <div class="w-full mt-8 relative z-1000 flex flex-row  mx-auto">
-            <div class="flex flex-row gap-4 w-1/2">
+            <div class="flex flex-row gap-4">
                 <div class="bg-white text-gray-900 p-6 rounded-2xl shadow-lg border border-gray-200 mt-4 relative">
                     <div class="relative mb-4 max-w-md">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -119,7 +120,9 @@
                     Total: <span id="cart-total">0</span> ETB
                 </div>
             </div>
-            <script>
+            
+        </div>
+        <script>
                 const cart = {}; // { productId: { id, name, price, quantity } }
 
                 function formatPrice(price) {
@@ -258,8 +261,7 @@
                     resultsBox.style.display = hasMatch ? 'block' : 'none';
                 });
             </script>
-        </div>
-
+    </div>
 
 
         <div class="search-box w-full justify-end flex pr-4 mt-8">
