@@ -58,74 +58,66 @@
 
     <body>
         <div class="w-full mt-8 relative z-1000">
-            <!-- Enhanced Product Search and Cart UI -->
-<div class="w-full mt-10 relative z-[1000]">
-    <div class="flex flex-col md:flex-row gap-8">
-        <!-- Search + Products -->
-        <div class="bg-white text-gray-900 p-6 rounded-3xl shadow-xl border border-gray-200 w-full md:w-2/3 relative">
-            <div class="relative mb-6">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z" />
-                    </svg>
-                </span>
-                <input type="text" id="search-product" placeholder="Search products..."
-                    class="pl-10 py-3 border border-gray-300 rounded-xl w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm transition-all duration-200">
-            </div>
-
-            <!-- Products List -->
-            <div id="product-results"
-                class="absolute top-24 left-0 w-full max-h-[400px] overflow-y-auto bg-white rounded-2xl shadow-xl border border-gray-200 z-50 hidden">
-                @foreach ($allProducts as $shopData)
-                    <div class="mb-6">
-                        <ul class="space-y-4">
-                            @foreach ($shopData['products'] as $product)
-                                <li
-                                    class="product-item bg-white text-gray-900 rounded-2xl shadow hover:shadow-xl transition-all duration-200 p-5 flex flex-col gap-3 border border-gray-100">
-                                    <div class="flex items-center gap-4">
-                                        <img src="{{ $product['images'][0]['src'] ?? '' }}"
-                                            alt="{{ $product['name'] }}" class="w-20 h-20 object-cover rounded-lg border" />
-                                        <div class="flex-1">
-                                            <h3 class="text-lg font-bold">{{ $product['name'] }}</h3>
-                                            <p class="text-sm text-gray-700">Price:
-                                                {{ $product['price'] ? $product['price'] . ' ' . ($product['currency'] ?? 'ETB') : 'N/A' }}
-                                            </p>
-                                            <p class="text-sm text-gray-500">
-                                                {{ Str::limit($product['description'] ?? '', 80) }}</p>
-                                        </div>
-                                    </div>
-                                    <button
-                                        class="toggle-cart bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition"
-                                        data-product-id="{{ $product['id'] }}">
-                                        Add to Cart
-                                    </button>
-                                </li>
-                            @endforeach
-                        </ul>
+            <div class="flex flex-row gap-4">
+                <div class="bg-white text-gray-900 p-6 rounded-2xl shadow-lg border border-gray-200 mt-4 relative">
+                    <div class="relative mb-4 max-w-md">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z" />
+                            </svg>
+                        </span>
+                        <input type="text" id="search-product" placeholder="Search products..."
+                            class="pl-10 p-2 border border-gray-300 rounded-lg w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white shadow-sm transition-all duration-150">
                     </div>
-                    @if (!$loop->last)
-                        <hr class="my-6 border-t border-gray-200">
-                    @endif
-                @endforeach
-            </div>
-        </div>
 
-        <!-- Cart Summary -->
-        <div id="cart-summary"
-            class="bg-white border border-gray-200 p-6 rounded-2xl shadow-xl w-full md:w-1/3 mt-2 md:mt-6 hidden text-black">
-            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
-                🛒 Cart
-            </h2>
-            <ul id="cart-items" class="space-y-4 text-sm"></ul>
-            <div class="mt-6 text-right font-semibold text-lg">
-                Total: <span id="cart-total">0</span> ETB
-            </div>
-        </div>
-    </div>
-</div>
+                    <!-- Floating Results Box -->
+                    <div id="product-results"
+                        class="absolute top-20 left-0 w-full max-h-[300px] overflow-y-auto bg-white rounded-xl shadow-lg border border-gray-200 z-50">
+                        @foreach ($allProducts as $shopData)
+                            <div class="mb-8">
+                                <ul class="space-y-4">
+                                    @foreach ($shopData['products'] as $product)
+                                        <li
+                                            class="product-item bg-white text-gray-900 rounded-xl shadow hover:shadow-lg transition-all duration-150 p-6 flex flex-col gap-2 border border-gray-100">
+                                            <div class="flex flex-wrap items-center gap-4">
+                                                <img src="{{ $product['images'][0]['src'] ?? '' }}"
+                                                    alt="{{ $product['name'] }}" class="w-16 h-16 object-cover rounded" />
+                                                <div>
+                                                    <h3 class="text-lg font-semibold">{{ $product['name'] }}</h3>
+                                                    <p class="text-sm text-gray-700">Price:
+                                                        {{ $product['price'] ? $product['price'] . ' ' . ($product['currency'] ?? 'ETB') : 'N/A' }}
+                                                    </p>
+                                                    <p class="text-sm text-gray-500">
+                                                        {{ Str::limit($product['description'] ?? '', 100) }}</p>
+                                                </div>
+                                            </div>
+                                            <button
+                                                class="toggle-cart bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded text-sm"
+                                                data-product-id="{{ $product['id'] }}">
+                                                Add to Cart
+                                            </button>
 
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @if (!$loop->last)
+                                <hr class="my-8 border-t border-gray-200">
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+                <div id="cart-summary" class="bg-gray-100 p-4 rounded-lg shadow-lg w-full max-w-md mt-6 hidden text-black">
+                    <h2 class="text-lg font-bold mb-4">Cart</h2>
+                    <ul id="cart-items" class="space-y-2"></ul>
+                    <div class="mt-4 text-right font-semibold text-lg">
+                        Total: <span id="cart-total">0</span> ETB
+                    </div>
+                </div>
+
+            </div>
             <script>
                 const cart = {}; // { productId: { id, name, price, quantity } }
 
