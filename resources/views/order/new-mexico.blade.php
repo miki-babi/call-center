@@ -53,19 +53,6 @@
         <div class="w-full mx-auto mt-8 md-8 max-h-[300px] overflow-hidden">
             <div class="flex flex-col gap-4">
                 <div class="bg-white text-gray-900 p-6 rounded-2xl shadow-lg border border-gray-200 mt-4">
-                    <div class="relative mb-4 max-w-md">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z" />
-                            </svg>
-                        </span>
-                        <input type="text" id="search-product" placeholder="Search products..."
-                            class="pl-10 p-2 border border-gray-300 rounded-lg w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white shadow-sm transition-all duration-150">
-                    </div>
-                    <h1 class="text-3xl font-extrabold mb-6 text-blue-700">Products</h1>
-                    <p class="mb-6 text-gray-500">Here are the products from all shops:</p>
 
                     @foreach ($allProducts as $shopData)
                         <div class="mb-8">
