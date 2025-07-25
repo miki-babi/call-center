@@ -71,7 +71,7 @@
                             class="pl-10 p-2 border border-gray-300 rounded-lg w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white shadow-sm transition-all duration-150">
                     </div>
 
-                    <div>
+                    <div class="relative z-100">
                         @foreach ($allProducts as $shopData)
                             <div class="mb-8">
                                 <ul class="space-y-4">
