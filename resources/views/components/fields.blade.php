@@ -1,4 +1,7 @@
-   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <form method="POST" action="{{ route('orders.place.new') }}">
+    @csrf
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
        <div>
            <label class="block font-medium">First Name:</label>
            <input type="text" name="first_name" required class="w-full border border-gray-300 rounded-lg p-2">
@@ -41,4 +44,9 @@
                <option value="ET" selected>Ethiopia</option>
            </select>
        </div>
+       <button type="submit" class="p-4 bg-blue-500 text-white rounded-sm ">
+           Orders
+       </button>
    </div>
+
+</form>
