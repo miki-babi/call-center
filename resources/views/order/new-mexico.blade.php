@@ -56,7 +56,7 @@
     </head>
 
     <body>
-        <div class="w-1/2  mt-8  ">
+        <div class="w-1/2  mt-8 relative z-100 ">
             <div class="flex flex-col gap-4">
                 <div class="bg-white text-gray-900 p-6 rounded-2xl shadow-lg border border-gray-200 mt-4">
                     <div class="relative mb-4 max-w-md">
@@ -71,7 +71,7 @@
                             class="pl-10 p-2 border border-gray-300 rounded-lg w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white shadow-sm transition-all duration-150">
                     </div>
 
-                    <div class="relative z-100">
+                    <div class="">
                         @foreach ($allProducts as $shopData)
                             <div class="mb-8">
                                 <ul class="space-y-4">
