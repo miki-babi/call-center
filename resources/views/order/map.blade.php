@@ -6,17 +6,21 @@
 
     <style>
         #map {
+            margin-top: 20px;
+            /* space between search/results and map */
             height: 500px;
             width: 100%;
-            padding-top:15px;
         }
+
+
 
         .search-box {
             margin: 10px;
-            padding-bottom:10px;
+            padding-bottom: 10px;
         }
 
         .search-results {
+            margin-top: 5px;
             background: #fff;
             border: 1px solid #ccc;
             max-height: 150px;
@@ -29,6 +33,7 @@
         }
 
         .search-results div {
+            margin-top: 5px;
             padding: 5px;
             cursor: pointer;
         }
@@ -46,7 +51,7 @@
 
     <body>
 
-        
+
         <div class="search-box w-full justify-end flex pr-4">
             <input type="text" id="search" placeholder="Search location..." style="width: 300px; padding: 6px;">
             <div id="results" class="search-results"></div>
