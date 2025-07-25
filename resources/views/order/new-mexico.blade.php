@@ -17,7 +17,7 @@
         .search-box {
             margin: 10px;
             padding-bottom: 10px;
-            margin-top:10px;
+            margin-top: 10px;
         }
 
         .search-results {
@@ -71,33 +71,34 @@
                             class="pl-10 p-2 border border-gray-300 rounded-lg w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white shadow-sm transition-all duration-150">
                     </div>
 
-
-                    @foreach ($allProducts as $shopData)
-                        <div class="mb-8">
-                            <ul class="space-y-4">
-                                @foreach ($shopData['products'] as $product)
-                                    <li
-                                        class="product-item bg-white text-gray-900 rounded-xl shadow hover:shadow-lg transition-all duration-150 p-6 flex flex-col gap-2 border border-gray-100">
-                                        <div class="flex flex-wrap items-center gap-4">
-                                            <img src="{{ $product['images'][0]['src'] ?? '' }}" alt="{{ $product['name'] }}"
-                                                class="w-16 h-16 object-cover rounded" />
-                                            <div>
-                                                <h3 class="text-lg font-semibold">{{ $product['name'] }}</h3>
-                                                <p class="text-sm text-gray-700">Price:
-                                                    {{ $product['price'] ? $product['price'] . ' ' . ($product['currency'] ?? 'ETB') : 'N/A' }}
-                                                </p>
-                                                <p class="text-sm text-gray-500">
-                                                    {{ Str::limit($product['description'] ?? '', 100) }}</p>
+                    <div>
+                        @foreach ($allProducts as $shopData)
+                            <div class="mb-8">
+                                <ul class="space-y-4">
+                                    @foreach ($shopData['products'] as $product)
+                                        <li
+                                            class="product-item bg-white text-gray-900 rounded-xl shadow hover:shadow-lg transition-all duration-150 p-6 flex flex-col gap-2 border border-gray-100">
+                                            <div class="flex flex-wrap items-center gap-4">
+                                                <img src="{{ $product['images'][0]['src'] ?? '' }}"
+                                                    alt="{{ $product['name'] }}" class="w-16 h-16 object-cover rounded" />
+                                                <div>
+                                                    <h3 class="text-lg font-semibold">{{ $product['name'] }}</h3>
+                                                    <p class="text-sm text-gray-700">Price:
+                                                        {{ $product['price'] ? $product['price'] . ' ' . ($product['currency'] ?? 'ETB') : 'N/A' }}
+                                                    </p>
+                                                    <p class="text-sm text-gray-500">
+                                                        {{ Str::limit($product['description'] ?? '', 100) }}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @if (!$loop->last)
-                            <hr class="my-8 border-t border-gray-200">
-                        @endif
-                    @endforeach
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @if (!$loop->last)
+                                <hr class="my-8 border-t border-gray-200">
+                            @endif
+                        @endforeach
+                    </div>
                 </div>
             </div>
 
