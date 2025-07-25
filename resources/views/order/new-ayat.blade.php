@@ -12,6 +12,7 @@
 
         .search-box {
             margin: 10px;
+            padding-bottom:10px;
         }
 
         .search-results {
@@ -225,3 +226,4 @@
             });
         </script>
     @endsection
+
