@@ -46,9 +46,11 @@
             margin: 10px;
             font-weight: bold;
         }
-        .product-item, .mb-8 {
-    display: none;
-}
+
+        .product-item,
+        .mb-8 {
+            display: none;
+        }
     </style>
     </head>
 
@@ -98,23 +100,29 @@
                 </div>
             </div>
 
-           <script>
+            <script>
     const searchInput = document.getElementById('search-product');
     const productItems = document.querySelectorAll('.product-item');
     const shopBlocks = document.querySelectorAll('.mb-8');
 
-    // Hide all on page load
+    // Initially hide all
     productItems.forEach(item => item.style.display = 'none');
     shopBlocks.forEach(block => block.style.display = 'none');
 
     searchInput.addEventListener('input', function () {
-        const searchValue = this.value.toLowerCase();
+        const searchValue = this.value.toLowerCase().trim();
 
-        // Track which shop blocks should be shown
+        if (searchValue === '') {
+            // Hide all if input is empty
+            productItems.forEach(item => item.style.display = 'none');
+            shopBlocks.forEach(block => block.style.display = 'none');
+            return;
+        }
+
         shopBlocks.forEach(shopBlock => {
             let matchFound = false;
-
             const items = shopBlock.querySelectorAll('.product-item');
+
             items.forEach(item => {
                 const text = item.textContent.toLowerCase();
                 const isMatch = text.includes(searchValue);
@@ -126,6 +134,7 @@
         });
     });
 </script>
+
 
             {{-- <script>
                 const searchInput = document.getElementById('search-product');
