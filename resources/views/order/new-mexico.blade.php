@@ -57,8 +57,8 @@
     </head>
 
     <body>
-        <div class="w-1/2 mt-8 relative z-1000">
-            <div class="flex flex-col gap-4">
+        <div class="w-full mt-8 relative z-1000">
+            <div class="flex flex-row gap-4">
                 <div class="bg-white text-gray-900 p-6 rounded-2xl shadow-lg border border-gray-200 mt-4 relative">
                     <div class="relative mb-4 max-w-md">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -109,38 +109,38 @@
                         @endforeach
                     </div>
                 </div>
-                <div id="cart-summary" class="bg-gray-100 p-4 rounded-lg shadow-lg w-full max-w-md mt-6 hidden">
-    <h2 class="text-lg font-bold mb-4">Cart</h2>
-    <ul id="cart-items" class="space-y-2"></ul>
-    <div class="mt-4 text-right font-semibold text-lg">
-        Total: <span id="cart-total">0</span> ETB
-    </div>
-</div>
+                <div id="cart-summary" class="bg-gray-100 p-4 rounded-lg shadow-lg w-full max-w-md mt-6 hidden text-black">
+                    <h2 class="text-lg font-bold mb-4">Cart</h2>
+                    <ul id="cart-items" class="space-y-2"></ul>
+                    <div class="mt-4 text-right font-semibold text-lg">
+                        Total: <span id="cart-total">0</span> ETB
+                    </div>
+                </div>
 
             </div>
-<script>
-    const cart = {}; // { productId: { id, name, price, quantity } }
+            <script>
+                const cart = {}; // { productId: { id, name, price, quantity } }
 
-    function formatPrice(price) {
-        return parseFloat(price).toFixed(2);
-    }
+                function formatPrice(price) {
+                    return parseFloat(price).toFixed(2);
+                }
 
-    function renderCart() {
-        const cartItemsContainer = document.getElementById('cart-items');
-        const cartSummary = document.getElementById('cart-summary');
-        const totalElement = document.getElementById('cart-total');
+                function renderCart() {
+                    const cartItemsContainer = document.getElementById('cart-items');
+                    const cartSummary = document.getElementById('cart-summary');
+                    const totalElement = document.getElementById('cart-total');
 
-        cartItemsContainer.innerHTML = '';
-        let total = 0;
-        let hasItems = false;
+                    cartItemsContainer.innerHTML = '';
+                    let total = 0;
+                    let hasItems = false;
 
-        for (const id in cart) {
-            const item = cart[id];
-            const lineTotal = item.price * item.quantity;
-            total += lineTotal;
-            hasItems = true;
+                    for (const id in cart) {
+                        const item = cart[id];
+                        const lineTotal = item.price * item.quantity;
+                        total += lineTotal;
+                        hasItems = true;
 
-            cartItemsContainer.innerHTML += `
+                        cartItemsContainer.innerHTML += `
                 <li class="flex justify-between items-center">
                     <div>
                         <div class="font-semibold">${item.name}</div>
@@ -153,62 +153,67 @@
                     </div>
                 </li>
             `;
-        }
+                    }
 
-        totalElement.innerText = formatPrice(total);
-        cartSummary.style.display = hasItems ? 'block' : 'none';
+                    totalElement.innerText = formatPrice(total);
+                    cartSummary.style.display = hasItems ? 'block' : 'none';
 
-        // Reattach events
-        document.querySelectorAll('.increase').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.dataset.id;
-                cart[id].quantity += 1;
-                renderCart();
-            });
-        });
+                    // Reattach events
+                    document.querySelectorAll('.increase').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const id = btn.dataset.id;
+                            cart[id].quantity += 1;
+                            renderCart();
+                        });
+                    });
 
-        document.querySelectorAll('.decrease').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.dataset.id;
-                if (cart[id].quantity > 1) {
-                    cart[id].quantity -= 1;
-                } else {
-                    delete cart[id];
+                    document.querySelectorAll('.decrease').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const id = btn.dataset.id;
+                            if (cart[id].quantity > 1) {
+                                cart[id].quantity -= 1;
+                            } else {
+                                delete cart[id];
+                            }
+                            renderCart();
+                            updateToggleButtons();
+                        });
+                    });
                 }
-                renderCart();
-                updateToggleButtons();
-            });
-        });
-    }
 
-    function updateToggleButtons() {
-        document.querySelectorAll('.toggle-cart').forEach(button => {
-            const id = button.dataset.productId;
-            const isInCart = cart[id];
-            button.innerText = isInCart ? 'Remove from Cart' : 'Add to Cart';
-            button.classList.toggle('bg-red-500', isInCart);
-            button.classList.toggle('bg-blue-500', !isInCart);
-        });
-    }
+                function updateToggleButtons() {
+                    document.querySelectorAll('.toggle-cart').forEach(button => {
+                        const id = button.dataset.productId;
+                        const isInCart = cart[id];
+                        button.innerText = isInCart ? 'Remove from Cart' : 'Add to Cart';
+                        button.classList.toggle('bg-red-500', isInCart);
+                        button.classList.toggle('bg-blue-500', !isInCart);
+                    });
+                }
 
-    document.querySelectorAll('.toggle-cart').forEach(button => {
-        button.addEventListener('click', function () {
-            const id = this.dataset.productId;
-            const name = this.closest('.product-item').querySelector('h3').innerText;
-            const priceText = this.closest('.product-item').querySelector('p.text-sm').innerText;
-            const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
+                document.querySelectorAll('.toggle-cart').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const id = this.dataset.productId;
+                        const name = this.closest('.product-item').querySelector('h3').innerText;
+                        const priceText = this.closest('.product-item').querySelector('p.text-sm').innerText;
+                        const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
 
-            if (!cart[id]) {
-                cart[id] = { id, name, price, quantity: 1 };
-            } else {
-                delete cart[id];
-            }
+                        if (!cart[id]) {
+                            cart[id] = {
+                                id,
+                                name,
+                                price,
+                                quantity: 1
+                            };
+                        } else {
+                            delete cart[id];
+                        }
 
-            updateToggleButtons();
-            renderCart();
-        });
-    });
-</script>
+                        updateToggleButtons();
+                        renderCart();
+                    });
+                });
+            </script>
 
 
 
