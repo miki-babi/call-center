@@ -300,6 +300,6 @@ class OrderController extends Controller
     }
 
     public function placeOrder(Request $request){
-dd($request);
+dd($request->all());
     }
 }
