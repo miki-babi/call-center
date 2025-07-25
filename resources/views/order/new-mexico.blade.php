@@ -10,7 +10,7 @@
             /* space between search/results and map */
             height: 500px;
             width: 100%;
-            z-index: -10;
+            /* z-index: -10; */
         }
 
 
@@ -319,10 +319,6 @@
                 </select>
             </div>
         </div>
-
-
-
-
 
 
         <!-- Leaflet JS -->
