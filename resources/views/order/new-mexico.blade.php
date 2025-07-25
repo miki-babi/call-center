@@ -402,7 +402,7 @@
                             color: 'green'
                         })
                         .addTo(map)
-                        .bindPopup('Warehouse')
+                        .bindPopup('Mexico-Store')
                         .openPopup();
                 }
 
