@@ -35,7 +35,7 @@
                                                     {{ $product['price'] ? $product['price'] . ' ' . ($product['currency'] ?? 'ETB') : 'N/A' }}
                                                 </p>
                                                 <p class="text-sm text-gray-500">
-                                                    {{ Str::limit($product['description'] ?? '', 100) }}</p>
+                                                    {{ Str::limit($product['weight'] ?? '', 100) }}</p>
                                             </div>
                                         </div>
                                         <button
