@@ -34,13 +34,15 @@
                                                 <p class="text-sm text-gray-700">Price:
                                                     {{ $product['price'] ? $product['price'] . ' ' . ($product['currency'] ?? 'ETB') : 'N/A' }}
                                                 </p>
-                                                <p class="text-sm text-gray-500">
+                                                <p class="text-sm text-gray-500" id="weight">
                                                     {{ Str::limit($product['weight'] ?? '', 100) }}</p>
                                             </div>
                                         </div>
                                         <button
                                             class="toggle-cart bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded text-sm"
-                                            data-product-id="{{ $product['id'] }}">
+                                            data-product-id="{{ $product['id'] }}"
+                                            data-product-weight="{{ $product['weight'] }}"
+                                            >
                                             Add to Cart
                                         </button>
                                     </li>
@@ -61,13 +63,16 @@
                 <h2 class="text-lg font-bold mb-4">Cart</h2>
                 <ul id="cart-items" class="space-y-2"></ul>
                 <div class="mt-4 text-right font-semibold text-lg">
-                    Total: <span id="cart-total">0</span> ETB
+                    <p>Total: <span id="cart-total">0</span> ETB</p>
+                    <p>Total Weight: <span id="cart-weight">0.00</span> kg</p>
                 </div>
+
+                
             </div>
         </div>
     </div>
 
-    <script>
+    {{-- <script>
         const cart = {}; // { productId: { id, name, price, quantity } }
 
         function formatPrice(price) {
@@ -162,8 +167,114 @@
                 renderCart();
             });
         });
-    </script>
-    
+    </script> --}}
+    <script>
+    const cart = {}; // { productId: { id, name, price, quantity, weight } }
+
+    function formatPrice(price) {
+        return parseFloat(price).toFixed(2);
+    }
+
+    function renderCart() {
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartSummary = document.getElementById('cart-summary');
+        const totalElement = document.getElementById('cart-total');
+        const weightElement = document.getElementById('cart-weight'); // Add this in your HTML
+
+        cartItemsContainer.innerHTML = '';
+        let total = 0;
+        let totalWeight = 0;
+        let hasItems = false;
+
+        for (const id in cart) {
+            const item = cart[id];
+            const lineTotal = item.price * item.quantity;
+            const lineWeight = item.weight * item.quantity;
+            total += lineTotal;
+            totalWeight += lineWeight;
+            hasItems = true;
+
+            cartItemsContainer.innerHTML += `
+                <li class="flex justify-between items-center">
+                    <div>
+                        <div class="font-semibold">${item.name}</div>
+                        <div class="text-sm text-gray-600">
+                            Price: ${formatPrice(item.price)} × ${item.quantity}<br>
+                            Weight: ${formatPrice(item.weight)} kg × ${item.quantity}
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button class="decrease bg-gray-300 px-2 rounded" data-id="${id}">-</button>
+                        <span>${item.quantity}</span>
+                        <button class="increase bg-gray-300 px-2 rounded" data-id="${id}">+</button>
+                    </div>
+                </li>
+            `;
+        }
+
+        totalElement.innerText = formatPrice(total);
+        if (weightElement) weightElement.innerText = `${totalWeight.toFixed(2)} kg`;
+        cartSummary.style.display = hasItems ? 'block' : 'none';
+
+        // Reattach events
+        document.querySelectorAll('.increase').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.id;
+                cart[id].quantity += 1;
+                renderCart();
+            });
+        });
+
+        document.querySelectorAll('.decrease').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.id;
+                if (cart[id].quantity > 1) {
+                    cart[id].quantity -= 1;
+                } else {
+                    delete cart[id];
+                }
+                renderCart();
+                updateToggleButtons();
+            });
+        });
+    }
+
+    function updateToggleButtons() {
+        document.querySelectorAll('.toggle-cart').forEach(button => {
+            const id = button.dataset.productId;
+            const isInCart = cart[id];
+            button.innerText = isInCart ? 'Remove from Cart' : 'Add to Cart';
+            button.classList.toggle('bg-red-500', isInCart);
+            button.classList.toggle('bg-blue-500', !isInCart);
+        });
+    }
+
+    document.querySelectorAll('.toggle-cart').forEach(button => {
+        button.addEventListener('click', function () {
+            const id = this.dataset.productId;
+            const name = this.closest('.product-item').querySelector('h3').innerText;
+            const priceText = this.closest('.product-item').querySelector('p.text-sm').innerText;
+            const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
+            const weight = parseFloat(this.dataset.weight) || 0;
+
+            if (!cart[id]) {
+                cart[id] = {
+                    id,
+                    name,
+                    price,
+                    weight,
+                    quantity: 1
+                };
+            } else {
+                delete cart[id];
+            }
+
+            updateToggleButtons();
+            renderCart();
+        });
+    });
+</script>
+
     <script>
         const searchInput = document.getElementById('search-product');
         const productItems = document.querySelectorAll('.product-item');
