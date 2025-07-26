@@ -1,4 +1,4 @@
-@props(['shop','lat','lon'])
+@props(['shop','lat','lon','delivery_price'])
 
 <div class="search-box w-full justify-end flex pr-4 mt-8">
             <input type="text" id="search" placeholder="Search location..." style="width: 300px; padding: 6px;">

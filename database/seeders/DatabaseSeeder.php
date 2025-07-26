@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Delivery;
 use App\Models\Shop;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -38,6 +39,27 @@ class DatabaseSeeder extends Seeder
             'consumer_key' => 'ck_7ec1f731a07c9ec77d087122f94354d43ef8f2af',
             'consumer_secret' => 'cs_2667463452d7a679653b00e1d7c17a8d1cc1ad39',
             'url' => 'https://beshgebeya.co/ayat',
+        ]);
+        Delivery::factory()->create([
+            'mode_of_delivery' => 'bicycle',
+            'base_price' => '45.25',
+            'price_per_km' => '25.00',
+            'max_weight' => '10.00',
+            'max_distance' => '3.00',
+        ]);
+        Delivery::factory()->create([
+            'mode_of_delivery' => 'motorbike',
+            'base_price' => '71.70',
+            'price_per_km' => '25.00',
+            'max_weight' => '20.00',
+            'max_distance' => '10.00',
+        ]);
+        Delivery::factory()->create([
+            'mode_of_delivery' => 'car',
+            'base_price' => '287.34',
+            'price_per_km' => '25.00',
+            'max_weight' => '500.00',
+            'max_distance' => '25.00',
         ]);
     }
 }

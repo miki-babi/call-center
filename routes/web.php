@@ -7,9 +7,12 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\MapController;
+use App\Models\Delivery;
 
 Route::get('test', function(){
-    return "hello";
+    $deli=Delivery::all();
+dd($deli);
+
 });
 
 
