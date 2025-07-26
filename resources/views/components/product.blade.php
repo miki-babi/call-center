@@ -41,8 +41,7 @@
                                         <button
                                             class="toggle-cart bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded text-sm"
                                             data-product-id="{{ $product['id'] }}"
-                                            data-product-weight="{{ $product['weight'] }}"
-                                            >
+                                            data-product-weight="{{ $product['weight'] }}">
                                             Add to Cart
                                         </button>
                                     </li>
@@ -67,7 +66,7 @@
                     <p>Total Weight: <span id="cart-weight">0.00</span> kg</p>
                 </div>
 
-                
+
             </div>
         </div>
     </div>
@@ -168,33 +167,33 @@
             });
         });
     </script> --}}
-    <script>
-    const cart = {}; // { productId: { id, name, price, quantity, weight } }
+    {{-- <script>
+        const cart = {}; // { productId: { id, name, price, quantity, weight } }
 
-    function formatPrice(price) {
-        return parseFloat(price).toFixed(2);
-    }
+        function formatPrice(price) {
+            return parseFloat(price).toFixed(2);
+        }
 
-    function renderCart() {
-        const cartItemsContainer = document.getElementById('cart-items');
-        const cartSummary = document.getElementById('cart-summary');
-        const totalElement = document.getElementById('cart-total');
-        const weightElement = document.getElementById('cart-weight'); // Add this in your HTML
+        function renderCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartSummary = document.getElementById('cart-summary');
+            const totalElement = document.getElementById('cart-total');
+            const weightElement = document.getElementById('cart-weight'); // Add this in your HTML
 
-        cartItemsContainer.innerHTML = '';
-        let total = 0;
-        let totalWeight = 0;
-        let hasItems = false;
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+            let totalWeight = 0;
+            let hasItems = false;
 
-        for (const id in cart) {
-            const item = cart[id];
-            const lineTotal = item.price * item.quantity;
-            const lineWeight = item.weight * item.quantity;
-            total += lineTotal;
-            totalWeight += lineWeight;
-            hasItems = true;
+            for (const id in cart) {
+                const item = cart[id];
+                const lineTotal = item.price * item.quantity;
+                const lineWeight = item.weight * item.quantity;
+                total += lineTotal;
+                totalWeight += lineWeight;
+                hasItems = true;
 
-            cartItemsContainer.innerHTML += `
+                cartItemsContainer.innerHTML += `
                 <li class="flex justify-between items-center">
                     <div>
                         <div class="font-semibold">${item.name}</div>
@@ -210,13 +209,128 @@
                     </div>
                 </li>
             `;
+            }
+
+            totalElement.innerText = formatPrice(total);
+            if (weightElement) weightElement.innerText = `${totalWeight.toFixed(2)} kg`;
+            cartSummary.style.display = hasItems ? 'block' : 'none';
+
+            // Reattach events
+            document.querySelectorAll('.increase').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.dataset.id;
+                    cart[id].quantity += 1;
+                    renderCart();
+                });
+            });
+
+            document.querySelectorAll('.decrease').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.dataset.id;
+                    if (cart[id].quantity > 1) {
+                        cart[id].quantity -= 1;
+                    } else {
+                        delete cart[id];
+                    }
+                    renderCart();
+                    updateToggleButtons();
+                });
+            });
         }
 
-        totalElement.innerText = formatPrice(total);
-        if (weightElement) weightElement.innerText = `${totalWeight.toFixed(2)} kg`;
+        function updateToggleButtons() {
+            document.querySelectorAll('.toggle-cart').forEach(button => {
+                const id = button.dataset.productId;
+                const isInCart = cart[id];
+                button.innerText = isInCart ? 'Remove from Cart' : 'Add to Cart';
+                button.classList.toggle('bg-red-500', isInCart);
+                button.classList.toggle('bg-blue-500', !isInCart);
+            });
+        }
+
+        document.querySelectorAll('.toggle-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const id = this.dataset.productId;
+                const name = this.closest('.product-item').querySelector('h3').innerText;
+                const priceText = this.closest('.product-item').querySelector('p.text-sm').innerText;
+                const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
+                const weight = parseFloat(this.dataset.weight) || 0;
+
+                if (!cart[id]) {
+                    cart[id] = {
+                        id,
+                        name,
+                        price,
+                        weight,
+                        quantity: 1
+                    };
+                } else {
+                    delete cart[id];
+                }
+
+                updateToggleButtons();
+                renderCart();
+            });
+        });
+    </script> --}}
+<script>
+    const cart = {}; // { productId: { id, name, price, quantity, weight } }
+
+    const deliveryOptions = @json($deliveryOptions); // Pass from backend
+    let currentDistance = 0;
+
+    function formatPrice(price) {
+        return parseFloat(price).toFixed(2);
+    }
+
+    function calculateDeliveryPrice(weight) {
+        const option = deliveryOptions.find(opt => weight <= parseFloat(opt.max_weight));
+        if (!option || !currentDistance) return 0;
+
+        const base = parseFloat(option.base_price);
+        const perKm = parseFloat(option.price_per_km);
+        const maxDist = parseFloat(option.max_distance);
+
+        if (currentDistance > maxDist) return 0;
+        return base + (perKm * currentDistance);
+    }
+
+    function renderCart() {
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartSummary = document.getElementById('cart-summary');
+        const totalElement = document.getElementById('cart-total');
+        const deliveryElement = document.getElementById('delivery-cost');
+
+        cartItemsContainer.innerHTML = '';
+        let total = 0, totalWeight = 0, hasItems = false;
+
+        for (const id in cart) {
+            const item = cart[id];
+            const lineTotal = item.price * item.quantity;
+            total += lineTotal;
+            totalWeight += item.weight * item.quantity;
+            hasItems = true;
+
+            cartItemsContainer.innerHTML += `
+                <li class="flex justify-between items-center">
+                    <div>
+                        <div class="font-semibold">${item.name}</div>
+                        <div class="text-sm text-gray-600">Price: ${formatPrice(item.price)} × ${item.quantity}</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button class="decrease bg-gray-300 px-2 rounded" data-id="${id}">-</button>
+                        <span>${item.quantity}</span>
+                        <button class="increase bg-gray-300 px-2 rounded" data-id="${id}">+</button>
+                    </div>
+                </li>`;
+        }
+
+        const deliveryCost = calculateDeliveryPrice(totalWeight);
+        deliveryElement.innerText = formatPrice(deliveryCost);
+        totalElement.innerText = formatPrice(total + deliveryCost);
+
         cartSummary.style.display = hasItems ? 'block' : 'none';
 
-        // Reattach events
         document.querySelectorAll('.increase').forEach(btn => {
             btn.addEventListener('click', () => {
                 const id = btn.dataset.id;
@@ -255,7 +369,7 @@
             const name = this.closest('.product-item').querySelector('h3').innerText;
             const priceText = this.closest('.product-item').querySelector('p.text-sm').innerText;
             const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
-            const weight = parseFloat(this.dataset.weight) || 0;
+            const weight = parseFloat(this.getAttribute('data-weight')) || 0;
 
             if (!cart[id]) {
                 cart[id] = {
@@ -273,6 +387,16 @@
             renderCart();
         });
     });
+
+    function updateDistanceAndDelivery(lat, lon) {
+        if (!startMarker) return;
+        const from = startMarker.getLatLng();
+        const to = L.latLng(lat, lon);
+        const distanceKm = from.distanceTo(to) / 1000;
+        currentDistance = distanceKm;
+        document.getElementById('distance-display').innerText = `Distance: ${distanceKm.toFixed(2)} km`;
+        renderCart();
+    }
 </script>
 
     <script>
