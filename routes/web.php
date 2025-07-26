@@ -8,6 +8,9 @@ use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\MapController;
 
+Route::get('test', function(){
+    return "hello";
+});
 
 
 Route::post('login', [SessionController::class, 'login'])->name('auth.login');

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('deliveries', function (Blueprint $table) {
+        Schema::create('delivery_price', function (Blueprint $table) {
             $table->id();
             $table->enum('mode_of_delivery', ['bicycle', 'motorbike', 'car']); 
             $table->string('base_price');
