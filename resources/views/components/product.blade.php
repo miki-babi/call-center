@@ -77,8 +77,8 @@
         window.cart = window.cart || {};
         window.currentDistance = window.currentDistance || 0;
 
-        // const deliveryOptions = @json($deliveryOptions);
-        const deliveryOptions = "test";
+        const deliveryOptions = @json($deliveryOptions);
+        // const deliveryOptions = "test";
         console.log(deliveryOptions);
         // Pass from backend
 
