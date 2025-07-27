@@ -79,7 +79,7 @@
 
         const deliveryOptions = @json($deliveryOptions);
         // const deliveryOptions = "test";
-        console.log(deliveryOptions);
+        console.log(typeof(deliveryOptions));
         // Pass from backend
 
         function formatPrice(price) {
