@@ -1,4 +1,4 @@
-@props(['products'])
+@props(['products','deliveryOptions'])
 
 <div class="w-full">
     <div class="w-full mt-8 relative z-1000 flex flex-row gap-6">
