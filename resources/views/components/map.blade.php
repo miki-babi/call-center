@@ -1,5 +1,8 @@
 @props(['shop','lat','lon','deliveryOptions'])
 <div>✅ MAP COMPONENT LOADED</div>
+<script>
+    console.log('✅ simple script works');
+</script>
 <div class="search-box w-full justify-end flex pr-4 mt-8">
             <input type="text" id="search" placeholder="Search location..." style="width: 300px; padding: 6px;">
             <div id="results" class="search-results"></div>
