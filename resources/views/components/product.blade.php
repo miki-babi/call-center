@@ -1,4 +1,4 @@
-@props(['products','deliveryOptions'])
+@props(['products', 'deliveryOptions'])
 
 <div class="w-full">
     <div class="w-full mt-8 relative z-1000 flex flex-row gap-6">
@@ -71,53 +71,57 @@
             </div>
         </div>
     </div>
+    @push('scripts')
     <script>
-    console.log("script loaded");
-</script>
-<script>
-    window.cart = window.cart || {};
-    window.currentDistance = window.currentDistance || 0;
+        console.log("script loaded");
+    </script>
+    @endpush
+    <script>
+        window.cart = window.cart || {};
+        window.currentDistance = window.currentDistance || 0;
 
-    // const deliveryOptions = @json($deliveryOptions);
-    const deliveryOptions = "test";
-    console.log(deliveryOptions);
-     // Pass from backend
+        // const deliveryOptions = @json($deliveryOptions);
+        const deliveryOptions = "test";
+        console.log(deliveryOptions);
+        // Pass from backend
 
-    function formatPrice(price) {
-        return parseFloat(price).toFixed(2);
-    }
+        function formatPrice(price) {
+            return parseFloat(price).toFixed(2);
+        }
 
-    function calculateDeliveryPrice(weight) {
-        const option = deliveryOptions.find(opt => weight <= parseFloat(opt.max_weight));
-        if (!option || !window.currentDistance) return 0;
+        function calculateDeliveryPrice(weight) {
+            const option = deliveryOptions.find(opt => weight <= parseFloat(opt.max_weight));
+            if (!option || !window.currentDistance) return 0;
 
-        const base = parseFloat(option.base_price);
-        const perKm = parseFloat(option.price_per_km);
-        const maxDist = parseFloat(option.max_distance);
+            const base = parseFloat(option.base_price);
+            const perKm = parseFloat(option.price_per_km);
+            const maxDist = parseFloat(option.max_distance);
 
-        if (window.currentDistance > maxDist) return 0;
-        return base + (perKm * window.currentDistance);
-    }
-    window.calculateDeliveryPrice = calculateDeliveryPrice;
+            if (window.currentDistance > maxDist) return 0;
+            return base + (perKm * window.currentDistance);
+        }
+        window.calculateDeliveryPrice = calculateDeliveryPrice;
 
-    function renderCart() {
-        const cartItemsContainer = document.getElementById('cart-items');
-        const cartSummary = document.getElementById('cart-summary');
-        const totalElement = document.getElementById('cart-total');
-        const deliveryElement = document.getElementById('delivery-cost');
-        const weightElement = document.getElementById('cart-weight');
+        function renderCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartSummary = document.getElementById('cart-summary');
+            const totalElement = document.getElementById('cart-total');
+            const deliveryElement = document.getElementById('delivery-cost');
+            const weightElement = document.getElementById('cart-weight');
 
-        cartItemsContainer.innerHTML = '';
-        let total = 0, totalWeight = 0, hasItems = false;
+            cartItemsContainer.innerHTML = '';
+            let total = 0,
+                totalWeight = 0,
+                hasItems = false;
 
-        for (const id in window.cart) {
-            const item = window.cart[id];
-            const lineTotal = item.price * item.quantity;
-            total += lineTotal;
-            totalWeight += item.weight * item.quantity;
-            hasItems = true;
+            for (const id in window.cart) {
+                const item = window.cart[id];
+                const lineTotal = item.price * item.quantity;
+                total += lineTotal;
+                totalWeight += item.weight * item.quantity;
+                hasItems = true;
 
-            cartItemsContainer.innerHTML += `
+                cartItemsContainer.innerHTML += `
                 <li class="flex justify-between items-center">
                     <div>
                         <div class="font-semibold">${item.name}</div>
@@ -129,88 +133,88 @@
                         <button class="increase bg-gray-300 px-2 rounded" data-id="${id}">+</button>
                     </div>
                 </li>`;
+            }
+
+            const deliveryCost = calculateDeliveryPrice(totalWeight);
+            deliveryElement.innerText = formatPrice(deliveryCost);
+            totalElement.innerText = formatPrice(total + deliveryCost);
+            if (weightElement) weightElement.innerText = `${totalWeight.toFixed(2)} kg`;
+
+            // Update hidden fields for form submission
+            const deliveryPriceInput = document.getElementById('delivery_price');
+            const productsInput = document.getElementById('products');
+            if (deliveryPriceInput) deliveryPriceInput.value = deliveryCost;
+            if (productsInput) productsInput.value = JSON.stringify(Object.values(window.cart));
+
+            cartSummary.style.display = hasItems ? 'block' : 'none';
+
+            document.querySelectorAll('.increase').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.dataset.id;
+                    window.cart[id].quantity += 1;
+                    renderCart();
+                });
+            });
+
+            document.querySelectorAll('.decrease').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.dataset.id;
+                    if (window.cart[id].quantity > 1) {
+                        window.cart[id].quantity -= 1;
+                    } else {
+                        delete window.cart[id];
+                    }
+                    renderCart();
+                    updateToggleButtons();
+                });
+            });
         }
 
-        const deliveryCost = calculateDeliveryPrice(totalWeight);
-        deliveryElement.innerText = formatPrice(deliveryCost);
-        totalElement.innerText = formatPrice(total + deliveryCost);
-        if (weightElement) weightElement.innerText = `${totalWeight.toFixed(2)} kg`;
-
-        // Update hidden fields for form submission
-        const deliveryPriceInput = document.getElementById('delivery_price');
-        const productsInput = document.getElementById('products');
-        if (deliveryPriceInput) deliveryPriceInput.value = deliveryCost;
-        if (productsInput) productsInput.value = JSON.stringify(Object.values(window.cart));
-
-        cartSummary.style.display = hasItems ? 'block' : 'none';
-
-        document.querySelectorAll('.increase').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.dataset.id;
-                window.cart[id].quantity += 1;
-                renderCart();
+        function updateToggleButtons() {
+            document.querySelectorAll('.toggle-cart').forEach(button => {
+                const id = button.dataset.productId;
+                const isInCart = window.cart[id];
+                button.innerText = isInCart ? 'Remove from Cart' : 'Add to Cart';
+                button.classList.toggle('bg-red-500', isInCart);
+                button.classList.toggle('bg-blue-500', !isInCart);
             });
-        });
+        }
 
-        document.querySelectorAll('.decrease').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.dataset.id;
-                if (window.cart[id].quantity > 1) {
-                    window.cart[id].quantity -= 1;
+        document.querySelectorAll('.toggle-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const id = this.dataset.productId;
+                const name = this.closest('.product-item').querySelector('h3').innerText;
+                const priceText = this.closest('.product-item').querySelector('p.text-sm').innerText;
+                const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
+                const weight = parseFloat(this.getAttribute('data-product-weight')) || 0;
+
+                if (!window.cart[id]) {
+                    window.cart[id] = {
+                        id,
+                        name,
+                        price,
+                        weight,
+                        quantity: 1
+                    };
                 } else {
                     delete window.cart[id];
                 }
-                renderCart();
+
                 updateToggleButtons();
+                renderCart();
             });
         });
-    }
 
-    function updateToggleButtons() {
-        document.querySelectorAll('.toggle-cart').forEach(button => {
-            const id = button.dataset.productId;
-            const isInCart = window.cart[id];
-            button.innerText = isInCart ? 'Remove from Cart' : 'Add to Cart';
-            button.classList.toggle('bg-red-500', isInCart);
-            button.classList.toggle('bg-blue-500', !isInCart);
-        });
-    }
-
-    document.querySelectorAll('.toggle-cart').forEach(button => {
-        button.addEventListener('click', function () {
-            const id = this.dataset.productId;
-            const name = this.closest('.product-item').querySelector('h3').innerText;
-            const priceText = this.closest('.product-item').querySelector('p.text-sm').innerText;
-            const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
-            const weight = parseFloat(this.getAttribute('data-product-weight')) || 0;
-
-            if (!window.cart[id]) {
-                window.cart[id] = {
-                    id,
-                    name,
-                    price,
-                    weight,
-                    quantity: 1
-                };
-            } else {
-                delete window.cart[id];
-            }
-
-            updateToggleButtons();
+        function updateDistanceAndDelivery(lat, lon) {
+            if (!startMarker) return;
+            const from = startMarker.getLatLng();
+            const to = L.latLng(lat, lon);
+            const distanceKm = from.distanceTo(to) / 1000;
+            window.currentDistance = distanceKm;
+            document.getElementById('distance-display').innerText = `Distance: ${distanceKm.toFixed(2)} km`;
             renderCart();
-        });
-    });
-
-    function updateDistanceAndDelivery(lat, lon) {
-        if (!startMarker) return;
-        const from = startMarker.getLatLng();
-        const to = L.latLng(lat, lon);
-        const distanceKm = from.distanceTo(to) / 1000;
-        window.currentDistance = distanceKm;
-        document.getElementById('distance-display').innerText = `Distance: ${distanceKm.toFixed(2)} km`;
-        renderCart();
-    }
-</script>
+        }
+    </script>
 
     <script>
         const searchInput = document.getElementById('search-product');
