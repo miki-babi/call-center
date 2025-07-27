@@ -64,6 +64,7 @@
                 <div class="mt-4 text-right font-semibold text-lg">
                     <p>Total: <span id="cart-total">0</span> ETB</p>
                     <p>Total Weight: <span id="cart-weight">0.00</span> kg</p>
+                    <p>Delivery: <span id="delivery-cost">0</span> ETB</p>
                 </div>
 
 
