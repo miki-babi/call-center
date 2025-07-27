@@ -42,7 +42,7 @@
                                             class="toggle-cart bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded text-sm"
                                             data-product-id="{{ $product['id'] }}"
                                             data-product-weight="{{ $product['weight'] }}">
-                                            Add to Cart
+                                            Add to Cart (weight: {{ $product['weight'] }})
                                         </button>
                                     </li>
                                 @endforeach
