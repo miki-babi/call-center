@@ -11,7 +11,7 @@
 
 
 <script>
-    const deliveryOptions = @json($deliveryOptions);
-    console.log("✅ from main view", deliveryOptions);
+    const Options = @json($deliveryOptions);
+    console.log("✅ from main view", Options);
 </script>
 @endsection
