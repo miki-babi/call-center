@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use App\Models\Delivery;
 
 class OrderController extends Controller
 {
@@ -97,6 +98,7 @@ class OrderController extends Controller
             if ($products->isEmpty()) {
                 return response()->json(['message' => 'No Products found'], 404);
             }
+            $deliveryOptions=Delivery::all();
 
             return view('order.new-mexico', [
                 'allProducts' => [
@@ -105,7 +107,7 @@ class OrderController extends Controller
                         'shop_id' => $shop->id,
                         'products' => $products,
                     ]
-                ]
+                    ],'deliveryOptions'=>$deliveryOptions
             ]);
 
 
