@@ -73,10 +73,16 @@
 
                 map.setView([lat, lon], 15);
                 calculateDistance(lat, lon);
+                if (window.updateDistanceAndDelivery) {
+                    window.updateDistanceAndDelivery(lat, lon);
+                }
 
                 endMarker.on('dragend', function(e) {
                     const newLatLng = e.target.getLatLng();
                     calculateDistance(newLatLng.lat, newLatLng.lng);
+                    if (window.updateDistanceAndDelivery) {
+                        window.updateDistanceAndDelivery(newLatLng.lat, newLatLng.lng);
+                    }
                 });
 
                 if (result) fillAddressFields(result);
@@ -126,4 +132,16 @@
                 } = e.latlng;
                 placeEndMarker(lat, lng);
             });
+
+            // Expose updateDistanceAndDelivery globally for cart/delivery calculation
+            window.updateDistanceAndDelivery = function(lat, lon) {
+                if (typeof currentDistance === 'undefined') return;
+                if (typeof renderCart !== 'function') return;
+                if (!window.startMarker) return;
+                const from = window.startMarker.getLatLng();
+                const to = L.latLng(lat, lon);
+                const distanceKm = from.distanceTo(to) / 1000;
+                currentDistance = distanceKm;
+                renderCart();
+            };
         </script>
