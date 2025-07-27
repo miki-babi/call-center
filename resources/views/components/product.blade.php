@@ -71,11 +71,8 @@
             </div>
         </div>
     </div>
-    @push('scripts')
-    <script>
-        console.log("script loaded");
-    </script>
-    @endpush
+   
+
     <script>
         window.cart = window.cart || {};
         window.currentDistance = window.currentDistance || 0;
