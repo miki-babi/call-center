@@ -295,6 +295,7 @@
         if (window.currentDistance > maxDist) return 0;
         return base + (perKm * window.currentDistance);
     }
+    window.calculateDeliveryPrice = calculateDeliveryPrice;
 
     function renderCart() {
         const cartItemsContainer = document.getElementById('cart-items');
