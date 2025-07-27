@@ -305,6 +305,7 @@ class OrderController extends Controller
         $data = $request->all();
         $deliveryPrice = $data['delivery_price'] ?? 0;
         $products = json_decode($data['products'] ?? '[]', true);
+        dd(['delivery_price' => $deliveryPrice, 'products' => $products]);
 
         // Prepare WooCommerce order payload
         $orderPayload = [
