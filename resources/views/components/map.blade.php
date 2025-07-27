@@ -11,6 +11,91 @@
         <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
         <script>
+            // Delivery calculation logic moved here
+            window.currentDistance = 0;
+            window.deliveryOptions = @json($deliveryOptions);
+            window.cart = window.cart || {};
+
+            window.formatPrice = function(price) {
+                return parseFloat(price).toFixed(2);
+            };
+
+            window.calculateDeliveryPrice = function(weight) {
+                const option = window.deliveryOptions.find(opt => weight <= parseFloat(opt.max_weight));
+                if (!option || !window.currentDistance) return 0;
+                const base = parseFloat(option.base_price);
+                const perKm = parseFloat(option.price_per_km);
+                const maxDist = parseFloat(option.max_distance);
+                if (window.currentDistance > maxDist) return 0;
+                return base + (perKm * window.currentDistance);
+            };
+
+            window.renderCart = function() {
+                const cartItemsContainer = document.getElementById('cart-items');
+                const cartSummary = document.getElementById('cart-summary');
+                const totalElement = document.getElementById('cart-total');
+                const deliveryElement = document.getElementById('delivery-cost');
+                const weightElement = document.getElementById('cart-weight');
+
+                cartItemsContainer.innerHTML = '';
+                let total = 0, totalWeight = 0, hasItems = false;
+
+                for (const id in window.cart) {
+                    const item = window.cart[id];
+                    const lineTotal = item.price * item.quantity;
+                    total += lineTotal;
+                    totalWeight += item.weight * item.quantity;
+                    hasItems = true;
+
+                    cartItemsContainer.innerHTML += `
+                        <li class="flex justify-between items-center">
+                            <div>
+                                <div class="font-semibold">${item.name}</div>
+                                <div class="text-sm text-gray-600">Price: ${window.formatPrice(item.price)} × ${item.quantity}</div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button class="decrease bg-gray-300 px-2 rounded" data-id="${id}">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="increase bg-gray-300 px-2 rounded" data-id="${id}">+</button>
+                            </div>
+                        </li>`;
+                }
+
+                const deliveryCost = window.calculateDeliveryPrice(totalWeight);
+                if (deliveryElement) deliveryElement.innerText = window.formatPrice(deliveryCost);
+                if (totalElement) totalElement.innerText = window.formatPrice(total + deliveryCost);
+                if (weightElement) weightElement.innerText = `${totalWeight.toFixed(2)} kg`;
+
+                // Update hidden fields for form submission
+                const deliveryPriceInput = document.getElementById('delivery_price');
+                const productsInput = document.getElementById('products');
+                if (deliveryPriceInput) deliveryPriceInput.value = deliveryCost;
+                if (productsInput) productsInput.value = JSON.stringify(Object.values(window.cart));
+
+                if (cartSummary) cartSummary.style.display = hasItems ? 'block' : 'none';
+
+                document.querySelectorAll('.increase').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const id = btn.dataset.id;
+                        window.cart[id].quantity += 1;
+                        window.renderCart();
+                    });
+                });
+
+                document.querySelectorAll('.decrease').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const id = btn.dataset.id;
+                        if (window.cart[id].quantity > 1) {
+                            window.cart[id].quantity -= 1;
+                        } else {
+                            delete window.cart[id];
+                        }
+                        window.renderCart();
+                        if (typeof updateToggleButtons === 'function') updateToggleButtons();
+                    });
+                });
+            };
+
             let map = L.map('map').setView([9.03, 38.74], 13); // Addis Ababa center
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -76,12 +161,25 @@
                 if (window.updateDistanceAndDelivery) {
                     window.updateDistanceAndDelivery(lat, lon);
                 }
+                // Update global currentDistance and recalculate cart
+                if (window.startMarker) {
+                    const from = window.startMarker.getLatLng();
+                    const to = L.latLng(lat, lon);
+                    window.currentDistance = from.distanceTo(to) / 1000;
+                    window.renderCart();
+                }
 
                 endMarker.on('dragend', function(e) {
                     const newLatLng = e.target.getLatLng();
                     calculateDistance(newLatLng.lat, newLatLng.lng);
                     if (window.updateDistanceAndDelivery) {
                         window.updateDistanceAndDelivery(newLatLng.lat, newLatLng.lng);
+                    }
+                    if (window.startMarker) {
+                        const from = window.startMarker.getLatLng();
+                        const to = L.latLng(newLatLng.lat, newLatLng.lng);
+                        window.currentDistance = from.distanceTo(to) / 1000;
+                        window.renderCart();
                     }
                 });
 
