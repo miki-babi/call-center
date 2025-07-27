@@ -301,6 +301,7 @@
         const cartSummary = document.getElementById('cart-summary');
         const totalElement = document.getElementById('cart-total');
         const deliveryElement = document.getElementById('delivery-cost');
+        const weightElement = document.getElementById('cart-weight');
 
         cartItemsContainer.innerHTML = '';
         let total = 0, totalWeight = 0, hasItems = false;
@@ -329,6 +330,7 @@
         const deliveryCost = calculateDeliveryPrice(totalWeight);
         deliveryElement.innerText = formatPrice(deliveryCost);
         totalElement.innerText = formatPrice(total + deliveryCost);
+        if (weightElement) weightElement.innerText = `${totalWeight.toFixed(2)} kg`;
 
         // Update hidden fields for form submission
         const deliveryPriceInput = document.getElementById('delivery_price');
