@@ -1,7 +1,5 @@
 @props(['shop','lat','lon','deliveryOptions'])
-@php
-    dd($deliveryOptions);
-@endphp
+
 <div class="search-box w-full justify-end flex pr-4 mt-8">
             <input type="text" id="search" placeholder="Search location..." style="width: 300px; padding: 6px;">
             <div id="results" class="search-results"></div>
