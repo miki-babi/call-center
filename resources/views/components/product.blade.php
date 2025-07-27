@@ -71,6 +71,9 @@
             </div>
         </div>
     </div>
+    <script>
+    console.log("script loaded");
+</script>
 <script>
     window.cart = window.cart || {};
     window.currentDistance = window.currentDistance || 0;
