@@ -302,6 +302,58 @@ class OrderController extends Controller
     }
 
     public function placeOrder(Request $request){
-dd($request->all());
+        $data = $request->all();
+        $deliveryPrice = $data['delivery_price'] ?? 0;
+        $products = json_decode($data['products'] ?? '[]', true);
+
+        // Prepare WooCommerce order payload
+        $orderPayload = [
+            'payment_method' => 'cod', // or as needed
+            'payment_method_title' => 'Cash on Delivery',
+            'set_paid' => false,
+            'billing' => [
+                'first_name' => $data['first_name'] ?? '',
+                'last_name' => $data['last_name'] ?? '',
+                'address_1' => $data['address_1'] ?? '',
+                'city' => $data['city'] ?? '',
+                'state' => $data['state'] ?? '',
+                'postcode' => $data['postcode'] ?? '',
+                'country' => $data['country'] ?? '',
+                'email' => $data['email'] ?? '',
+                'phone' => $data['phone'] ?? '',
+            ],
+            'shipping' => [
+                'first_name' => $data['first_name'] ?? '',
+                'last_name' => $data['last_name'] ?? '',
+                'address_1' => $data['address_1'] ?? '',
+                'city' => $data['city'] ?? '',
+                'state' => $data['state'] ?? '',
+                'postcode' => $data['postcode'] ?? '',
+                'country' => $data['country'] ?? '',
+            ],
+            'line_items' => array_map(function($item) {
+                return [
+                    'product_id' => $item['id'],
+                    'quantity' => $item['quantity'],
+                ];
+            }, $products),
+            'fee_lines' => [
+                [
+                    'name' => 'Delivery',
+                    'total' => (string) $deliveryPrice,
+                ]
+            ],
+        ];
+
+        // Send to WooCommerce (assume 'mexico' shop for now)
+        $shop = \App\Models\Shop::where('name', 'mexico')->first();
+        $response = \Illuminate\Support\Facades\Http::withBasicAuth($shop->consumer_key, $shop->consumer_secret)
+            ->post($shop->url . '/wp-json/wc/v3/orders', $orderPayload);
+
+        if ($response->successful()) {
+            return redirect()->back()->with('success', 'Order placed successfully!');
+        } else {
+            return redirect()->back()->with('error', 'Failed to place order.');
+        }
     }
 }

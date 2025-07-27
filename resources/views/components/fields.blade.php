@@ -44,6 +44,8 @@
                <option value="ET" selected>Ethiopia</option>
            </select>
        </div>
+       <input type="hidden" name="delivery_price" id="delivery_price" value="">
+<input type="hidden" name="products" id="products" value="">
        <button type="submit" class="p-4 bg-blue-500 text-white rounded-sm ">
            Orders
        </button>

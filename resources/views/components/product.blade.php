@@ -329,6 +329,12 @@
         deliveryElement.innerText = formatPrice(deliveryCost);
         totalElement.innerText = formatPrice(total + deliveryCost);
 
+        // Update hidden fields for form submission
+        const deliveryPriceInput = document.getElementById('delivery_price');
+        const productsInput = document.getElementById('products');
+        if (deliveryPriceInput) deliveryPriceInput.value = deliveryCost;
+        if (productsInput) productsInput.value = JSON.stringify(Object.values(cart));
+
         cartSummary.style.display = hasItems ? 'block' : 'none';
 
         document.querySelectorAll('.increase').forEach(btn => {
