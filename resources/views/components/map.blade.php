@@ -103,6 +103,10 @@
                 const distanceKm = from.distanceTo(to) / 1000;
 
                 distanceDiv.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
+                window.currentDistance = distanceKm;
+                if (typeof window.renderCart === 'function') {
+                    window.renderCart();
+                }
             }
 
             function fillAddressFields(result) {

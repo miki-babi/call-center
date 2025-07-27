@@ -275,10 +275,10 @@
         });
     </script> --}}
 <script>
-    const cart = {}; // { productId: { id, name, price, quantity, weight } }
+    window.cart = window.cart || {};
+    window.currentDistance = window.currentDistance || 0;
 
     const deliveryOptions = @json($deliveryOptions); // Pass from backend
-    let currentDistance = 0;
 
     function formatPrice(price) {
         return parseFloat(price).toFixed(2);
@@ -286,14 +286,14 @@
 
     function calculateDeliveryPrice(weight) {
         const option = deliveryOptions.find(opt => weight <= parseFloat(opt.max_weight));
-        if (!option || !currentDistance) return 0;
+        if (!option || !window.currentDistance) return 0;
 
         const base = parseFloat(option.base_price);
         const perKm = parseFloat(option.price_per_km);
         const maxDist = parseFloat(option.max_distance);
 
-        if (currentDistance > maxDist) return 0;
-        return base + (perKm * currentDistance);
+        if (window.currentDistance > maxDist) return 0;
+        return base + (perKm * window.currentDistance);
     }
 
     function renderCart() {
@@ -306,8 +306,8 @@
         cartItemsContainer.innerHTML = '';
         let total = 0, totalWeight = 0, hasItems = false;
 
-        for (const id in cart) {
-            const item = cart[id];
+        for (const id in window.cart) {
+            const item = window.cart[id];
             const lineTotal = item.price * item.quantity;
             total += lineTotal;
             totalWeight += item.weight * item.quantity;
@@ -336,14 +336,14 @@
         const deliveryPriceInput = document.getElementById('delivery_price');
         const productsInput = document.getElementById('products');
         if (deliveryPriceInput) deliveryPriceInput.value = deliveryCost;
-        if (productsInput) productsInput.value = JSON.stringify(Object.values(cart));
+        if (productsInput) productsInput.value = JSON.stringify(Object.values(window.cart));
 
         cartSummary.style.display = hasItems ? 'block' : 'none';
 
         document.querySelectorAll('.increase').forEach(btn => {
             btn.addEventListener('click', () => {
                 const id = btn.dataset.id;
-                cart[id].quantity += 1;
+                window.cart[id].quantity += 1;
                 renderCart();
             });
         });
@@ -351,10 +351,10 @@
         document.querySelectorAll('.decrease').forEach(btn => {
             btn.addEventListener('click', () => {
                 const id = btn.dataset.id;
-                if (cart[id].quantity > 1) {
-                    cart[id].quantity -= 1;
+                if (window.cart[id].quantity > 1) {
+                    window.cart[id].quantity -= 1;
                 } else {
-                    delete cart[id];
+                    delete window.cart[id];
                 }
                 renderCart();
                 updateToggleButtons();
@@ -365,7 +365,7 @@
     function updateToggleButtons() {
         document.querySelectorAll('.toggle-cart').forEach(button => {
             const id = button.dataset.productId;
-            const isInCart = cart[id];
+            const isInCart = window.cart[id];
             button.innerText = isInCart ? 'Remove from Cart' : 'Add to Cart';
             button.classList.toggle('bg-red-500', isInCart);
             button.classList.toggle('bg-blue-500', !isInCart);
@@ -380,8 +380,8 @@
             const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
             const weight = parseFloat(this.getAttribute('data-product-weight')) || 0;
 
-            if (!cart[id]) {
-                cart[id] = {
+            if (!window.cart[id]) {
+                window.cart[id] = {
                     id,
                     name,
                     price,
@@ -389,7 +389,7 @@
                     quantity: 1
                 };
             } else {
-                delete cart[id];
+                delete window.cart[id];
             }
 
             updateToggleButtons();
@@ -402,7 +402,7 @@
         const from = startMarker.getLatLng();
         const to = L.latLng(lat, lon);
         const distanceKm = from.distanceTo(to) / 1000;
-        currentDistance = distanceKm;
+        window.currentDistance = distanceKm;
         document.getElementById('distance-display').innerText = `Distance: ${distanceKm.toFixed(2)} km`;
         renderCart();
     }
