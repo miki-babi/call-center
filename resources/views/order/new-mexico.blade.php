@@ -8,4 +8,10 @@
  <script>
         console.log("script loaded");
     </script>
+
+
+<script>
+    const deliveryOptions = @json($deliveryOptions);
+    console.log("✅ from main view", deliveryOptions);
+</script>
 @endsection
