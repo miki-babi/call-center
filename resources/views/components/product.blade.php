@@ -376,7 +376,7 @@
             const name = this.closest('.product-item').querySelector('h3').innerText;
             const priceText = this.closest('.product-item').querySelector('p.text-sm').innerText;
             const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
-            const weight = parseFloat(this.getAttribute('data-weight')) || 0;
+            const weight = parseFloat(this.getAttribute('data-product-weight')) || 0;
 
             if (!cart[id]) {
                 cart[id] = {
