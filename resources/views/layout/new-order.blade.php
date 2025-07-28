@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Farmer Dashboard')</title>
+    <title>@yield('title', 'Call-Center Dashboard')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
@@ -95,6 +95,7 @@ setTimeout(() => loading = false, 1000)">
         <div class="p-4 bg-blue-500 text-white rounded-sm ">
             <a" href="{{ route('orders.index') }}">Orders</a>
         </div>
+        
     </nav>
 
     <div class="flex h-screen">
