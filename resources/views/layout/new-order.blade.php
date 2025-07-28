@@ -298,16 +298,16 @@ setTimeout(() => loading = false, 1000)">
             });
         });
 
-        function updateDistanceAndDelivery(lat, lon) {
-            if (!startMarker) return;
-            const from = startMarker.getLatLng();
-            const to = L.latLng(lat, lon);
-            const distanceKm = from.distanceTo(to) / 1000;
-            window.currentDistance = distanceKm;
-            document.getElementById('distance-display').innerText = `Distane: ${distanceKm.toFixed(2)} km`;
-            renderCart();
+        // function updateDistanceAndDelivery(lat, lon) {
+        //     if (!startMarker) return;
+        //     const from = startMarker.getLatLng();
+        //     const to = L.latLng(lat, lon);
+        //     const distanceKm = from.distanceTo(to) / 1000;
+        //     window.currentDistance = distanceKm;
+        //     document.getElementById('distance-display').innerText = `Distane: ${distanceKm.toFixed(2)} km`;
+        //     renderCart();
 
-        }
+        // }
     </script>
 
 
