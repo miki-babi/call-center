@@ -107,6 +107,8 @@
         if (typeof window.renderCart === 'function') {
             window.renderCart();
         }
+        console.log(window.currentDistance);
+        
 
         // Delivery calculation and display
         let deliveryDiv = document.getElementById('distance-delivery');
