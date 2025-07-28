@@ -303,6 +303,7 @@ $deliveryOptions=Delivery::all();
 
     public function placeOrder(Request $request){
         $data = $request->all();
+        dd($data);
         $deliveryPrice = $data['delivery_price'] ?? 0;
         $products = json_decode($data['products'] ?? '[]', true);
         // dd(['delivery_price' => $deliveryPrice, 'products' => $products]);
@@ -347,7 +348,7 @@ $deliveryOptions=Delivery::all();
         ];
 
         // Send to WooCommerce (assume 'mexico' shop for now)
-        $shop = \App\Models\Shop::where('name', 'mexico')->first();
+        $shop = Shop::where('name', 'mexico')->first();
         $response = \Illuminate\Support\Facades\Http::withBasicAuth($shop->consumer_key, $shop->consumer_secret)
             ->post($shop->url . '/wp-json/wc/v3/orders', $orderPayload);
 
