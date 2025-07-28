@@ -161,7 +161,8 @@ setTimeout(() => loading = false, 1000)">
             // 👇 Expose totalWeight globally
             window.cartWeight = totalWeight;
 
-            const deliveryCost = calculateDeliveryPrice(totalWeight);
+            const deliveryCost = calculateDeliveryPrice(totalWeight, window.currentDistance || 0);
+
             deliveryElement.innerText = formatPrice(deliveryCost);
             totalElement.innerText = formatPrice(total + deliveryCost);
             if (weightElement) weightElement.innerText = `${totalWeight.toFixed(2)} kg`;
