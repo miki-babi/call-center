@@ -51,7 +51,7 @@
 <input type="hidden" name="branch" id="brach" value="{{$branch}}">
 
        <button type="submit" class="p-4 bg-blue-500 text-white rounded-sm ">
-           Orders
+           Place order
        </button>
    </div>
 
