@@ -22,7 +22,7 @@ class OrderController extends Controller
     public function newOrder()
     {
         // Logic to list orders
-        
+
         return view('order.newOrder');
     }
 
@@ -356,7 +356,6 @@ class OrderController extends Controller
             ->post($shop->url . '/wp-json/wc/v3/orders', $orderPayload);
 
         if ($response->successful()) {
-            dd('order placed');
             $orderData = $response->json();
             $paymentUrl = $orderData['payment_url'] ?? null;
             $orderNumber = $orderData['number'] ?? null;
