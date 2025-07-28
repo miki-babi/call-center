@@ -183,7 +183,7 @@
 
         if (typeof window.cartWeight !== 'undefined') {
             window.deliveryCost = window.calculateDeliveryPrice(window.cartWeight, distanceKm);
-            console.log("Delivery cost updated:", window.deliveryCost);
+            console.log("Deliveryo cost updated:", window.deliveryCost);
         }
 
         if (typeof window.renderCart === 'function') {
@@ -220,14 +220,14 @@
     });
 
     // Expose updateDistanceAndDelivery globally for cart/delivery calculation
-    window.updateDistanceAndDelivery = function(lat, lon) {
-        if (typeof currentDistance === 'undefined') return;
-        if (typeof renderCart !== 'function') return;
-        if (!window.startMarker) return;
-        const from = window.startMarker.getLatLng();
-        const to = L.latLng(lat, lon);
-        const distanceKm = from.distanceTo(to) / 1000;
-        currentDistance = distanceKm;
-        renderCart();
-    };
+    // window.updateDistanceAndDelivery = function(lat, lon) {
+    //     if (typeof currentDistance === 'undefined') return;
+    //     if (typeof renderCart !== 'function') return;
+    //     if (!window.startMarker) return;
+    //     const from = window.startMarker.getLatLng();
+    //     const to = L.latLng(lat, lon);
+    //     const distanceKm = from.distanceTo(to) / 1000;
+    //     currentDistance = distanceKm;
+    //     renderCart();
+    // };
 </script>
