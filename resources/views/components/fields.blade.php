@@ -3,7 +3,7 @@
     @csrf
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <h1>{{$branch}}</h1>
+    <h1></h1>
        <div>
            <label class="block font-medium">First Name:</label>
            <input type="text" name="first_name" required class="w-full border border-gray-300 rounded-lg p-2">
@@ -48,6 +48,8 @@
        </div>
        <input type="hidden" name="delivery_price" id="delivery_price" value="">
 <input type="hidden" name="products" id="products" value="">
+<input type="hidden" name="branch" id="brach" value="{{$branch}}">
+
        <button type="submit" class="p-4 bg-blue-500 text-white rounded-sm ">
            Orders
        </button>
