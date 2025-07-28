@@ -107,10 +107,8 @@
         if (typeof window.renderCart === 'function') {
             window.renderCart();
         }
-        console.log(`distance is ${window.currentDistance}`);
-        console.log(`cart weight is ${window.cartWeight}`);
-        
-        
+
+
 
         // Delivery calculation and display
         let deliveryDiv = document.getElementById('distance-delivery');
@@ -129,6 +127,8 @@
             }
             const deliveryCost = window.calculateDeliveryPrice(totalWeight);
             deliveryDiv.textContent = `Delivery: ${deliveryCost.toFixed(2)} ETB`;
+            console.log(`distance is ${window.currentDistance}`);
+            console.log(`cart weight is ${window.cartWeight}`);
         } else {
             deliveryDiv.textContent = '';
         }
