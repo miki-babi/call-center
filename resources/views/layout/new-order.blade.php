@@ -304,8 +304,9 @@ setTimeout(() => loading = false, 1000)">
             const to = L.latLng(lat, lon);
             const distanceKm = from.distanceTo(to) / 1000;
             window.currentDistance = distanceKm;
-            document.getElementById('distance-display').innerText = `Distance: ${distanceKm.toFixed(2)} km`;
+            document.getElementById('distance-display').innerText = `Distane: ${distanceKm.toFixed(2)} km`;
             renderCart();
+
         }
     </script>
 
