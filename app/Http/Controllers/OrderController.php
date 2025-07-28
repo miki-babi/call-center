@@ -305,7 +305,7 @@ $deliveryOptions=Delivery::all();
         $data = $request->all();
         $deliveryPrice = $data['delivery_price'] ?? 0;
         $products = json_decode($data['products'] ?? '[]', true);
-        dd(['delivery_price' => $deliveryPrice, 'products' => $products]);
+        // dd(['delivery_price' => $deliveryPrice, 'products' => $products]);
 
         // Prepare WooCommerce order payload
         $orderPayload = [
@@ -352,6 +352,7 @@ $deliveryOptions=Delivery::all();
             ->post($shop->url . '/wp-json/wc/v3/orders', $orderPayload);
 
         if ($response->successful()) {
+            dd($response);
             return redirect()->back()->with('success', 'Order placed successfully!');
         } else {
             return redirect()->back()->with('error', 'Failed to place order.');
