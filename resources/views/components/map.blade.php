@@ -127,8 +127,8 @@
             }
             const deliveryCost = window.calculateDeliveryPrice(totalWeight);
             deliveryDiv.textContent = `Delivery: ${deliveryCost.toFixed(2)} ETB`;
-            console.log(`distance is ${window.currentDistance}`);
-            console.log(`cart weight is ${window.cartWeight}`);
+            console.log(`distanceo is ${window.currentDistance}`);
+            console.log(`carto weight is ${window.cartWeight}`);
         } else {
             deliveryDiv.textContent = '';
         }
