@@ -140,7 +140,7 @@
         if (typeof window.calculateDeliveryPrice === 'function' && typeof window.cartWeight !== 'undefined') {
             console.log("cart weigth :", window.cartWeight);
             
-            const cost = window.calculateDeliveryPrice(window.cartWeight, distanceKm);
+            const cost = window.calculateDeliveryPrice(window.cartWeight, window.currentDistance);
             console.log("Updated delivery cost:", cost);
         }
 
