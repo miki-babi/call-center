@@ -348,7 +348,7 @@ $deliveryOptions=Delivery::all();
         ];
 
         // Send to WooCommerce (assume 'mexico' shop for now)
-        $shop = Shop::where('name', 'mexico')->first();
+        $shop = Shop::where('name', $data->branch)->first();
         $response = \Illuminate\Support\Facades\Http::withBasicAuth($shop->consumer_key, $shop->consumer_secret)
             ->post($shop->url . '/wp-json/wc/v3/orders', $orderPayload);
 
