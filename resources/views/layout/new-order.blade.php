@@ -61,6 +61,9 @@
         window.cartWeight = 0;
         window.currentDistance = 0;
         window.deliveryCost = 0;
+        @php
+            $deliveryOptions = App\Models\Delivery::all();
+        @endphp
         window.deliveryOptions = @json($deliveryOptions);
     </script>
 </head>

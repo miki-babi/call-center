@@ -22,6 +22,7 @@ class OrderController extends Controller
     public function newOrder()
     {
         // Logic to list orders
+        
         return view('order.newOrder');
     }
 
