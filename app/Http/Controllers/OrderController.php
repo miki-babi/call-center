@@ -354,8 +354,15 @@ $deliveryOptions=Delivery::all();
             ->post($shop->url . '/wp-json/wc/v3/orders', $orderPayload);
 
         if ($response->successful()) {
-            dd($response['payment_url']);
-            return redirect()->back()->with('success', 'Order placed successfully!');
+            $orderData = $response->json();
+            $paymentUrl = $orderData['payment_url'] ?? null;
+            $orderNumber = $orderData['number'] ?? null;
+            $totalAmount = $orderData['total'] ?? null;
+            return view('order.payment', [
+                'payment_url' => $paymentUrl,
+                'order_number' => $orderNumber,
+                'total_amount' => $totalAmount,
+            ]);
         } else {
             return redirect()->back()->with('error', 'Failed to place order.');
         }
