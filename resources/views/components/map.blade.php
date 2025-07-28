@@ -137,12 +137,17 @@
         window.currentDistance = distanceKm;
 
         // ✅ Call calculateDeliveryPrice using global cartWeight
+        // if (typeof window.calculateDeliveryPrice === 'function' && typeof window.cartWeight !== 'undefined') {
+        //     console.log("cart weigth :", window.cartWeight);
+
+        //     const cost = window.calculateDeliveryPrice(window.cartWeight, window.currentDistance);
+        //     console.log("Updated delivery cost:", cost);
+        // }
         if (typeof window.calculateDeliveryPrice === 'function' && typeof window.cartWeight !== 'undefined') {
-            console.log("cart weigth :", window.cartWeight);
-            
-            const cost = window.calculateDeliveryPrice(window.cartWeight, window.currentDistance);
-            console.log("Updated delivery cost:", cost);
+            const cost = window.calculateDeliveryPrice(window.cartWeight, distanceKm);
+            window.deliveryCost = cost; // 👈 make it global
         }
+
 
         // ✅ Then update cart
         if (typeof window.renderCart === 'function') {
