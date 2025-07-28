@@ -1,4 +1,4 @@
-@props(['branch']);
+@props(['branch'])
 <form method="POST" action="{{ route('orders.place.new') }}">
     @csrf
 
