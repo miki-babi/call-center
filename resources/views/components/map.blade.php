@@ -88,6 +88,37 @@
         if (result) fillAddressFields(result);
     }
 
+    // function calculateDistance(lat, lon) {
+    //     if (!startMarker) {
+    //         startMarker = L.marker([{{ $lat }}, {{ $lon }}], {
+    //                 color: 'green'
+    //             })
+    //             .addTo(map)
+    //             .bindPopup("{{ $shop }}")
+    //             .openPopup();
+    //     }
+
+    //     const from = startMarker.getLatLng();
+    //     const to = L.latLng(lat, lon);
+    //     const distanceKm = from.distanceTo(to) / 1000;
+
+    //     distanceDiv.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
+    //     window.currentDistance = distanceKm;
+    //     if (typeof window.renderCart === 'function') {
+    //         window.renderCart();
+    //     }
+
+    // }
+
+    window.calculateDeliveryPrice = function(weight, distance) {
+        const option = window.deliveryOptions.find(opt =>
+            weight <= parseFloat(opt.max_weight) &&
+            distance <= parseFloat(opt.max_distance)
+        );
+        if (!option) return 0;
+        return parseFloat(option.base_price) + distance * parseFloat(option.price_per_km);
+    };
+
     function calculateDistance(lat, lon) {
         if (!startMarker) {
             startMarker = L.marker([{{ $lat }}, {{ $lon }}], {
@@ -102,37 +133,21 @@
         const to = L.latLng(lat, lon);
         const distanceKm = from.distanceTo(to) / 1000;
 
-        distanceDiv.textContent = `Distace: ${distanceKm.toFixed(2)} km`;
+        distanceDiv.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
         window.currentDistance = distanceKm;
+
+        // ✅ Call calculateDeliveryPrice using global cartWeight
+        if (typeof window.calculateDeliveryPrice === 'function' && typeof window.cartWeight !== 'undefined') {
+            const cost = window.calculateDeliveryPrice(window.cartWeight, distanceKm);
+            console.log("Updated delivery cost:", cost);
+        }
+
+        // ✅ Then update cart
         if (typeof window.renderCart === 'function') {
             window.renderCart();
         }
-
-
-
-        // // Delivery calculation and display
-        // let deliveryDiv = document.getElementById('distance-delivery');
-        // if (!deliveryDiv) {
-        //     deliveryDiv = document.createElement('div');
-        //     deliveryDiv.id = 'distance-delivery';
-        //     deliveryDiv.className = 'distance-delivery';
-        //     distanceDiv.parentNode.insertBefore(deliveryDiv, distanceDiv.nextSibling);
-        // }
-        // if (typeof window.calculateDeliveryPrice === 'function' && window.cart) {
-        //     // Calculate total weight in cart
-        //     let totalWeight = 0;
-        //     for (const id in window.cart) {
-        //         const item = window.cart[id];
-        //         totalWeight += item.weight * item.quantity;
-        //     }
-        //     const deliveryCost = window.calculateDeliveryPrice(totalWeight);
-        //     deliveryDiv.textContent = `Delivery: ${deliveryCost.toFixed(2)} ETB`;
-        //     console.log(`distanceo is ${window.currentDistance}`);
-        //     console.log(`carto weight is ${window.cartWeight}`);
-        // } else {
-        //     deliveryDiv.textContent = '';
-        // }
     }
+
 
     function fillAddressFields(result) {
         const address = result.address || {};
