@@ -178,12 +178,12 @@
         const to = L.latLng(lat, lon);
         const distanceKm = from.distanceTo(to) / 1000;
 
-        distanceDiv.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
+        distanceDiv.textContent = `Distance0: ${distanceKm.toFixed(2)} km`;
         window.currentDistance = distanceKm;
 
         if (typeof window.cartWeight !== 'undefined') {
             window.deliveryCost = window.calculateDeliveryPrice(window.cartWeight, distanceKm);
-            console.log("Deliveryo cost updated:", window.deliveryCost);
+            console.log("Delivery cost updated:", window.deliveryCost);
         }
 
         if (typeof window.renderCart === 'function') {
