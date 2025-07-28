@@ -100,12 +100,12 @@
     //     return parseFloat(option.base_price) + distance * parseFloat(option.price_per_km);
     // };
 window.calculateDeliveryPrice = function(weight, distance) {
-    console.log("🚚 calculateDeliveryPrice called");
-    console.log("Weight:", weight);
-    console.log("Distance:", distance);
+    // console.log("🚚 calculateDeliveryPrice called");
+    // console.log("Weight:", weight);
+    // console.log("Distance:", distance);
 
     if (!window.deliveryOptions) {
-        console.log("❌ deliveryOptions is undefined");
+        // console.log("❌ deliveryOptions is undefined");
         return 0;
     }
 
@@ -114,7 +114,7 @@ window.calculateDeliveryPrice = function(weight, distance) {
     const option = window.deliveryOptions.find(opt => {
         const maxWeight = parseFloat(opt.max_weight);
         const maxDistance = parseFloat(opt.max_distance);
-        console.log(`Checking option:`, opt, `Max Weight: ${maxWeight}, Max Distance: ${maxDistance}`);
+        // console.log(`Checking option:`, opt, `Max Weight: ${maxWeight}, Max Distance: ${maxDistance}`);
         return weight <= maxWeight && distance <= maxDistance;
     });
 
@@ -129,9 +129,11 @@ window.calculateDeliveryPrice = function(weight, distance) {
     const perKm = parseFloat(option.price_per_km);
     const cost = basePrice + distance * perKm;
 
-    console.log("Base price:", basePrice);
-    console.log("Price per km:", perKm);
-    console.log("Total cost:", cost);
+    // console.log("Base price:", basePrice);
+    // console.log("Price per km:", perKm);
+    // console.log("Total cost:", cost);
+    window.deliveryCost= cost;
+    console.log("Total cost:", window.deliveryCost);
 
     return cost;
 };
