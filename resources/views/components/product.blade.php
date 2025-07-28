@@ -71,9 +71,6 @@
             </div>
         </div>
     </div>
-   
-
-
     <script>
         const searchInput = document.getElementById('search-product');
         const productItems = document.querySelectorAll('.product-item');
