@@ -195,6 +195,10 @@ setTimeout(() => loading = false, 1000)">
             const deliveryElement = document.getElementById('delivery-cost');
             const weightElement = document.getElementById('cart-weight');
 
+
+            console.log("helllo");
+            
+
             cartItemsContainer.innerHTML = '';
             let total = 0,
                 totalWeight = 0,
