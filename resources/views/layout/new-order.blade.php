@@ -61,6 +61,7 @@
         window.cartWeight = 0;
         window.currentDistance = 0;
         window.deliveryCost = 0;
+        window.deliveryOptions = @json($deliveryOptions);
     </script>
 </head>
 
@@ -105,9 +106,9 @@ setTimeout(() => loading = false, 1000)">
         // window.cart = window.cart || {};
         // window.currentDistance = window.currentDistance || 0;
 
-        const deliveryOptions = @json($deliveryOptions);
+        // const deliveryOptions = @json($deliveryOptions);
         // const deliveryOptions = "test";
-        console.log(deliveryOptions);
+        // console.log(deliveryOptions);
         // Pass from backend
 
         function formatPrice(price) {
