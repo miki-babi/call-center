@@ -98,7 +98,7 @@ class OrderController extends Controller
             if ($products->isEmpty()) {
                 return response()->json(['message' => 'No Products found'], 404);
             }
-            $deliveryOptions=Delivery::all();
+            $deliveryOptions = Delivery::all();
 
             return view('order.new-mexico', [
                 'allProducts' => [
@@ -107,13 +107,12 @@ class OrderController extends Controller
                         'shop_id' => $shop->id,
                         'products' => $products,
                     ]
-                    ],'deliveryOptions'=>$deliveryOptions
+                ],
+                'deliveryOptions' => $deliveryOptions
             ]);
-
-
         } elseif ($shop->name == 'ayat') {
             # code...
-                    $cacheKey = "woo_products_{$shop->id}";
+            $cacheKey = "woo_products_{$shop->id}";
 
             $products = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($shop) {
                 $allProducts = [];
@@ -180,7 +179,7 @@ class OrderController extends Controller
             if ($products->isEmpty()) {
                 return response()->json(['message' => 'No Products found'], 404);
             }
-$deliveryOptions=Delivery::all();
+            $deliveryOptions = Delivery::all();
             return view('order.new-ayat', [
                 'allProducts' => [
                     [
@@ -188,7 +187,8 @@ $deliveryOptions=Delivery::all();
                         'shop_id' => $shop->id,
                         'products' => $products,
                     ]
-                    ],'deliveryOptions'=>$deliveryOptions
+                ],
+                'deliveryOptions' => $deliveryOptions
             ]);
         } else {
             return;
@@ -301,7 +301,8 @@ $deliveryOptions=Delivery::all();
         ]);
     }
 
-    public function placeOrder(Request $request){
+    public function placeOrder(Request $request)
+    {
         $data = $request->all();
         // dd($data);
         // dd($data['branch']);
@@ -334,7 +335,7 @@ $deliveryOptions=Delivery::all();
                 'postcode' => $data['postcode'] ?? '',
                 'country' => $data['country'] ?? '',
             ],
-            'line_items' => array_map(function($item) {
+            'line_items' => array_map(function ($item) {
                 return [
                     'product_id' => $item['id'],
                     'quantity' => $item['quantity'],
@@ -354,6 +355,7 @@ $deliveryOptions=Delivery::all();
             ->post($shop->url . '/wp-json/wc/v3/orders', $orderPayload);
 
         if ($response->successful()) {
+            dd('order placed');
             $orderData = $response->json();
             $paymentUrl = $orderData['payment_url'] ?? null;
             $orderNumber = $orderData['number'] ?? null;
