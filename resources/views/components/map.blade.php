@@ -88,27 +88,27 @@
         if (result) fillAddressFields(result);
     }
 
-    function calculateDistance(lat, lon) {
-        if (!startMarker) {
-            startMarker = L.marker([{{ $lat }}, {{ $lon }}], {
-                    color: 'green'
-                })
-                .addTo(map)
-                .bindPopup("{{ $shop }}")
-                .openPopup();
-        }
+    // function calculateDistance(lat, lon) {
+    //     if (!startMarker) {
+    //         startMarker = L.marker([{{ $lat }}, {{ $lon }}], {
+    //                 color: 'green'
+    //             })
+    //             .addTo(map)
+    //             .bindPopup("{{ $shop }}")
+    //             .openPopup();
+    //     }
 
-        const from = startMarker.getLatLng();
-        const to = L.latLng(lat, lon);
-        const distanceKm = from.distanceTo(to) / 1000;
+    //     const from = startMarker.getLatLng();
+    //     const to = L.latLng(lat, lon);
+    //     const distanceKm = from.distanceTo(to) / 1000;
 
-        distanceDiv.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
-        window.currentDistance = distanceKm;
-        if (typeof window.renderCart === 'function') {
-            window.renderCart();
-        }
+    //     distanceDiv.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
+    //     window.currentDistance = distanceKm;
+    //     if (typeof window.renderCart === 'function') {
+    //         window.renderCart();
+    //     }
 
-    }
+    // }
 
     // window.calculateDeliveryPrice = function(weight, distance) {
     //     const option = window.deliveryOptions.find(opt =>
@@ -178,11 +178,11 @@
         const to = L.latLng(lat, lon);
         const distanceKm = from.distanceTo(to) / 1000;
 
-        distanceDiv.textContent = `Distance0: ${distanceKm.toFixed(2)} km`;
+        distanceDiv.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
         window.currentDistance = distanceKm;
 
         if (typeof window.cartWeight !== 'undefined') {
-            window.deliveryCost = window.calculateDeliveryPrice(window.cartWeight, distanceKm);
+            window.deliveryCost = window.calculateDeliveryPrice(window.cartWeight, window.currentDistance);
             console.log("Delivery cost updated:", window.deliveryCost);
         }
 
