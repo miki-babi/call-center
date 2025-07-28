@@ -354,7 +354,7 @@ $deliveryOptions=Delivery::all();
             ->post($shop->url . '/wp-json/wc/v3/orders', $orderPayload);
 
         if ($response->successful()) {
-            dd($response);
+            dd($response['payment_url']);
             return redirect()->back()->with('success', 'Order placed successfully!');
         } else {
             return redirect()->back()->with('error', 'Failed to place order.');
