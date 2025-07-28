@@ -180,7 +180,7 @@ class OrderController extends Controller
             if ($products->isEmpty()) {
                 return response()->json(['message' => 'No Products found'], 404);
             }
-
+$deliveryOptions=Delivery::all();
             return view('order.new-ayat', [
                 'allProducts' => [
                     [
@@ -188,7 +188,7 @@ class OrderController extends Controller
                         'shop_id' => $shop->id,
                         'products' => $products,
                     ]
-                ]
+                    ],'deliveryOptions'=>$deliveryOptions
             ]);
         } else {
             return;
