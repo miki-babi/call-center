@@ -1,7 +1,9 @@
-  <form method="POST" action="{{ route('orders.place.new') }}">
+@props('branch');
+<form method="POST" action="{{ route('orders.place.new') }}">
     @csrf
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <h1>{{$branch}}</h1>
        <div>
            <label class="block font-medium">First Name:</label>
            <input type="text" name="first_name" required class="w-full border border-gray-300 rounded-lg p-2">
