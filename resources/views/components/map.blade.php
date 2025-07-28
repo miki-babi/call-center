@@ -97,6 +97,8 @@
         );
         if (!option) return 0;
         return parseFloat(option.base_price) + distance * parseFloat(option.price_per_km);
+        console.log("calculatedelivery");
+        
     };
 
  
