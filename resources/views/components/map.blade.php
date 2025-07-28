@@ -107,7 +107,7 @@
         if (typeof window.renderCart === 'function') {
             window.renderCart();
         }
-        console.log(window.currentDistance);
+        console.log(`distance is ${window.currentDistance}`);
         
 
         // Delivery calculation and display
