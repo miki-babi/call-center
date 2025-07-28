@@ -121,73 +121,6 @@ setTimeout(() => loading = false, 1000)">
         }
         window.calculateDeliveryPrice = calculateDeliveryPrice;
 
-        // function renderCart() {
-        //     const cartItemsContainer = document.getElementById('cart-items');
-        //     const cartSummary = document.getElementById('cart-summary');
-        //     const totalElement = document.getElementById('cart-total');
-        //     const deliveryElement = document.getElementById('delivery-cost');
-        //     const weightElement = document.getElementById('cart-weight');
-
-        //     cartItemsContainer.innerHTML = '';
-        //     let total = 0,
-        //         totalWeight = 0,
-        //         hasItems = false;
-
-        //     for (const id in window.cart) {
-        //         const item = window.cart[id];
-        //         const lineTotal = item.price * item.quantity;
-        //         total += lineTotal;
-        //         totalWeight += item.weight * item.quantity;
-        //         hasItems = true;
-
-        //         cartItemsContainer.innerHTML += `
-    //         <li class="flex justify-between items-center">
-    //             <div>
-    //                 <div class="font-semibold">${item.name}</div>
-    //                 <div class="text-sm text-gray-600">Price: ${formatPrice(item.price)} × ${item.quantity}</div>
-    //             </div>
-    //             <div class="flex items-center gap-2">
-    //                 <button class="decrease bg-gray-300 px-2 rounded" data-id="${id}">-</button>
-    //                 <span>${item.quantity}</span>
-    //                 <button class="increase bg-gray-300 px-2 rounded" data-id="${id}">+</button>
-    //             </div>
-    //         </li>`;
-        //     }
-
-        //     const deliveryCost = calculateDeliveryPrice(totalWeight);
-        //     deliveryElement.innerText = formatPrice(deliveryCost);
-        //     totalElement.innerText = formatPrice(total + deliveryCost);
-        //     if (weightElement) weightElement.innerText = `${totalWeight.toFixed(2)} kg`;
-
-        //     // Update hidden fields for form submission
-        //     const deliveryPriceInput = document.getElementById('delivery_price');
-        //     const productsInput = document.getElementById('products');
-        //     if (deliveryPriceInput) deliveryPriceInput.value = deliveryCost;
-        //     if (productsInput) productsInput.value = JSON.stringify(Object.values(window.cart));
-
-        //     cartSummary.style.display = hasItems ? 'block' : 'none';
-
-        //     document.querySelectorAll('.increase').forEach(btn => {
-        //         btn.addEventListener('click', () => {
-        //             const id = btn.dataset.id;
-        //             window.cart[id].quantity += 1;
-        //             renderCart();
-        //         });
-        //     });
-
-        //     document.querySelectorAll('.decrease').forEach(btn => {
-        //         btn.addEventListener('click', () => {
-        //             const id = btn.dataset.id;
-        //             if (window.cart[id].quantity > 1) {
-        //                 window.cart[id].quantity -= 1;
-        //             } else {
-        //                 delete window.cart[id];
-        //             }
-        //             renderCart();
-        //             updateToggleButtons();
-        //         });
-        //     });
-        // }
         function renderCart() {
             const cartItemsContainer = document.getElementById('cart-items');
             const cartSummary = document.getElementById('cart-summary');
@@ -298,16 +231,6 @@ setTimeout(() => loading = false, 1000)">
             });
         });
 
-        // function updateDistanceAndDelivery(lat, lon) {
-        //     if (!startMarker) return;
-        //     const from = startMarker.getLatLng();
-        //     const to = L.latLng(lat, lon);
-        //     const distanceKm = from.distanceTo(to) / 1000;
-        //     window.currentDistance = distanceKm;
-        //     document.getElementById('distance-display').innerText = `Distane: ${distanceKm.toFixed(2)} km`;
-        //     renderCart();
-
-        // }
     </script>
 
 

@@ -102,7 +102,7 @@
         const to = L.latLng(lat, lon);
         const distanceKm = from.distanceTo(to) / 1000;
 
-        distanceDiv.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
+        distanceDiv.textContent = `Distace: ${distanceKm.toFixed(2)} km`;
         window.currentDistance = distanceKm;
         if (typeof window.renderCart === 'function') {
             window.renderCart();
