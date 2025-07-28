@@ -304,7 +304,7 @@ $deliveryOptions=Delivery::all();
     public function placeOrder(Request $request){
         $data = $request->all();
         // dd($data);
-        dd($data['branch']);
+        // dd($data['branch']);
         $deliveryPrice = $data['delivery_price'] ?? 0;
         $products = json_decode($data['products'] ?? '[]', true);
         // dd(['delivery_price' => $deliveryPrice, 'products' => $products]);
