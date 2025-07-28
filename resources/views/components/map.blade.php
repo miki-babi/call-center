@@ -110,28 +110,28 @@
 
 
 
-        // Delivery calculation and display
-        let deliveryDiv = document.getElementById('distance-delivery');
-        if (!deliveryDiv) {
-            deliveryDiv = document.createElement('div');
-            deliveryDiv.id = 'distance-delivery';
-            deliveryDiv.className = 'distance-delivery';
-            distanceDiv.parentNode.insertBefore(deliveryDiv, distanceDiv.nextSibling);
-        }
-        if (typeof window.calculateDeliveryPrice === 'function' && window.cart) {
-            // Calculate total weight in cart
-            let totalWeight = 0;
-            for (const id in window.cart) {
-                const item = window.cart[id];
-                totalWeight += item.weight * item.quantity;
-            }
-            const deliveryCost = window.calculateDeliveryPrice(totalWeight);
-            deliveryDiv.textContent = `Delivery: ${deliveryCost.toFixed(2)} ETB`;
-            console.log(`distanceo is ${window.currentDistance}`);
-            console.log(`carto weight is ${window.cartWeight}`);
-        } else {
-            deliveryDiv.textContent = '';
-        }
+        // // Delivery calculation and display
+        // let deliveryDiv = document.getElementById('distance-delivery');
+        // if (!deliveryDiv) {
+        //     deliveryDiv = document.createElement('div');
+        //     deliveryDiv.id = 'distance-delivery';
+        //     deliveryDiv.className = 'distance-delivery';
+        //     distanceDiv.parentNode.insertBefore(deliveryDiv, distanceDiv.nextSibling);
+        // }
+        // if (typeof window.calculateDeliveryPrice === 'function' && window.cart) {
+        //     // Calculate total weight in cart
+        //     let totalWeight = 0;
+        //     for (const id in window.cart) {
+        //         const item = window.cart[id];
+        //         totalWeight += item.weight * item.quantity;
+        //     }
+        //     const deliveryCost = window.calculateDeliveryPrice(totalWeight);
+        //     deliveryDiv.textContent = `Delivery: ${deliveryCost.toFixed(2)} ETB`;
+        //     console.log(`distanceo is ${window.currentDistance}`);
+        //     console.log(`carto weight is ${window.cartWeight}`);
+        // } else {
+        //     deliveryDiv.textContent = '';
+        // }
     }
 
     function fillAddressFields(result) {
