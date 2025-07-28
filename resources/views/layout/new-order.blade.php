@@ -102,8 +102,8 @@ setTimeout(() => loading = false, 1000)">
 
 
     <script>
-        window.cart = window.cart || {};
-        window.currentDistance = window.currentDistance || 0;
+        // window.cart = window.cart || {};
+        // window.currentDistance = window.currentDistance || 0;
 
         const deliveryOptions = @json($deliveryOptions);
         // const deliveryOptions = "test";
@@ -114,95 +114,19 @@ setTimeout(() => loading = false, 1000)">
             return parseFloat(price).toFixed(2);
         }
 
-        function calculateDeliveryPrice(weight) {
-            const option = deliveryOptions.find(opt => weight <= parseFloat(opt.max_weight));
-            if (!option || !window.currentDistance) return 0;
+        // function calculateDeliveryPrice(weight) {
+        //     const option = deliveryOptions.find(opt => weight <= parseFloat(opt.max_weight));
+        //     if (!option || !window.currentDistance) return 0;
 
-            const base = parseFloat(option.base_price);
-            const perKm = parseFloat(option.price_per_km);
-            const maxDist = parseFloat(option.max_distance);
+        //     const base = parseFloat(option.base_price);
+        //     const perKm = parseFloat(option.price_per_km);
+        //     const maxDist = parseFloat(option.max_distance);
 
-            if (window.currentDistance > maxDist) return 0;
-            return base + (perKm * window.currentDistance);
-        }
-        window.calculateDeliveryPrice = calculateDeliveryPrice;
-
-        // function renderCart() {
-        //     const cartItemsContainer = document.getElementById('cart-items');
-        //     const cartSummary = document.getElementById('cart-summary');
-        //     const totalElement = document.getElementById('cart-total');
-        //     const deliveryElement = document.getElementById('delivery-cost');
-        //     const weightElement = document.getElementById('cart-weight');
-
-
-        //     console.log("helllo");
-
-
-        //     cartItemsContainer.innerHTML = '';
-        //     let total = 0,
-        //         totalWeight = 0,
-        //         hasItems = false;
-
-        //     for (const id in window.cart) {
-        //         const item = window.cart[id];
-        //         const lineTotal = item.price * item.quantity;
-        //         total += lineTotal;
-        //         totalWeight += item.weight * item.quantity;
-        //         hasItems = true;
-
-        //         cartItemsContainer.innerHTML += `
-    //     <li class="flex justify-between items-center">
-    //         <div>
-    //             <div class="font-semibold">${item.name}</div>
-    //             <div class="text-sm text-gray-600">Price: ${formatPrice(item.price)} × ${item.quantity}</div>
-    //         </div>
-    //         <div class="flex items-center gap-2">
-    //             <button class="decrease bg-gray-300 px-2 rounded" data-id="${id}">-</button>
-    //             <span>${item.quantity}</span>
-    //             <button class="increase bg-gray-300 px-2 rounded" data-id="${id}">+</button>
-    //         </div>
-    //     </li>`;
-        //     }
-
-        //     // 👇 Expose totalWeight globally
-        //     window.cartWeight = totalWeight;
-
-        //     const deliveryCost = window.deliveryCost || 0;
-
-
-        //     deliveryElement.innerText = formatPrice(deliveryCost);
-        //     totalElement.innerText = formatPrice(total + deliveryCost);
-        //     if (weightElement) weightElement.innerText = `${totalWeight.toFixed(2)} kg`;
-
-        //     // Update hidden fields for form submission
-        //     const deliveryPriceInput = document.getElementById('delivery_price');
-        //     const productsInput = document.getElementById('products');
-        //     if (deliveryPriceInput) deliveryPriceInput.value = deliveryCost;
-        //     if (productsInput) productsInput.value = JSON.stringify(Object.values(window.cart));
-
-        //     cartSummary.style.display = hasItems ? 'block' : 'none';
-
-        //     document.querySelectorAll('.increase').forEach(btn => {
-        //         btn.addEventListener('click', () => {
-        //             const id = btn.dataset.id;
-        //             window.cart[id].quantity += 1;
-        //             renderCart();
-        //         });
-        //     });
-
-        //     document.querySelectorAll('.decrease').forEach(btn => {
-        //         btn.addEventListener('click', () => {
-        //             const id = btn.dataset.id;
-        //             if (window.cart[id].quantity > 1) {
-        //                 window.cart[id].quantity -= 1;
-        //             } else {
-        //                 delete window.cart[id];
-        //             }
-        //             renderCart();
-        //             updateToggleButtons();
-        //         });
-        //     });
+        //     if (window.currentDistance > maxDist) return 0;
+        //     return base + (perKm * window.currentDistance);
         // }
+        // window.calculateDeliveryPrice = calculateDeliveryPrice;
+
         function renderCart() {
             const cartItemsContainer = document.getElementById('cart-items');
             const cartSummary = document.getElementById('cart-summary');
