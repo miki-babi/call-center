@@ -95,7 +95,7 @@ setTimeout(() => loading = false, 1000)">
     </div>
 
 
-    {{-- <script>
+    <script>
         window.cart = window.cart || {};
         window.currentDistance = window.currentDistance || 0;
 
@@ -233,7 +233,7 @@ setTimeout(() => loading = false, 1000)">
             });
         });
 
-    </script> --}}
+    </script>
 
 
 
