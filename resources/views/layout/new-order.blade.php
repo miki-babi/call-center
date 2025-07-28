@@ -107,30 +107,13 @@ setTimeout(() => loading = false, 1000)">
 
 
     <script>
-        // window.cart = window.cart || {};
-        // window.currentDistance = window.currentDistance || 0;
-
-        // const deliveryOptions = @json($deliveryOptions);
-        // const deliveryOptions = "test";
-        // console.log(deliveryOptions);
+     
         // Pass from backend
 
         function formatPrice(price) {
             return parseFloat(price).toFixed(2);
         }
 
-        // function calculateDeliveryPrice(weight) {
-        //     const option = deliveryOptions.find(opt => weight <= parseFloat(opt.max_weight));
-        //     if (!option || !window.currentDistance) return 0;
-
-        //     const base = parseFloat(option.base_price);
-        //     const perKm = parseFloat(option.price_per_km);
-        //     const maxDist = parseFloat(option.max_distance);
-
-        //     if (window.currentDistance > maxDist) return 0;
-        //     return base + (perKm * window.currentDistance);
-        // }
-        // window.calculateDeliveryPrice = calculateDeliveryPrice;
 
         function renderCart() {
             const cartItemsContainer = document.getElementById('cart-items');
