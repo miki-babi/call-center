@@ -108,6 +108,8 @@
             window.renderCart();
         }
         console.log(`distance is ${window.currentDistance}`);
+        console.log(`cart weight is ${window.cartWeight}`);
+        
         
 
         // Delivery calculation and display
