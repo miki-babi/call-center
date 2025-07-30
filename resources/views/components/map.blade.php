@@ -88,57 +88,34 @@
         if (result) fillAddressFields(result);
     }
 
+    window.calculateDeliveryPrice = function(weight, distance) {
 
+        if (!window.deliveryOptions) {
+            return 0;
+        }
 
-    // window.calculateDeliveryPrice = function(weight, distance) {
-    //     const option = window.deliveryOptions.find(opt =>
-    //         weight <= parseFloat(opt.max_weight) &&
-    //         distance <= parseFloat(opt.max_distance)
-    //     );
-    //     if (!option) return 0;
-    //     console.log("calculatedelivery");
-    //     return parseFloat(option.base_price) + distance * parseFloat(option.price_per_km);
-    // };
-window.calculateDeliveryPrice = function(weight, distance) {
-    // console.log("🚚 calculateDeliveryPrice called");
-    // console.log("Weight:", weight);
-    // console.log("Distance:", distance);
+        console.log("✅ deliveryOptions:", window.deliveryOptions);
 
-    if (!window.deliveryOptions) {
-        // console.log("❌ deliveryOptions is undefined");
-        return 0;
-    }
+        const option = window.deliveryOptions.find(opt => {
+            const maxWeight = parseFloat(opt.max_weight);
+            const maxDistance = parseFloat(opt.max_distance);
+            return weight <= maxWeight && distance <= maxDistance;
+        });
 
-    console.log("✅ deliveryOptions:", window.deliveryOptions);
+        if (!option) {
+            console.log("❌ No matching delivery option found");
+            return 0;
+        }
+        console.log("✅ Matched delivery option:", option);
 
-    const option = window.deliveryOptions.find(opt => {
-        const maxWeight = parseFloat(opt.max_weight);
-        const maxDistance = parseFloat(opt.max_distance);
-        // console.log(`Checking option:`, opt, `Max Weight: ${maxWeight}, Max Distance: ${maxDistance}`);
-        return weight <= maxWeight && distance <= maxDistance;
-    });
+        const basePrice = parseFloat(option.base_price);
+        const perKm = parseFloat(option.price_per_km);
+        const cost = basePrice + distance * perKm;
+        window.deliveryCost = cost;
+        console.log("Total cost:", window.deliveryCost);
 
-    if (!option) {
-        console.log("❌ No matching delivery option found");
-        return 0;
-    }
-
-    console.log("✅ Matched delivery option:", option);
-
-    const basePrice = parseFloat(option.base_price);
-    const perKm = parseFloat(option.price_per_km);
-    const cost = basePrice + distance * perKm;
-
-    // console.log("Base price:", basePrice);
-    // console.log("Price per km:", perKm);
-    // console.log("Total cost:", cost);
-    window.deliveryCost= cost;
-    console.log("Total cost:", window.deliveryCost);
-
-    return cost;
-};
-
- 
+        return cost;
+    };
 
     function calculateDistance(lat, lon) {
         if (!startMarker) {
@@ -194,6 +171,4 @@ window.calculateDeliveryPrice = function(weight, distance) {
         } = e.latlng;
         placeEndMarker(lat, lng);
     });
-
-
 </script>
