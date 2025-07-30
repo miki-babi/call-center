@@ -28,10 +28,10 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <!-- Pass shop data to JS -->
-<script>
+{{-- <script>
     const shop1 = @json($shop1);
     const shop2 = @json($shop2);
-</script>
+</script> --}}
 
 <script>
     let map = L.map('map').setView([9.03, 38.74], 13);
