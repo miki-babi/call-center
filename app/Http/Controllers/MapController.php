@@ -27,7 +27,7 @@ public function search(Request $request)
     }
 
     $cacheKey = 'addis_search_' . md5($query);
-    $results = Cache::remember($cacheKey, 86400, function () use ($query) {
+    $results = Cache::remember($cacheKey, 2592000, function () use ($query) {
         $url = 'https://nominatim.openstreetmap.org/search?format=json&q=' .
             urlencode($query . ' Addis Ababa') .
             '&addressdetails=1&limit=5';

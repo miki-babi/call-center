@@ -15,6 +15,8 @@ class Shop extends Model
         'consumer_key',
         'consumer_secret',
         'url',
+        'latitude',
+        'longitude',
     ];
    protected static function booted()
     {
