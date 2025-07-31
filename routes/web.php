@@ -34,10 +34,10 @@ use App\Http\Controllers\MapController;
 Route::middleware('guest')->group(function () {
     Route::get('/login', function () {
         return view('auth.login');
-    })->name('auth.form');
+    })->name('login');
     Route::get('/', function () {
         return view('auth.login');
-    })->name('auth.form');
+    });
     Route::post('login', [SessionController::class, 'login'])->name('auth.login');
 });
 
