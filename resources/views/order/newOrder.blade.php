@@ -13,8 +13,8 @@
 
 
     @php
-        $shop1 = ['name' => 'Ayat Store', 'lat' => 9.023810040605607, 'lon' => 38.897535922518266];
-        $shop2 = ['name' => 'Mexico Store', 'lat' => 9.009907758314755, 'lon' => 38.75883353263652];
+        $shop1 = ['name' => 'Ayat Store', 'lat' => 9.023810040605607, 'lon' => 38.897535922518266 , 'branch'=> ayat];
+        $shop2 = ['name' => 'Mexico Store', 'lat' => 9.009907758314755, 'lon' => 38.75883353263652 , 'branch' => mexico];
     @endphp
 
     <!-- Search input -->
