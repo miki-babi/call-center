@@ -31,7 +31,7 @@
 
     <!-- Shop list -->
     <ul id="shop-list" class="flex gap-4 mt-4">
-        <a role="tab" class="p-4 bg-blue-500 text-white rounded-sm "
+        <a role="tab" class="p-4  text-white rounded-sm "
             href="{{ route('orders.new.branch', ['branch' => 'ayat']) }}">
             <li id="shop-a" class="shop-item border p-4 rounded transition">
 
@@ -40,7 +40,7 @@
             </li>
         </a>
 
-        <a role="tab" class="p-4 bg-blue-500 text-white rounded-sm "
+        <a role="tab" class="p-4  text-white rounded-sm "
             href="{{ route('orders.new.branch', ['branch' => 'mexico']) }}">
             <li id="shop-b" class="shop-item border p-4 rounded  transition">
                 <h3 class="text-lg font-semibold">{{ $shop2['name'] }}</h3>
@@ -156,7 +156,7 @@
                 item.classList.remove('border-green-500', 'border-2');
             });
 
-            document.getElementById(nearestId).classList.add('border-green-500', 'border-2');
+            document.getElementById(nearestId).classList.add('bg-green-500', 'border-2');
         }
 
         function fillAddressFields(result) {
