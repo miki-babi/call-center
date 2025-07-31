@@ -33,7 +33,7 @@
     <ul id="shop-list" class="flex gap-4 mt-4">
         <a role="tab" class="p-4 bg-blue-500 text-white rounded-sm "
             href="{{ route('orders.new.branch', ['branch' => 'ayat']) }}">
-            <li id="shop-a" class="shop-item border p-4 rounded w-1/2 transition">
+            <li id="shop-a" class="shop-item border p-4 rounded transition">
 
                 <h3 class="text-lg font-semibold">{{ $shop1['name'] }}</h3>
 
@@ -42,8 +42,7 @@
 
         <a role="tab" class="p-4 bg-blue-500 text-white rounded-sm "
             href="{{ route('orders.new.branch', ['branch' => 'mexico']) }}">
-            <li id="shop-b" class="shop-item border p-4 rounded w-1/2 transition">
-
+            <li id="shop-b" class="shop-item border p-4 rounded  transition">
                 <h3 class="text-lg font-semibold">{{ $shop2['name'] }}</h3>
             </li>
         </a>
