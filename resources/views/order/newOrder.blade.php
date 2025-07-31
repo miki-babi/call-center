@@ -14,7 +14,12 @@
 
     @php
         $shop1 = ['name' => 'Ayat Store', 'lat' => 9.023810040605607, 'lon' => 38.897535922518266, 'branch' => 'ayat'];
-        $shop2 = ['name' => 'Mexico Store', 'lat' => 9.009907758314755, 'lon' => 38.75883353263652, 'branch' => 'mexico'];
+        $shop2 = [
+            'name' => 'Mexico Store',
+            'lat' => 9.009907758314755,
+            'lon' => 38.75883353263652,
+            'branch' => 'mexico',
+        ];
     @endphp
 
     <!-- Search input -->
@@ -26,20 +31,23 @@
 
     <!-- Shop list -->
     <ul id="shop-list" class="flex gap-4 mt-4">
-        <li id="shop-a" class="shop-item border p-4 rounded w-1/2 transition">
-            <a role="tab" class="tab {{ request()->is('order/new/ayat') ? 'tab-active' : '' }}"
-                href="{{ route('orders.new.branch', ['branch' => 'ayat']) }}">
+        <a role="tab" class="tab {{ request()->is('order/new/ayat') ? 'tab-active' : '' }}"
+            href="{{ route('orders.new.branch', ['branch' => 'ayat']) }}">
+            <li id="shop-a" class="shop-item border p-4 rounded w-1/2 transition">
+
                 <h3 class="text-lg font-semibold">{{ $shop1['name'] }}</h3>
-                <p>Lat: {{ $shop1['lat'] }}, Lon: {{ $shop1['lon'] }}</p>
-            </a>
-        </li>
-        <li id="shop-b" class="shop-item border p-4 rounded w-1/2 transition">
-            <a role="tab" class="tab {{ request()->is('order/new/mexico') ? 'tab-active' : '' }}"
-                href="{{ route('orders.new.branch', ['branch' => 'mexico']) }}">
+
+            </li>
+        </a>
+
+        <a role="tab" class="tab {{ request()->is('order/new/mexico') ? 'tab-active' : '' }}"
+            href="{{ route('orders.new.branch', ['branch' => 'mexico']) }}">
+            <li id="shop-b" class="shop-item border p-4 rounded w-1/2 transition">
+
                 <h3 class="text-lg font-semibold">{{ $shop2['name'] }}</h3>
-                <p>Lat: {{ $shop2['lat'] }}, Lon: {{ $shop2['lon'] }}</p>
-            </a>
-        </li>
+            </li>
+        </a>
+
     </ul>
 
     <!-- Map -->
