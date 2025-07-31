@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 class SessionController extends Controller
 {
     //
-    
+
     public function login(Request $request)
     {
         // dd($request->all());
@@ -30,7 +30,7 @@ class SessionController extends Controller
                 Log::info('Login attempt successful for phone: ' . $attribute['phone']);
                 $request->session()->regenerate();
                 // dd('Login successful');
-                return redirect()->route('order.index', ['page' => 1])->with('success', 'Login successful');
+                return redirect()->route('orders.index', ['page' => 1])->with('success', 'Login successful');
             } else {
                 // dd('Login failed');
                 Log::warning('Login attempt failed for phone: ' . $attribute['phone']);
