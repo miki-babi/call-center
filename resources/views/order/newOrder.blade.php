@@ -27,18 +27,18 @@
     <!-- Shop list -->
     <ul id="shop-list" class="flex gap-4 mt-4">
         <li id="shop-a" class="shop-item border p-4 rounded w-1/2 transition">
-            <a role="tab" class="tab {{ request()->is('order/new/ayat') ? 'tab-active' : '' }}"
-                href="{{ route('orders.new.branch', ['branch' => 'ayat']) }}">
+            {{-- <a role="tab" class="tab {{ request()->is('order/new/ayat') ? 'tab-active' : '' }}" --}}
+                {{-- href="{{ route('orders.new.branch', ['branch' => 'ayat']) }}"> --}}
                 <h3 class="text-lg font-semibold">{{ $shop1['name'] }}</h3>
                 <p>Lat: {{ $shop1['lat'] }}, Lon: {{ $shop1['lon'] }}</p>
-            </a>
+            {{-- </a> --}}
         </li>
         <li id="shop-b" class="shop-item border p-4 rounded w-1/2 transition">
-            <a role="tab" class="tab {{ request()->is('order/new/mexico') ? 'tab-active' : '' }}"
-                href="{{ route('orders.new.branch', ['branch' => 'mexico']) }}">
+            {{-- <a role="tab" class="tab {{ request()->is('order/new/mexico') ? 'tab-active' : '' }}" --}}
+                {{-- href="{{ route('orders.new.branch', ['branch' => 'mexico']) }}"> --}}
                 <h3 class="text-lg font-semibold">{{ $shop2['name'] }}</h3>
                 <p>Lat: {{ $shop2['lat'] }}, Lon: {{ $shop2['lon'] }}</p>
-            </a>
+            {{-- </a> --}}
         </li>
     </ul>
 
