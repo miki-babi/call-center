@@ -31,7 +31,7 @@
 
     <!-- Shop list -->
     <ul id="shop-list" class="flex gap-4 mt-4">
-        <a role="tab" class="tab {{ request()->is('order/new/ayat') ? 'tab-active' : '' }}"
+        <a role="tab" class="p-4 bg-blue-500 text-white rounded-sm "
             href="{{ route('orders.new.branch', ['branch' => 'ayat']) }}">
             <li id="shop-a" class="shop-item border p-4 rounded w-1/2 transition">
 
@@ -40,7 +40,7 @@
             </li>
         </a>
 
-        <a role="tab" class="tab {{ request()->is('order/new/mexico') ? 'tab-active' : '' }}"
+        <a role="tab" class="p-4 bg-blue-500 text-white rounded-sm "
             href="{{ route('orders.new.branch', ['branch' => 'mexico']) }}">
             <li id="shop-b" class="shop-item border p-4 rounded w-1/2 transition">
 
