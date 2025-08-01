@@ -309,6 +309,16 @@ class OrderController extends Controller
         // dd($data['branch']);
         $deliveryPrice = $data['delivery_price'] ?? 0;
         $products = json_decode($data['products'] ?? '[]', true);
+        $deliveryMethod = $data['delivery_method'] ?? 'standard_delivery';
+        
+        // Map delivery method to method title
+        $methodTitles = [
+            'standard_delivery' => 'Standard Delivery',
+            'next_day_delivery' => 'Next Day Delivery',
+            'express_delivery' => 'Express Delivery'
+        ];
+        $methodTitle = $methodTitles[$deliveryMethod] ?? 'Standard Delivery';
+        
         // dd(['delivery_price' => $deliveryPrice, 'products' => $products]);
 
         // Prepare WooCommerce order payload
@@ -342,6 +352,18 @@ class OrderController extends Controller
                     'quantity' => $item['quantity'],
                 ];
             }, $products),
+            'shipping_lines' => [
+                [
+                    'method_title' => $methodTitle,
+                    'method_id' => $deliveryMethod,
+                    'instance_id' => '0',
+                    'total' => (string) $deliveryPrice,
+                    'total_tax' => '0.00',
+                    'taxes' => [],
+                    'tax_status' => 'taxable',
+                    'meta_data' => []
+                ]
+            ],
             'fee_lines' => [
                 [
                     'name' => 'Delivery',

@@ -40,10 +40,18 @@
            <input type="text" name="postcode" id="postcode" required
                class="w-full border border-gray-300 rounded-lg p-2">
        </div>
-    
+       <div>
            <label class="block font-medium">Country:</label>
            <select name="country" required class="w-full border border-gray-300 rounded-lg p-2">
                <option value="ET" selected>Ethiopia</option>
+           </select>
+       </div>
+       <div>
+           <label class="block font-medium">Delivery Method:</label>
+           <select name="delivery_method" required class="w-full border border-gray-300 rounded-lg p-2">
+               <option value="standard_delivery">Standard Delivery</option>
+               <option value="next_day_delivery">Next Day Delivery</option>
+               <option value="express_delivery">Express Delivery</option>
            </select>
        </div>
        <input type="hidden" name="delivery_price" id="delivery_price" value="">
