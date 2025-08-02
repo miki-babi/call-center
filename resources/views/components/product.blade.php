@@ -24,6 +24,11 @@
                         <div class="mb-8">
                             <ul class="space-y-4">
                                 @foreach ($shopData['products'] as $product)
+                                    @php
+                                        $stockQuantity = $product['stock_quantity'] ?? 0;
+                                        $stockStatus = $product['stock_status'] ?? 'instock';
+                                        $isInStock = $stockStatus === 'instock' && $stockQuantity > 0;
+                                    @endphp
                                     <li
                                         class="product-item bg-white text-gray-900 rounded-xl shadow hover:shadow-lg transition-all duration-150 p-6 flex flex-col gap-2 border border-gray-100">
                                         <div class="flex flex-wrap items-center gap-4">
@@ -36,13 +41,18 @@
                                                 </p>
                                                 <p class="text-sm text-gray-500" id="weight">
                                                     {{ Str::limit($product['weight'] ?? '', 100) }}</p>
+                                                <p class="text-sm {{ $isInStock ? 'text-green-600' : 'text-red-600' }} font-medium">
+                                                    Stock: {{ $stockQuantity > 0 ? $stockQuantity . ' available' : 'Out of stock' }}
+                                                </p>
                                             </div>
                                         </div>
                                         <button
-                                            class="toggle-cart bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded text-sm"
+                                            class="toggle-cart {{ $isInStock ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed' }} text-white px-4 py-1 rounded text-sm"
                                             data-product-id="{{ $product['id'] }}"
-                                            data-product-weight="{{ $product['weight'] }}">
-                                            Add to Cart (weight: {{ $product['weight'] }})
+                                            data-product-weight="{{ $product['weight'] }}"
+                                            data-stock-quantity="{{ $stockQuantity }}"
+                                            {{ !$isInStock ? 'disabled' : '' }}>
+                                            {{ $isInStock ? 'Add to Cart (weight: ' . ($product['weight'] ?? 0) . ')' : 'Out of Stock' }}
                                         </button>
                                     </li>
                                 @endforeach

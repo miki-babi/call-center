@@ -55,6 +55,16 @@
         .mb-8 {
             display: none;
         }
+
+        .toggle-cart:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .increase:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
     </style>
     <script>
         window.cart = {};
@@ -138,11 +148,13 @@ setTimeout(() => loading = false, 1000)">
                 <div>
                     <div class="font-semibold">${item.name}</div>
                     <div class="text-sm text-gray-600">Price: ${formatPrice(item.price)} × ${item.quantity}</div>
+                    <div class="text-xs text-gray-500">Stock: ${item.stockQuantity} available</div>
                 </div>
                 <div class="flex items-center gap-2">
                     <button class="decrease bg-gray-300 px-2 rounded" data-id="${id}">-</button>
                     <span>${item.quantity}</span>
-                    <button class="increase bg-gray-300 px-2 rounded" data-id="${id}">+</button>
+                    <button class="increase bg-gray-300 px-2 rounded" data-id="${id}" ${item.quantity >= item.stockQuantity ? 'disabled' : ''}>+</button>
+                    ${item.quantity >= item.stockQuantity ? '<span class="text-xs text-red-500">Max reached</span>' : ''}
                 </div>
             </li>`;
             }
@@ -163,8 +175,21 @@ setTimeout(() => loading = false, 1000)">
             document.querySelectorAll('.increase').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const id = btn.dataset.id;
-                    window.cart[id].quantity += 1;
-                    renderCart();
+                    const item = window.cart[id];
+                    if (item.quantity < item.stockQuantity) {
+                        item.quantity += 1;
+                        renderCart();
+                    } else {
+                        // Show notification that stock limit reached
+                        const notification = document.createElement('div');
+                        notification.className = 'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded shadow-lg z-50';
+                        notification.textContent = `Cannot add more. Only ${item.stockQuantity} available in stock.`;
+                        document.body.appendChild(notification);
+                        
+                        setTimeout(() => {
+                            notification.remove();
+                        }, 3000);
+                    }
                 });
             });
 
@@ -186,9 +211,25 @@ setTimeout(() => loading = false, 1000)">
             document.querySelectorAll('.toggle-cart').forEach(button => {
                 const id = button.dataset.productId;
                 const isInCart = window.cart[id];
-                button.innerText = isInCart ? 'Remove from Cart' : 'Add to Cart';
-                button.classList.toggle('bg-red-500', isInCart);
-                button.classList.toggle('bg-blue-500', !isInCart);
+                const stockQuantity = parseInt(button.dataset.stockQuantity) || 0;
+                const currentQuantity = isInCart ? isInCart.quantity : 0;
+                
+                if (stockQuantity === 0) {
+                    button.innerText = 'Out of Stock';
+                    button.classList.add('bg-gray-400', 'cursor-not-allowed');
+                    button.classList.remove('bg-blue-500', 'bg-red-500');
+                    button.disabled = true;
+                } else if (isInCart) {
+                    button.innerText = 'Remove from Cart';
+                    button.classList.add('bg-red-500');
+                    button.classList.remove('bg-blue-500', 'bg-gray-400', 'cursor-not-allowed');
+                    button.disabled = false;
+                } else {
+                    button.innerText = 'Add to Cart';
+                    button.classList.add('bg-blue-500');
+                    button.classList.remove('bg-red-500', 'bg-gray-400', 'cursor-not-allowed');
+                    button.disabled = false;
+                }
             });
         }
 
@@ -199,15 +240,31 @@ setTimeout(() => loading = false, 1000)">
                 const priceText = this.closest('.product-item').querySelector('p.text-sm').innerText;
                 const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
                 const weight = parseFloat(this.getAttribute('data-product-weight')) || 0;
+                const stockQuantity = parseInt(this.getAttribute('data-stock-quantity')) || 0;
 
                 if (!window.cart[id]) {
-                    window.cart[id] = {
-                        id,
-                        name,
-                        price,
-                        weight,
-                        quantity: 1
-                    };
+                    // Check if product is in stock
+                    if (stockQuantity > 0) {
+                        window.cart[id] = {
+                            id,
+                            name,
+                            price,
+                            weight,
+                            stockQuantity,
+                            quantity: 1
+                        };
+                    } else {
+                        // Show notification for out of stock
+                        const notification = document.createElement('div');
+                        notification.className = 'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded shadow-lg z-50';
+                        notification.textContent = 'This product is out of stock!';
+                        document.body.appendChild(notification);
+                        
+                        setTimeout(() => {
+                            notification.remove();
+                        }, 3000);
+                        return;
+                    }
                 } else {
                     delete window.cart[id];
                 }
