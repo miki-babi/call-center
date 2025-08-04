@@ -52,7 +52,7 @@
                 </div>
                 <div class="bg-grey-400 text-white p-4 rounded-xl shadow-md mt-4 ">
                     <h1 class="text-2xl font-bold mb-4">Orders</h1>
-                    <p class="mb-4 text-gray-300">Here are all orders from all branches and statuses:</p>
+                    <p class="mb-4 text-black">Here are all orders from all branches and statuses:</p>
                     <ul class="space-y-4">
                         @foreach (array_merge(
                             $pendingOrders->toArray(),
@@ -106,7 +106,7 @@
                 </div>
                 <div class="bg-grey-400 text-white p-4 rounded-xl shadow-md mt-4 ">
                     <h1 class="text-2xl font-bold mb-4">Orders</h1>
-                    <p class="mb-4 text-gray-300">Here are the orders from all branches:</p>
+                    <p class="mb-4 text-black">Here are the orders from all branches:</p>
                     <ul class="space-y-4">
                         @foreach ($pendingOrders as $order)
                             <li class="pending-order-item bg-white text-gray-900 rounded-lg shadow hover:shadow-lg transition-all duration-150 p-4 flex flex-col gap-2">
@@ -153,7 +153,7 @@
                 </div>
                 <div class="bg-grey-400 text-white p-4 rounded-xl shadow-md mt-4 ">
                     <h1 class="text-2xl font-bold mb-4">Orders</h1>
-                    <p class="mb-4 text-gray-300">Here are the orders from all branches:</p>
+                    <p class="mb-4 text-black">Here are the orders from all branches:</p>
                     <ul class="space-y-4">
                         @foreach ($completedOrders as $order)
                             <li class="completed-order-item bg-white text-gray-900 rounded-lg shadow hover:shadow-lg transition-all duration-150 p-4 flex flex-col gap-2">
@@ -200,7 +200,7 @@
                 </div>
                 <div class="bg-grey-400 text-white p-4 rounded-xl shadow-md mt-4 ">
                     <h1 class="text-2xl font-bold mb-4">Orders</h1>
-                    <p class="mb-4 text-gray-300">Here are the orders from all branches:</p>
+                    <p class="mb-4 text-black">Here are the orders from all branches:</p>
                     <ul class="space-y-4">
                         @foreach ($processingOrders as $order)
                             <li class="processing-order-item bg-white text-gray-900 rounded-lg shadow hover:shadow-lg transition-all duration-150 p-4 flex flex-col gap-2">
@@ -247,7 +247,7 @@
                 </div>
                 <div class="bg-grey-400 text-white p-4 rounded-xl shadow-md mt-4 ">
                     <h1 class="text-2xl font-bold mb-4">Orders</h1>
-                    <p class="mb-4 text-gray-300">Here are the orders from all branches:</p>
+                    <p class="mb-4 text-black">Here are the orders from all branches:</p>
                     <ul class="space-y-4">
                         @foreach ($onHoldOrders as $order)
                             <li class="onhold-order-item bg-white text-gray-900 rounded-lg shadow hover:shadow-lg transition-all duration-150 p-4 flex flex-col gap-2">
@@ -294,7 +294,7 @@
                 </div>
                 <div class="bg-grey-400 text-white p-4 rounded-xl shadow-md mt-4 ">
                     <h1 class="text-2xl font-bold mb-4">Orders</h1>
-                    <p class="mb-4 text-gray-300">Here are the orders from all branches:</p>
+                    <p class="mb-4 text-black">Here are the orders from all branches:</p>
                     <ul class="space-y-4">
                         @foreach ($failedOrders as $order)
                             <li class="failed-order-item bg-white text-gray-900 rounded-lg shadow hover:shadow-lg transition-all duration-150 p-4 flex flex-col gap-2">
@@ -341,7 +341,7 @@
                 </div>
                 <div class="bg-grey-400 text-white p-4 rounded-xl shadow-md mt-4 ">
                     <h1 class="text-2xl font-bold mb-4">Orders</h1>
-                    <p class="mb-4 text-gray-300">Here are the orders from all branches:</p>
+                    <p class="mb-4 text-black">Here are the orders from all branches:</p>
                     <ul class="space-y-4">
                         @foreach ($shipmentReadyOrders as $order)
                             <li class="shipment-order-item bg-white text-gray-900 rounded-lg shadow hover:shadow-lg transition-all duration-150 p-4 flex flex-col gap-2">
