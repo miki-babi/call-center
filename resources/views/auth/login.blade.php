@@ -16,11 +16,11 @@
         @csrf
         <div class="form-group">
             <label for="phone" class="block text-sm font-medium text-black">Phone:</label>
-            <input type="tel" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" id="phone" name="phone" required>
+            <input type="tel" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-black" id="phone" name="phone" required>
         </div>
         <div class="form-group">
             <label for="password" class="block text-sm font-medium text-black">Password:</label>
-            <input type="password" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" id="password" name="password" required>
+            <input type="password" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-black" id="password" name="password" required>
         </div>
         <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Login</button>
     </form>
