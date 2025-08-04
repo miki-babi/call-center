@@ -50,7 +50,7 @@
                     <input type="text" id="allsearch" placeholder="Search orders..."
                         class="pl-10 p-2 border border-gray-300 rounded-lg w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white shadow-sm transition-all duration-150">
                 </div>
-                <div class="bg-black/90 text-white p-4 rounded-xl shadow-md mt-4 ">
+                <div class="bg-grey-400 text-white p-4 rounded-xl shadow-md mt-4 ">
                     <h1 class="text-2xl font-bold mb-4">Orders</h1>
                     <p class="mb-4 text-gray-300">Here are all orders from all branches and statuses:</p>
                     <ul class="space-y-4">
@@ -104,7 +104,7 @@
                     <input type="text" id="pendingsearch" placeholder="Search orders..."
                         class="pl-10 p-2 border border-gray-300 rounded-lg w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm transition-all duration-150">
                 </div>
-                <div class="bg-black/90 text-white p-4 rounded-xl shadow-md mt-4 ">
+                <div class="bg-grey-400 text-white p-4 rounded-xl shadow-md mt-4 ">
                     <h1 class="text-2xl font-bold mb-4">Orders</h1>
                     <p class="mb-4 text-gray-300">Here are the orders from all branches:</p>
                     <ul class="space-y-4">
@@ -151,7 +151,7 @@
                     <input type="text" id="completedsearch" placeholder="Search orders..."
                         class="pl-10 p-2 border border-gray-300 rounded-lg w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white shadow-sm transition-all duration-150">
                 </div>
-                <div class="bg-black/90 text-white p-4 rounded-xl shadow-md mt-4 ">
+                <div class="bg-grey-400 text-white p-4 rounded-xl shadow-md mt-4 ">
                     <h1 class="text-2xl font-bold mb-4">Orders</h1>
                     <p class="mb-4 text-gray-300">Here are the orders from all branches:</p>
                     <ul class="space-y-4">
@@ -198,7 +198,7 @@
                     <input type="text" id="processingsearch" placeholder="Search orders..."
                         class="pl-10 p-2 border border-gray-300 rounded-lg w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-white shadow-sm transition-all duration-150">
                 </div>
-                <div class="bg-black/90 text-white p-4 rounded-xl shadow-md mt-4 ">
+                <div class="bg-grey-400 text-white p-4 rounded-xl shadow-md mt-4 ">
                     <h1 class="text-2xl font-bold mb-4">Orders</h1>
                     <p class="mb-4 text-gray-300">Here are the orders from all branches:</p>
                     <ul class="space-y-4">
@@ -245,7 +245,7 @@
                 <input type="text" id="onholdsearch" placeholder="Search orders..."
                         class="pl-10 p-2 border border-gray-300 rounded-lg w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white shadow-sm transition-all duration-150">
                 </div>
-                <div class="bg-black/90 text-white p-4 rounded-xl shadow-md mt-4 ">
+                <div class="bg-grey-400 text-white p-4 rounded-xl shadow-md mt-4 ">
                     <h1 class="text-2xl font-bold mb-4">Orders</h1>
                     <p class="mb-4 text-gray-300">Here are the orders from all branches:</p>
                     <ul class="space-y-4">
@@ -292,7 +292,7 @@
                 <input type="text" id="failedsearch" placeholder="Search orders..."
                         class="pl-10 p-2 border border-gray-300 rounded-lg w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all duration-150">
                 </div>
-                <div class="bg-black/90 text-white p-4 rounded-xl shadow-md mt-4 ">
+                <div class="bg-grey-400 text-white p-4 rounded-xl shadow-md mt-4 ">
                     <h1 class="text-2xl font-bold mb-4">Orders</h1>
                     <p class="mb-4 text-gray-300">Here are the orders from all branches:</p>
                     <ul class="space-y-4">
@@ -339,7 +339,7 @@
                 <input type="text" id="shipmentsearch" placeholder="Search orders..."
                         class="pl-10 p-2 border border-gray-300 rounded-lg w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white shadow-sm transition-all duration-150">
                 </div>
-                <div class="bg-black/90 text-white p-4 rounded-xl shadow-md mt-4 ">
+                <div class="bg-grey-400 text-white p-4 rounded-xl shadow-md mt-4 ">
                     <h1 class="text-2xl font-bold mb-4">Orders</h1>
                     <p class="mb-4 text-gray-300">Here are the orders from all branches:</p>
                     <ul class="space-y-4">
