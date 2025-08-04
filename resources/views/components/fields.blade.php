@@ -49,9 +49,9 @@
         <div>
             <label class="block font-medium">Delivery Method:</label>
             <select name="delivery_method" required class="w-full border border-gray-300 rounded-lg p-2">
-                <option value="standard_delivery">Standard Delivery</option>
+                <option value="self_pickup">Self Pickup</option>
+                <option value="same_day_delivery">Same Day Delivery</option>
                 <option value="next_day_delivery">Next Day Delivery</option>
-                <option value="express_delivery">Express Delivery</option>
             </select>
         </div>
         <input type="hidden" name="delivery_price" id="delivery_price" value="">
