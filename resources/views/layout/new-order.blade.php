@@ -148,6 +148,7 @@ setTimeout(() => loading = false, 1000)">
                 <div>
                     <div class="font-semibold">${item.name}</div>
                     <div class="text-sm text-gray-600">Price: ${formatPrice(item.price)} × ${item.quantity}</div>
+                    <div class="text-sm text-gray-800">Total: ${formatPrice(item.price * item.quantity)}</div>
                     <div class="text-xs text-gray-500">Stock: ${item.stockQuantity} available</div>
                 </div>
                 <div class="flex items-center gap-2">

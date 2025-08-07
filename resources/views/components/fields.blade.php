@@ -48,7 +48,7 @@
         </div>
         <div>
             <label class="block font-medium">Delivery Method:</label>
-            <select name="delivery_method" required class="w-full border border-gray-300 rounded-lg p-2">
+            <select name="delivery_method" id="delivery_method" required class="w-full border border-gray-300 rounded-lg p-2">
                 <option value="self_pickup">Self Pickup</option>
                 <option value="same_day_delivery">Same Day Delivery</option>
                 <option value="next_day_delivery">Next Day Delivery</option>
@@ -64,3 +64,33 @@
     </div>
 
 </form>
+
+<script>
+    // Handle delivery method change
+    document.getElementById('delivery_method').addEventListener('change', function() {
+        const deliveryMethod = this.value;
+        
+        if (deliveryMethod === 'self_pickup') {
+            // Set delivery price to 0 for self pickup
+            window.deliveryCost = 0;
+            
+            // Update the hidden input
+            document.getElementById('delivery_price').value = '0';
+            
+            // Update cart display if it exists
+            if (typeof renderCart === 'function') {
+                renderCart();
+            }
+            
+            // Show notification
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50';
+            notification.textContent = 'Self pickup selected - No delivery charge';
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+    });
+</script>
