@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [SessionController::class, 'logout'])->name('auth.logout');
 
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        // return view('dashboard');
     })->name('dashboard');
 
     Route::get('/map', [MapController::class, 'show']);
