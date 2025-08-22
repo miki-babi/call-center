@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 
 
-Route::post('/callback', function (Request $request) {
+Route::get('/callback', function (Request $request) {
 
     Log::info('Chapa callback received:', $request->all());
     $data=Chapa::initiate($order_id="test");
