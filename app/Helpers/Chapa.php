@@ -10,7 +10,7 @@ class Chapa
  
     public static function initiate()
     {
-        dd('test');
+        // dd('test');
         $response = Http::withHeaders([
             'Authorization' => "Bearer " . env('Chapa_Secretkey'),
             'Content-Type' => 'application/json',
