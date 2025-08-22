@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use App\Models\Delivery;
+use App\Models\Payment;
+
 
 class OrderController extends Controller
 {
@@ -305,11 +307,11 @@ class OrderController extends Controller
     public function placeOrder(Request $request)
     {
         $data = $request->all();
-        
+
         $deliveryPrice = $data['delivery_price'] ?? 0;
         $products = json_decode($data['products'] ?? '[]', true);
         $deliveryMethod = $data['delivery_method'] ?? 'standard_delivery';
-        
+
         // Map delivery method to method title
         $methodTitles = [
             'standard_delivery' => 'Standard Delivery',
@@ -317,7 +319,7 @@ class OrderController extends Controller
             'express_delivery' => 'Express Delivery'
         ];
         $methodTitle = $methodTitles[$deliveryMethod] ?? 'Standard Delivery';
-        
+
 
         // Prepare WooCommerce order payload
         $orderPayload = [
@@ -370,21 +372,46 @@ class OrderController extends Controller
             ],
         ];
 
-        // Send to WooCommerce (assume 'mexico' shop for now)
+
+
+
         $shop = Shop::where('name', $data['branch'])->first();
+
         $response = Http::withBasicAuth($shop->consumer_key, $shop->consumer_secret)
             ->post($shop->url . '/wp-json/wc/v3/orders', $orderPayload);
 
         if ($response->successful()) {
             $orderData = $response->json();
-            dd($orderData);
-            $paymentUrl = $orderData['payment_url'] ?? null;
+
+            // Extract WooCommerce order details
             $orderNumber = $orderData['number'] ?? null;
             $totalAmount = $orderData['total'] ?? null;
+
+            // Generate unique transaction reference
+            $txRef = 'chapa-' . \Illuminate\Support\Str::uuid();
+
+            // Store in Payment model
+            $payment = Payment::create([
+                'email'        => $data['email'] ?? null,
+                'first_name'   => $data['first_name'] ?? null,
+                'last_name'    => $data['last_name'] ?? null,
+                'phone'        => $data['phone'] ?? null,
+                'amount'       => $totalAmount,
+                'tx_ref'       => $txRef,
+                'callback_url' => route('callback', ['shop' => $shop->id, 'order' => $data['order_id'] ?? null]),
+                'order_id'     => $data['order_id'] ?? null,
+                'status'       => 0,
+                'shop'         => $shop->id,
+            ]);
+
+            // Payment URL (from WooCommerce or Chapa)
+            $paymentUrl = route('chapa', ['shop' => $shop->id, 'order_id' => $orderNumber]) ?? null;
+
             return view('order.payment', [
-                'payment_url' => $paymentUrl,
-                'order_number' => $orderNumber,
-                'total_amount' => $totalAmount,
+                'payment_url'   => $paymentUrl,
+                'order_number'  => $orderNumber,
+                'total_amount'  => $totalAmount,
+                'tx_ref'        => $txRef,
             ]);
         } else {
             return redirect()->back()->with('error', 'Failed to place order.');
