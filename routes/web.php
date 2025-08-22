@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 Route::get('/callback', function (Request $request) {
 
     Log::info('Chapa callback received:', $request->all());
+
     $data=Chapa::initiate($order_id="test");
 
     return $data;
@@ -23,7 +24,7 @@ Route::get('/callback', function (Request $request) {
 Route::get('/chapa', function () {
 
     $data=Chapa::initiate($order_id="test");
-
+    Log::info('test');
     return $data;
 });
 
