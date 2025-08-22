@@ -6,8 +6,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MapController;
+use Illuminate\Http\Request;
 
+Route::post('/callback', function (Request $request) {
 
+    dd($request->all());
+    $data=Chapa::initiate($order_id="test");
+
+    return $data;
+})->name('callback');
 
 Route::get('/chapa', function () {
 
@@ -15,6 +22,7 @@ Route::get('/chapa', function () {
 
     return $data;
 });
+
 Route::get('/chapa/verify/{order_id}', function ($order_id) {
 
     if(!$order_id) {
