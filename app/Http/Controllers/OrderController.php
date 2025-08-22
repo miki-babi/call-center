@@ -390,7 +390,6 @@ class OrderController extends Controller
             // Generate unique transaction reference
             $txRef = 'chapa-' . \Illuminate\Support\Str::uuid();
 
-            dd($orderData['id']);
             // Store in Payment model
             Payment::create([
                 'email'        => $data['email'] ?? null,
