@@ -37,6 +37,6 @@ class Chapa
             ]
         ]);
 
-        return $response->json()->data;
+        return $response->json();
     }
 }
