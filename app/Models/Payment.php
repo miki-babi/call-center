@@ -17,6 +17,7 @@ class Payment extends Model
         'callback_url',
         'order_id',
         'status',
+        'shop'
     ];
 
 }

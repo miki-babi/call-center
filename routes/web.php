@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Helpers\Chapa;
 use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
@@ -9,7 +9,12 @@ use App\Http\Controllers\MapController;
 
 
 
+Route::get('chapa', function () {
 
+    Chapa::initiate();
+
+    return view('chapa');
+});
 
 // Route::post('login', [SessionController::class, 'login'])->name('auth.login');
 // Route::post('logout', [SessionController::class, 'logout'])->name('auth.logout');
