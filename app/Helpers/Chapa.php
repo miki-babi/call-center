@@ -10,8 +10,9 @@ use Illuminate\Support\Str;
 class Chapa
 {
  
-    public static function initiate()
+    public static function initiate($order_id)
     {
+
 
         // dd('test');
         $tx_ref = Str::random(10) . '-' . time();
@@ -27,7 +28,7 @@ class Chapa
             'phone_number' => '0912345678',
             'tx_ref' => $tx_ref,
             'callback_url' => 'https://webhook.site/077164d6-29cb-40df-ba29-8a00e59a7e60',
-            'return_url' => 'https://www.google.com/',
+            'return_url' => 'https://call-center.beshgebeya.co/chapa/verify/' . $order_id,
             'customization' => [
                 'title' => 'Payment',
                 'description' => ' '
@@ -36,7 +37,7 @@ class Chapa
                 'hide_receipt' => 'true'
             ]
         ]);
-$order_id="test";
+        // $order_id="test";
         return $response->json()['data']['checkout_url'] . $order_id;
     }
 }

@@ -11,11 +11,21 @@ use App\Http\Controllers\MapController;
 
 Route::get('/chapa', function () {
 
-    $data=Chapa::initiate();
+    $data=Chapa::initiate($order_id="test");
 
     return $data;
 });
+Route::get('/chapa/verify/{order_id}', function ($order_id) {
 
+    if(!$order_id) {
+        return "Order ID is required";
+    }
+    if($order_id=="test") {
+        return "Order ID is test";
+    }
+
+    // return $data;
+});
 // Route::post('login', [SessionController::class, 'login'])->name('auth.login');
 // Route::post('logout', [SessionController::class, 'logout'])->name('auth.logout');
 // Route::get('/login', function () {
