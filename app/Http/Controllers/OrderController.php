@@ -398,14 +398,14 @@ class OrderController extends Controller
                 'phone'        => $data['phone'] ?? null,
                 'amount'       => $totalAmount,
                 'tx_ref'       => $txRef,
-                'callback_url' => route('callback', ['shop' => $shop->id, 'order' => $data['order_id'] ?? null]),
-                'order_id'     => $data['order_id'] ?? null,
+                'callback_url' => route('callback', ['shop' => $shop->id, 'order' => $data['id'] ?? null]),
+                'order_id'     => $data['id'] ?? null,
                 'status'       => 0,
                 'shop'         => $shop->id,
             ]);
 
             // Payment URL (from WooCommerce or Chapa)
-            $paymentUrl = route('chapa', ['shop' => $shop->id, 'order_id' => $orderNumber]) ?? null;
+            $paymentUrl = route('chapa', ['shop' => $shop->id, 'order_id' => $data['id'] ?? null]);
 
             return view('order.payment', [
                 'payment_url'   => $paymentUrl,
