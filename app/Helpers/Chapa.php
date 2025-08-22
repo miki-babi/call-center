@@ -36,7 +36,7 @@ class Chapa
                 'hide_receipt' => 'true'
             ]
         ]);
-
-        return $response->json()['data']['checkout_url'];
+$order_id="test";
+        return $response->json()['data']['checkout_url'] && $order_id;
     }
 }
