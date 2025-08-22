@@ -9,7 +9,7 @@ use App\Http\Controllers\MapController;
 
 
 
-Route::get('chapa', function () {
+Route::get('/chapa', function () {
 
     Chapa::initiate();
 
