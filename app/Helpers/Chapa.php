@@ -15,7 +15,8 @@ class Chapa
 
 
         // dd('test');
-        $tx_ref = Str::random(10) . '-' . time();
+        $tx_ref = Str::uuid();
+
         $response = Http::withHeaders([
             'Authorization' => "Bearer " . env('Chapa_Secretkey'),
             'Content-Type' => 'application/json',
