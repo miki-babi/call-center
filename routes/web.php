@@ -12,27 +12,28 @@ use Illuminate\Support\Facades\Log;
 
 
 
-Route::get('/callback', function (Request $request) {
-
+Route::get('/callback/{shop}/{order}', function (Request $request, $shop, $order) {
     $data = $request->all();
 
-    Log::info('Chapa callback received:', $data);
+    Log::info("Chapa callback received for shop: {$shop}, order: {$order}", $data);
 
-    if(isset($data['status']) && $data['status'] === 'success') {
-        // Handle successful payment
-        Log::info('Payment successful for transaction: ' . ($data['trx_ref'] ?? 'N/A'));
+    if (isset($data['status']) && $data['status'] === 'success') {
+        Log::info("Payment successful for transaction: " . ($data['trx_ref'] ?? 'N/A'));
     } else {
-        // Handle failed or pending payment
-        Log::warning('Payment failed or pending for transaction: ' . ($data['trx_ref'] ?? 'N/A'));
+        Log::warning("Payment failed or pending for transaction: " . ($data['trx_ref'] ?? 'N/A'));
     }
 
-    return $data;
+    return [
+        'shop' => $shop,
+        'order' => $order,
+        'callback' => $data
+    ];
 })->name('callback');
 
-Route::get('/chapa', function () {
+Route::get('/chapa/{shop}/{order_id}', function ($shop, $order_id) {
 
-    $data=Chapa::initiate($order_id="test");
-    Log::info('test');
+    $data=Chapa::initiate($shop, $order_id);
+
     return $data;
 });
 

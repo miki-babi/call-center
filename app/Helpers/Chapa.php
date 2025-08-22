@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\Payment;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -9,10 +10,12 @@ use Illuminate\Support\Str;
 
 class Chapa
 {
- 
-    public static function initiate($order_id)
+
+    public static function initiate($shop, $order_id)
     {
 
+
+        // $shopOrder= Payment::where('shop_id', $shop->id)->where('order_id', $order_id)->where('status', 0)->first();
 
         // dd('test');
         $tx_ref = Str::uuid();
@@ -23,12 +26,15 @@ class Chapa
         ])->post('https://api.chapa.co/v1/transaction/initialize', [
             'amount' => '10',
             'currency' => 'ETB',
-            'email' => 'abebech_bekele@gmail.com',
-            'first_name' => 'Bilen',
-            'last_name' => 'Gizachew',
-            'phone_number' => '0912345678',
+            "email" => "abebech_bekele@gmail.com",
+            "first_name" => "Bilen",
+            "last_name" => "Gizachew",
+            "phone_number" => "0912345678",
             'tx_ref' => $tx_ref,
-            'callback_url' => route('callback'),
+            'callback_url' => route('callback', [
+    'shop' => $shop,
+    'order' => $order_id
+]),
             'return_url' => 'https://call-center.beshgebeya.co/chapa/verify/' . $order_id,
             'customization' => [
                 'title' => 'Payment',
