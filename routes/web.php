@@ -22,7 +22,7 @@ Route::get('/callback/{shop}/{order}', function (Request $request, $shop, $order
     Log::info("Chapa callback received for shop: {$shop}, order: {$order}", $data);
 
     // Process the callback data as needed
-    $shopOrder= Shop::where('id', $shop)->first();
+    $shopOrder= Shop::where('name', $shop)->first();
 
     if (isset($data['status']) && $data['status'] === 'success') {
 
