@@ -305,8 +305,7 @@ class OrderController extends Controller
     public function placeOrder(Request $request)
     {
         $data = $request->all();
-        // dd($data);
-        // dd($data['branch']);
+        
         $deliveryPrice = $data['delivery_price'] ?? 0;
         $products = json_decode($data['products'] ?? '[]', true);
         $deliveryMethod = $data['delivery_method'] ?? 'standard_delivery';
@@ -319,7 +318,6 @@ class OrderController extends Controller
         ];
         $methodTitle = $methodTitles[$deliveryMethod] ?? 'Standard Delivery';
         
-        // dd(['delivery_price' => $deliveryPrice, 'products' => $products]);
 
         // Prepare WooCommerce order payload
         $orderPayload = [
@@ -374,11 +372,12 @@ class OrderController extends Controller
 
         // Send to WooCommerce (assume 'mexico' shop for now)
         $shop = Shop::where('name', $data['branch'])->first();
-        $response = \Illuminate\Support\Facades\Http::withBasicAuth($shop->consumer_key, $shop->consumer_secret)
+        $response = Http::withBasicAuth($shop->consumer_key, $shop->consumer_secret)
             ->post($shop->url . '/wp-json/wc/v3/orders', $orderPayload);
 
         if ($response->successful()) {
             $orderData = $response->json();
+            dd($orderData);
             $paymentUrl = $orderData['payment_url'] ?? null;
             $orderNumber = $orderData['number'] ?? null;
             $totalAmount = $orderData['total'] ?? null;
