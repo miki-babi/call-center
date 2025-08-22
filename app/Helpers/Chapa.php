@@ -37,6 +37,6 @@ class Chapa
             ]
         ]);
 
-        return $response->body();
+        return $response->data();
     }
 }
