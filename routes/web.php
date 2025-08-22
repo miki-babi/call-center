@@ -11,9 +11,9 @@ use App\Http\Controllers\MapController;
 
 Route::get('/chapa', function () {
 
-    Chapa::initiate();
+    $data=Chapa::initiate();
 
-    return view('chapa');
+    return $data;
 });
 
 // Route::post('login', [SessionController::class, 'login'])->name('auth.login');
