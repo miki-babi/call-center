@@ -14,9 +14,17 @@ use Illuminate\Support\Facades\Log;
 
 Route::get('/callback', function (Request $request) {
 
-    Log::info('Chapa callback received:', $request->all());
+    $data = $request->all();
 
-    $data=Chapa::initiate($order_id="test");
+    Log::info('Chapa callback received:', $data);
+
+    if(isset($data['status']) && $data['status'] === 'success') {
+        // Handle successful payment
+        Log::info('Payment successful for transaction: ' . ($data['tx_ref'] ?? 'N/A'));
+    } else {
+        // Handle failed or pending payment
+        Log::warning('Payment failed or pending for transaction: ' . ($data['tx_ref'] ?? 'N/A'));
+    }
 
     return $data;
 })->name('callback');
