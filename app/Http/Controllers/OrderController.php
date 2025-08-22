@@ -390,7 +390,7 @@ class OrderController extends Controller
             // Generate unique transaction reference
             $txRef = 'chapa-' . \Illuminate\Support\Str::uuid();
 
-            dd($data['id']);
+            dd($orderData['id']);
             // Store in Payment model
             Payment::create([
                 'email'        => $data['email'] ?? null,
@@ -399,14 +399,14 @@ class OrderController extends Controller
                 'phone'        => $data['phone'] ?? null,
                 'amount'       => $totalAmount,
                 'tx_ref'       => $txRef,
-                'callback_url' => route('callback', ['shop' => $shop->id, 'order' => $data['id'] ?? null]),
-                'order_id'     => $data['id'] ?? null,
+                'callback_url' => route('callback', ['shop' => $shop->id, 'order' => $orderData['id'] ?? null]),
+                'order_id'     => $orderData['id'] ?? null,
                 'status'       => 0,
                 'shop'         => $shop->id,
             ]);
 
             // Payment URL (from WooCommerce or Chapa)
-            $paymentUrl = route('chapa', ['shop' => $shop->id, 'order_id' => $data['id'] ?? null]);
+            $paymentUrl = route('chapa', ['shop' => $shop->id, 'order_id' => $orderData['id'] ?? null]);
 
             return view('order.payment', [
                 'payment_url'   => $paymentUrl,
