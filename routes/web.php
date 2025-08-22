@@ -6,18 +6,38 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MapController;
+use App\Models\Shop;
 // use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+
 
 
 
 Route::get('/callback/{shop}/{order}', function (Request $request, $shop, $order) {
     $data = $request->all();
 
+
     Log::info("Chapa callback received for shop: {$shop}, order: {$order}", $data);
 
+    // Process the callback data as needed
+    $shopOrder= Shop::where('id', $shop)->first();
+
     if (isset($data['status']) && $data['status'] === 'success') {
+
+       $orderPayload = ['status' => 'processing'];
+
+$response = Http::withBasicAuth($shopOrder->consumer_key, $shopOrder->consumer_secret)
+    ->put($shopOrder->url . '/wp-json/wc/v3/orders/' . $order, $orderPayload);
+
+if ($response->successful()) {
+    Log::info("Order {$order} status updated to processing");
+} else {
+    Log::error("Failed to update order {$order}", $response->json());
+}
+
+
         Log::info("Payment successful for transaction: " . ($data['trx_ref'] ?? 'N/A'));
     } else {
         Log::warning("Payment failed or pending for transaction: " . ($data['trx_ref'] ?? 'N/A'));
