@@ -37,6 +37,6 @@ class Chapa
             ]
         ]);
 
-        return $response->json();
+        return $response->json()['data']['checkout_url'];
     }
 }
