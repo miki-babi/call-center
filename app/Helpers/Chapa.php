@@ -25,8 +25,8 @@ class Chapa
             'callback_url' => 'https://webhook.site/077164d6-29cb-40df-ba29-8a00e59a7e60',
             'return_url' => 'https://www.google.com/',
             'customization' => [
-                'title' => 'Payment for my favourite merchant',
-                'description' => 'I love online payments.'
+                'title' => 'Payment',
+                'description' => ' '
             ],
             'meta' => [
                 'hide_receipt' => 'true'
