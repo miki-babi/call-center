@@ -29,14 +29,6 @@ Route::get('/callback/{shop}/{order}', function (Request $request, $shop, $order
         'callback' => $data
     ];
 })->name('callback');
-
-Route::get('/chapa/{shop}/{order_id}', function ($shop, $order_id) {
-
-    $data=Chapa::initiate($shop, $order_id);
-
-    return $data;
-});
-
 Route::get('/chapa/verify/{order_id}', function ($order_id) {
 
     if(!$order_id) {
@@ -48,6 +40,14 @@ Route::get('/chapa/verify/{order_id}', function ($order_id) {
 
     // return $data;
 });
+Route::get('/chapa/{shop}/{order_id}', function ($shop, $order_id) {
+
+    $data=Chapa::initiate($shop, $order_id);
+
+    return $data;
+});
+
+
 // Route::post('login', [SessionController::class, 'login'])->name('auth.login');
 // Route::post('logout', [SessionController::class, 'logout'])->name('auth.logout');
 // Route::get('/login', function () {
