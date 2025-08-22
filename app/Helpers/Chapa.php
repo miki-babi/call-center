@@ -37,7 +37,11 @@ class Chapa
                 'hide_receipt' => 'true'
             ]
         ]);
+            if ($response->json()['data']['checkout_url']) {
+        return redirect()->away($response->json()['data']['checkout_url']);  // Laravel safe redirect
+    }
+
         // $order_id="test";
-        return $response->json()['data']['checkout_url'] . $order_id;
+        // return $response->json()['data']['checkout_url'] . $order_id;
     }
 }
