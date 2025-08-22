@@ -37,6 +37,6 @@ class Chapa
             ]
         ]);
 $order_id="test";
-        return $response->json()['data']['checkout_url'] && $order_id;
+        return $response->json()['data']['checkout_url'] . $order_id;
     }
 }
