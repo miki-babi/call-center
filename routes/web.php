@@ -6,11 +6,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MapController;
+// use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
+
 
 Route::post('/callback', function (Request $request) {
 
-    dd($request->all());
+    Log::info('Chapa callback received:', $request->all());
     $data=Chapa::initiate($order_id="test");
 
     return $data;
