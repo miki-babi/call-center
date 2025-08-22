@@ -34,8 +34,8 @@ Route::get('/chapa/verify/{order_id}', function ($order_id) {
     if(!$order_id) {
         return "Order ID is required";
     }
-    if($order_id=="test") {
-        return "Order ID is test";
+    if ($order_id != "test") {
+        return "Order ID is not test";
     }
 
     // return $data;
