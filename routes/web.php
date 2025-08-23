@@ -77,8 +77,9 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('logout', [SessionController::class, 'logout'])->name('auth.logout');
+    Route::get('/', [OrderController::class, 'fetchAllOrders']);
 
-    
+
     Route::get('/map', [MapController::class, 'show']);
     Route::get('/leaflet/search', [MapController::class, 'search']);
     Route::get('/leaflet/distance', [MapController::class, 'getDistance']);
