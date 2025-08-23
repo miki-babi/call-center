@@ -33,7 +33,8 @@ class Chapa
             'tx_ref' => $tx_ref,
             'callback_url' => route('callback', [
     'shop' => $shop,
-    'order' => $order_id
+    'order' => $order_id,
+    'trx_ref' => $tx_ref
 ]),
             'return_url' => 'https://call-center.beshgebeya.co/chapa/verify/' . $order_id,
             'customization' => [

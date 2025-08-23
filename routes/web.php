@@ -16,12 +16,11 @@ use App\Models\Payment;
 
 
 
-Route::get('/callback/{shop}/{order}', function (Request $request, $shop, $order) {
+Route::get('/callback/{shop}/{order}/{trx_ref}', function (Request $request, $shop, $order, $trx_ref) {
     $data = $request->all();
     
 
-
-    Log::info("Chapa callback received for shop: {$shop}, order: {$order}", $data);
+    Log::info("Chapa callback received for shop: {$shop}, order: {$order}, trx_ref: {$trx_ref}", $data);
 
     // Process the callback data as needed
     $shopOrder= Shop::where('name', $shop)->first();
@@ -34,9 +33,10 @@ $response = Http::withBasicAuth($shopOrder->consumer_key, $shopOrder->consumer_s
     ->put($shopOrder->url . '/wp-json/wc/v3/orders/' . $order, $orderPayload);
 
 if ($response->successful()) {
-    $payment = Payment::where('order_id', $order)->first();
+    $payment = Payment::where('shop', $shop)->where('order_id', $order)->first();
     if ($payment) {
         $payment->status = 1;
+
         $payment->save();
     }
     Log::info("Order {$order} status updated to processing");
