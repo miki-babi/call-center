@@ -56,13 +56,14 @@ if ($response->successful()) {
         'callback' => $data
     ];
 })->name('callback');
-Route::get('/chapa/verify/{order_id}', function ($order_id) {
+Route::get('/chapa/verify/{trx_ref}', function ($trx_ref) {
 
-    if(!$order_id) {
-        return "Order ID is required";
+    $paid=Chapa::verify($trx_ref);
+    if(!$paid) {
+        return "Transaction reference is required";
     }
-    if ($order_id != "test") {
-        return "Order ID is not test";
+    if ($paid['status'] === 'success') {
+        return "Transaction reference is not test";
     }
 
     // return $data;

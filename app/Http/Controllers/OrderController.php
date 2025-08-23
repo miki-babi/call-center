@@ -388,7 +388,7 @@ class OrderController extends Controller
             $totalAmount = $orderData['total'] ?? null;
 
             // Generate unique transaction reference
-            $txRef = 'chapa-' . \Illuminate\Support\Str::uuid();
+            $txRef = 'chapa-' . Str::uuid();
 
             // Store in Payment model
             Payment::create([

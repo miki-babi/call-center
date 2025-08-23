@@ -32,11 +32,11 @@ class Chapa
             "phone_number" => "0912345678",
             'tx_ref' => $tx_ref,
             'callback_url' => route('callback', [
-    'shop' => $shop,
-    'order' => $order_id,
-    'trx_ref' => $tx_ref
-]),
-            'return_url' => 'https://call-center.beshgebeya.co/chapa/verify/' . $order_id,
+                'shop' => $shop,
+                'order' => $order_id,
+                'trx_ref' => $tx_ref
+            ]),
+            'return_url' => 'https://call-center.beshgebeya.co/chapa/verify/' . $tx_ref,
             'customization' => [
                 'title' => 'Payment',
                 'description' => ' '
@@ -45,11 +45,21 @@ class Chapa
                 'hide_receipt' => 'true'
             ]
         ]);
-            if ($response->json()['data']['checkout_url']) {
-        return redirect()->away($response->json()['data']['checkout_url']);  // Laravel safe redirect
-    }
+        if ($response->json()['data']['checkout_url']) {
+            return redirect()->away($response->json()['data']['checkout_url']);  // Laravel safe redirect
+        }
 
         // $order_id="test";
         // return $response->json()['data']['checkout_url'] . $order_id;
+    }
+
+    public static function verify($trx_ref)
+    {
+        $response = Http::withHeaders([
+            'Authorization' => "Bearer " . env('Chapa_Secretkey'),
+            'Content-Type' => 'application/json',
+        ])->get('https://api.chapa.co/v1/transaction/verify/' . $trx_ref);
+
+        return $response->json();
     }
 }
