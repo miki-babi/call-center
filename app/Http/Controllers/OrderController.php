@@ -405,7 +405,7 @@ class OrderController extends Controller
             ]);
 
             // Payment URL (from WooCommerce or Chapa)
-            $paymentUrl = route('chapa', ['shop' => $shop->id, 'order_id' => $orderData['id'] ?? null]);
+            $paymentUrl = route('chapa', ['shop' => $data['branch'], 'order_id' => $orderData['id'] ?? null]);
 
             return view('order.payment', [
                 'payment_url'   => $paymentUrl,
