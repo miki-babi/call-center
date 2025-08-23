@@ -7,7 +7,6 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MapController;
 use App\Models\Shop;
-// use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -18,38 +17,31 @@ use App\Models\Payment;
 
 Route::get('/callback/{shop}/{order}/{trx_ref}', function (Request $request, $shop, $order, $trx_ref) {
     $data = $request->all();
-    
-
-    Log::info("Chapa callback received for shop: {$shop}, order: {$order}, trx_ref: {$trx_ref}", $data);
 
     // Process the callback data as needed
-    $shopOrder= Shop::where('name', $shop)->first();
+    $shopOrder = Shop::where('name', $shop)->first();
 
     if (isset($data['status']) && $data['status'] === 'success') {
 
-       $orderPayload = ['status' => 'processing'];
+        $orderPayload = ['status' => 'processing'];
 
-$response = Http::withBasicAuth($shopOrder->consumer_key, $shopOrder->consumer_secret)
-    ->put($shopOrder->url . '/wp-json/wc/v3/orders/' . $order, $orderPayload);
+        $response = Http::withBasicAuth($shopOrder->consumer_key, $shopOrder->consumer_secret)
+            ->put($shopOrder->url . '/wp-json/wc/v3/orders/' . $order, $orderPayload);
 
-if ($response->successful()) {
-    $payment = Payment::where('shop', $shop)->where('order_id', $order)->first();
-    if ($payment) {
-        $payment->status = 1;
+        if ($response->successful()) {
+            $payment = Payment::where('shop', $shop)->where('order_id', $order)->first();
+            if ($payment) {
+                $payment->status = 1;
 
-        $payment->save();
-    }
-    Log::info("Order {$order} status updated to processing");
-} else {
-    Log::error("Failed to update order {$order}", $response->json());
-}
-
-
-        Log::info("Payment successful for transaction: " . ($data['trx_ref'] ?? 'N/A'));
+                $payment->save();
+            }
+           
+        } else {
+            Log::error("Failed to update order {$order}", $response->json());
+        }
     } else {
         Log::warning("Payment failed or pending for transaction: " . ($data['trx_ref'] ?? 'N/A'));
     }
-
     return [
         'shop' => $shop,
         'order' => $order,
@@ -57,43 +49,20 @@ if ($response->successful()) {
     ];
 })->name('callback');
 Route::get('/chapa/verify/{trx_ref}/{shop}/{order_id}', function ($trx_ref, $shop, $order_id) {
-
-    $paid=Chapa::verify($trx_ref);
-    if($paid['status'] === 'success') {
+    $paid = Chapa::verify($trx_ref);
+    if ($paid['status'] === 'success') {
         return "Transaction reference is required";
     }
     if ($paid['status'] === 'failed') {
         Chapa::initiate($shop, $order_id);
     }
-
-    // return $data;
 })->name('verify');
 Route::get('/chapa/{shop}/{order_id}', function ($shop, $order_id) {
 
-    $data=Chapa::initiate($shop, $order_id);
+    $data = Chapa::initiate($shop, $order_id);
 
     return $data;
 })->name('chapa');
-
-
-// Route::post('login', [SessionController::class, 'login'])->name('auth.login');
-// Route::post('logout', [SessionController::class, 'logout'])->name('auth.logout');
-// Route::get('/login', function () {
-//     return view('auth.login');
-// })->name('auth.form');
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->name('dashboard');
-// Route::get('/map', [MapController::class, 'show']);
-// Route::get('/leaflet/search', [MapController::class, 'search']);
-// Route::get('/leaflet/distance', [MapController::class, 'getDistance']);
-// Route::get('/order/new', [OrderController::class, 'newOrder'])->name('orders.new');
-// Route::post('/order/new', [OrderController::class, 'placeOrder'])->name('orders.place.new');
-// Route::get('/order/new/{branch}', [OrderController::class, 'branch'])->name('orders.new.branch');
-// Route::get('/product', [ProductController::class, 'fetchAllProducts'])->name('product.index');
-// Route::get('/shop/orders', [OrderController::class, 'fetchAllOrders'])->name('orders.index');
-// Route::get('/shop/orders/{name}', [OrderController::class, 'fetchOrders'])->name('orders.fetch');
 
 
 Route::middleware('guest')->group(function () {
@@ -109,10 +78,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('logout', [SessionController::class, 'logout'])->name('auth.logout');
 
-    Route::get('/dashboard', function () {
-        // return view('dashboard');
-    })->name('dashboard');
-
+    
     Route::get('/map', [MapController::class, 'show']);
     Route::get('/leaflet/search', [MapController::class, 'search']);
     Route::get('/leaflet/distance', [MapController::class, 'getDistance']);
