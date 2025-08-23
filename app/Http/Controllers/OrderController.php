@@ -398,7 +398,7 @@ class OrderController extends Controller
                 'phone'        => $data['phone'] ?? null,
                 'amount'       => $totalAmount,
                 'tx_ref'       => $txRef,
-                'callback_url' => route('callback', ['shop' => $data['branch'], 'order' => $orderData['id'] ?? null]),
+                'callback_url' => route('callback', ['shop' => $data['branch'], 'order' => $orderData['id'] ?? null, 'trx_ref' => $txRef]),
                 'order_id'     => $orderData['id'] ?? null,
                 'status'       => 0,
                 'shop'         => $data['branch'],
