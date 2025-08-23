@@ -11,6 +11,7 @@ use App\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use App\Models\Payment;
 
 
 
@@ -33,6 +34,11 @@ $response = Http::withBasicAuth($shopOrder->consumer_key, $shopOrder->consumer_s
     ->put($shopOrder->url . '/wp-json/wc/v3/orders/' . $order, $orderPayload);
 
 if ($response->successful()) {
+    $payment = Payment::where('order_id', $order)->first();
+    if ($payment) {
+        $payment->status = 1;
+        $payment->save();
+    }
     Log::info("Order {$order} status updated to processing");
 } else {
     Log::error("Failed to update order {$order}", $response->json());
