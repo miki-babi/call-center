@@ -68,9 +68,9 @@ Route::get('/chapa/verify/{trx_ref}', function ($trx_ref) {
 
     // return $data;
 });
-Route::get('/chapa/{shop}/{order_id}/{trx_ref}', function ($shop, $order_id, $trx_ref) {
+Route::get('/chapa/{shop}/{order_id}', function ($shop, $order_id) {
 
-    $data=Chapa::initiate($shop, $order_id, $trx_ref);
+    $data=Chapa::initiate($shop, $order_id);
 
     return $data;
 })->name('chapa');

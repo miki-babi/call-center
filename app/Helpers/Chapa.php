@@ -11,14 +11,14 @@ use Illuminate\Support\Str;
 class Chapa
 {
 
-    public static function initiate($shop, $order_id, $trx_ref)
+    public static function initiate($shop, $order_id)
     {
 
 
         // $shopOrder= Payment::where('shop_id', $shop->id)->where('order_id', $order_id)->where('status', 0)->first();
 
         // dd('test');
-        $tx_ref = $trx_ref;
+        $tx_ref = Str::uuid();
 
         $response = Http::withHeaders([
             'Authorization' => "Bearer " . env('Chapa_Secretkey'),
