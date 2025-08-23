@@ -25,11 +25,11 @@ setTimeout(() => loading = false, 1000)">
             <div class="text-lg font-semibold">
                 <span>Current branch: </span>
             </div>
-            <a role="tab" class="tab {{ request()->is('shop/orders') ? 'tab-active' : '' }} "
+            <a role="tab" class="tab text-white {{ request()->is('shop/orders') ? 'tab-active' : '' }} "
                 href="{{ route('orders.index') }}">All</a>
-            <a role="tab" class="tab {{ request()->is('shop/orders/mexico') ? 'tab-active' : '' }} "
+            <a role="tab" class="tab text-white {{ request()->is('shop/orders/mexico') ? 'tab-active' : '' }} "
                 href="{{ route('orders.fetch', ['name' => 'mexico']) }}">Mexico</a>
-            <a role="tab" class="tab {{ request()->is('shop/orders/ayat') ? 'tab-active' : '' }} "
+            <a role="tab" class="tab text-white {{ request()->is('shop/orders/ayat') ? 'tab-active' : '' }} "
                 href="{{ route('orders.fetch', ['name' => 'ayat']) }}">Ayat</a>
             <a role="tab" class="tab tab-disabled">Kadisco</a>
         </div>
