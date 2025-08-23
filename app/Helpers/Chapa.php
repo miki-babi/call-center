@@ -36,7 +36,11 @@ class Chapa
                 'order' => $order_id,
                 'trx_ref' => $tx_ref
             ]),
-            'return_url' => 'https://call-center.beshgebeya.co/chapa/verify/' . $tx_ref,
+            'return_url' => route('verify', [
+                'trx_ref' => $tx_ref,
+                'shop' => $shop,
+                'order_id' => $order_id
+            ]),
             'customization' => [
                 'title' => 'Payment',
                 'description' => ' '

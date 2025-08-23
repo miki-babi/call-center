@@ -56,18 +56,18 @@ if ($response->successful()) {
         'callback' => $data
     ];
 })->name('callback');
-Route::get('/chapa/verify/{trx_ref}', function ($trx_ref) {
+Route::get('/chapa/verify/{trx_ref}/{shop}/{order_id}', function ($trx_ref, $shop, $order_id) {
 
     $paid=Chapa::verify($trx_ref);
-    if(!$paid) {
+    if($paid['status'] === 'success') {
         return "Transaction reference is required";
     }
-    if ($paid['status'] === 'success') {
-        return "Transaction reference is not test";
+    if ($paid['status'] === 'failed') {
+        Chapa::initiate($shop, $order_id);
     }
 
     // return $data;
-});
+})->name('verify');
 Route::get('/chapa/{shop}/{order_id}', function ($shop, $order_id) {
 
     $data=Chapa::initiate($shop, $order_id);
