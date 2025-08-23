@@ -15,7 +15,7 @@ class Chapa
     {
 
 
-        // $shopOrder= Payment::where('shop_id', $shop->id)->where('order_id', $order_id)->where('status', 0)->first();
+        $shopOrder= Payment::where('shop', $shop)->where('order_id', $order_id)->first();
 
         // dd('test');
         $tx_ref = Str::uuid();
@@ -24,12 +24,12 @@ class Chapa
             'Authorization' => "Bearer " . env('Chapa_Secretkey'),
             'Content-Type' => 'application/json',
         ])->post('https://api.chapa.co/v1/transaction/initialize', [
-            'amount' => '10',
+            'amount' => $shopOrder->amount,
             'currency' => 'ETB',
-            "email" => "abebech_bekele@gmail.com",
-            "first_name" => "Bilen",
-            "last_name" => "Gizachew",
-            "phone_number" => "0912345678",
+            "email" => "$shopOrder->email",
+            "first_name" => "$shopOrder->first_name",
+            "last_name" => "$shopOrder->last_name",
+            "phone_number" => "$shopOrder->phone_number",
             'tx_ref' => $tx_ref,
             'callback_url' => route('callback', [
                 'shop' => $shop,
