@@ -65,7 +65,7 @@ Route::get('/chapa/{shop}/{order_id}', function ($shop, $order_id) {
     $data=Chapa::initiate($shop, $order_id);
 
     return $data;
-});
+})->name('chapa');
 
 
 // Route::post('login', [SessionController::class, 'login'])->name('auth.login');
