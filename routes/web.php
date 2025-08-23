@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Log;
 
 Route::get('/callback/{shop}/{order}', function (Request $request, $shop, $order) {
     $data = $request->all();
+    dd($data);
 
 
     Log::info("Chapa callback received for shop: {$shop}, order: {$order}", $data);
