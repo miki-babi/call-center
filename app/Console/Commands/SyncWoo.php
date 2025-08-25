@@ -39,7 +39,7 @@ class SyncWoo extends Command
 
             $cacheKey = "woo_orders_{$shop->id}";
 
-            $orders = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($shop) {
+            $orders = Cache::remember($cacheKey, now()->addSeconds(3), function () use ($shop) {
                 return retry(5, function () use ($shop) {
 
                     $response = Http::withBasicAuth($shop->consumer_key, $shop->consumer_secret)

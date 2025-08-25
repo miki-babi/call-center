@@ -26,7 +26,7 @@ class ProductController extends Controller
         foreach ($allShops as $shop) {
             $cacheKey = "woo_products_{$shop->id}";
 
-            $products = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($shop) {
+            $products = Cache::remember($cacheKey, 3600, function () use ($shop) {
                 $allProducts = [];
                 $page = 1;
                 $perPage = 100;
@@ -108,7 +108,7 @@ class ProductController extends Controller
     $shop=Shop::where('name',$branch)->first();
     $cacheKey = "woo_products_{$shop->id}";
 
-    $products = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($shop) {
+    $products = Cache::remember($cacheKey,  now()->addSeconds(5), function () use ($shop) {
         $allProducts = [];
         $page = 1;
         $perPage = 100;

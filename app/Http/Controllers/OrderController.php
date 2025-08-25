@@ -36,7 +36,7 @@ class OrderController extends Controller
         if ($shop->name == 'mexico') {
             $cacheKey = "woo_products_{$shop->id}";
 
-            $products = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($shop) {
+            $products = Cache::remember($cacheKey, now()->addSeconds(10), function () use ($shop) {
                 $allProducts = [];
                 $page = 1;
                 $perPage = 100;
@@ -207,8 +207,8 @@ class OrderController extends Controller
         // dd($shop);
         $cacheKey = "woo_orders_{$shop->id}";
 
-        // Get from cache or fetch and cache for 5 minutes
-        $orders = Cache::remember($cacheKey, now()->addMinutes(1), function () use ($shop) {
+        // Get from cache or fetch and cache for 30 seconds
+        $orders = Cache::remember($cacheKey, now()->addSeconds(3), function () use ($shop) {
             return retry(5, function () use ($shop) {
                 $response = Http::withBasicAuth($shop->consumer_key, $shop->consumer_secret)
                     ->timeout(80)
@@ -252,7 +252,7 @@ class OrderController extends Controller
         foreach ($allShops as $shop) {
             $cacheKey = "woo_orders_{$shop->id}";
 
-            $orders = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($shop) {
+            $orders = Cache::remember($cacheKey, now()->addSeconds(10), function () use ($shop) {
                 return retry(5, function () use ($shop) {
                     $response = Http::withBasicAuth($shop->consumer_key, $shop->consumer_secret)
                         ->timeout(80)
