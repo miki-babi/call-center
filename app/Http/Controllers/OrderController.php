@@ -310,15 +310,18 @@ class OrderController extends Controller
 
         $deliveryPrice = $data['delivery_price'] ?? 0;
         $products = json_decode($data['products'] ?? '[]', true);
-        $deliveryMethod = $data['delivery_method'] ?? 'standard_delivery';
+        $deliveryMethod = $data['delivery_method'] ?? 'shop_pickup';
 
         // Map delivery method to method title
         $methodTitles = [
-            'standard_delivery' => 'Standard Delivery',
-            'next_day_delivery' => 'Next Day Delivery',
-            'express_delivery' => 'Express Delivery'
+            'express_delivery'    => 'Express Delivery (1-2 hours)',
+            'next_day_delivery'   => 'Next Day Delivery',
+            'same_day_delivery'   => 'Same Day Delivery',
+            'other_days_delivery' => 'Other Days',
+            'two_day_delivery'    => '2 Day Delivery',
+            'shop_pickup'         => 'Shop Pickup (Free)',
         ];
-        $methodTitle = $methodTitles[$deliveryMethod] ?? 'Standard Delivery';
+        $methodTitle = $methodTitles[$deliveryMethod] ?? 'Shop Pickup (Free)';
 
 
         // Prepare WooCommerce order payload

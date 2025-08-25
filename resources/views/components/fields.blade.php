@@ -49,9 +49,12 @@
         <div>
             <label class="block font-medium">Delivery Method:</label>
             <select name="delivery_method" id="delivery_method" required class="w-full border border-gray-300 rounded-lg p-2">
-                <option value="self_pickup">Self Pickup</option>
-                <option value="same_day_delivery">Same Day Delivery</option>
+                <option value="express_delivery">Express Delivery (1-2 hours)</option>
                 <option value="next_day_delivery">Next Day Delivery</option>
+                <option value="same_day_delivery">Same Day Delivery</option>
+                <option value="other_days_delivery">Other Days</option>
+                <option value="two_day_delivery">2 Day Delivery</option>
+                <option value="shop_pickup">Shop Pickup (Free)</option>
             </select>
         </div>
         <input type="hidden" name="delivery_price" id="delivery_price" value="">
@@ -70,7 +73,7 @@
     document.getElementById('delivery_method').addEventListener('change', function() {
         const deliveryMethod = this.value;
         
-        if (deliveryMethod === 'self_pickup') {
+        if (deliveryMethod === 'shop_pickup') {
             // Set delivery price to 0 for self pickup
             window.deliveryCost = 0;
             
@@ -85,7 +88,7 @@
             // Show notification
             const notification = document.createElement('div');
             notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50';
-            notification.textContent = 'Self pickup selected - No delivery charge';
+            notification.textContent = 'Shop pickup selected - No delivery charge';
             document.body.appendChild(notification);
             
             setTimeout(() => {
